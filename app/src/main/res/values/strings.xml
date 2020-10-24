@@ -1,3 +1,21 @@
 <resources>
+
+    <!-- Sign In page -->
+    <string name="sign_in_email_hint">Email</string>
+    <string name="sign_in_password_hint">Password</string>
+    <string name="sign_in_register_button">Register</string>
+    <string name="sign_in_sign_in_button">Sign In</string>
+    <string name="title_activity_auth">AuthActivity</string>
+    <string name="sign_in_fragment_label">Sign In</string>
+
+    <!-- Register page -->
+    <string name="register_first_name_hint">First Name</string>
+    <string name="register_last_name_hint">Last Name</string>
+    <string name="register_email_hint">Email</string>
+    <string name="register_password_hint">Password</string>
+    <string name="register_retype_password_hint">Retype Password</string>
+    <string name="register_register_button">Register</string>
+    <string name="register_fragment_label">Register</string>
+
     <string name="app_name">Group6Project</string>
 </resources>
