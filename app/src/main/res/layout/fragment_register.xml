@@ -4,7 +4,7 @@
     android:id="@+id/registerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ui.RegisterFragment">
+    tools:context="edu.uw.tcss450.group6project.ui.auth.RegisterFragment">
 
     <EditText
         android:id="@+id/first_name_field"
@@ -12,7 +12,7 @@
         android:layout_height="44dp"
         android:layout_marginTop="172dp"
         android:ems="10"
-        android:hint="@string/register_first_name_hint"
+        android:hint="@string/register_firstName"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         android:layout_height="43dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="@string/register_last_name_hint"
+        android:hint="@string/register_firstName"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -37,7 +37,7 @@
         android:layout_height="46dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="@string/register_email_hint"
+        android:hint="@string/all_emailAddress"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -50,7 +50,7 @@
         android:layout_height="46dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="@string/register_password_hint"
+        android:hint="@string/all_password"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -63,7 +63,7 @@
         android:layout_height="51dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="@string/register_retype_password_hint"
+        android:hint="@string/register_retypePassword"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -75,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/register_register_button"
+        android:text="@string/all_register"
         app:layout_constraintEnd_toEndOf="@+id/retype_pass"
         app:layout_constraintTop_toBottomOf="@+id/retype_pass" />
 </androidx.constraintlayout.widget.ConstraintLayout>

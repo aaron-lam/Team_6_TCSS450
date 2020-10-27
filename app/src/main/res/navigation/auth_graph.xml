@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/signInFragment"
-        android:name="ui.SignInFragment"
-        android:label="@string/sign_in_fragment_label"
-        tools:layout="@layout/fragment_sign_in" >
+        android:name="edu.uw.tcss450.group6project.ui.auth.SignInFragment"
+        android:label="@string/all_signIn"
+        tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_signInFragment_to_registerFragment2"
             app:destination="@id/registerFragment" />
@@ -19,9 +19,9 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="ui.RegisterFragment"
-        android:label="@string/register_fragment_label"
-        tools:layout="@layout/fragment_register" >
+        android:name="edu.uw.tcss450.group6project.ui.auth.RegisterFragment"
+        android:label="@string/all_register"
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_mainActivity"
             app:destination="@id/mainActivity" />
