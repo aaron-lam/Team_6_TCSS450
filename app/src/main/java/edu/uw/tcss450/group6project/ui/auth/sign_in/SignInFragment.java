@@ -1,4 +1,4 @@
-package edu.uw.tcss450.group6project.ui.auth;
+package edu.uw.tcss450.group6project.ui.auth.sign_in;
 
 import android.os.Bundle;
 

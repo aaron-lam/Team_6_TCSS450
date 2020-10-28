@@ -7,12 +7,15 @@
     <string name="all_signIn">Sign In</string>
 
     <!-- Sign In page -->
+    <string name="sign_in_email_hint">Email</string>
+    <string name="sign_in_password_hint">Password</string>
     <string name="title_activity_auth">AuthActivity</string>
 
     <!-- Register page -->
-    <string name="register_firstName">First Name</string>
-    <string name="register_lastName">Last Name</string>
-    <string name="register_retypePassword">Retype Password</string>
+    <string name="register_first_name_hint">First Name</string>
+    <string name="register_last_name_hint">Last Name</string>
+    <string name="register_nickname_hint">Nickname</string>
+    <string name="register_retype_password_hint">Retype Password</string>
 
     <!-- Nav Bar -->
     <string name="nav_home">Home</string>
