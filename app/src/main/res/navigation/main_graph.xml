@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/main_graph">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/navigation_home">
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="edu.uw.tcss450.group6project.ui.home.HomeFragment"
+        android:label="@string/nav_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/navigation_chat"
+        android:name="edu.uw.tcss450.group6project.ui.chat.ChatListFragment"
+        android:label="@string/nav_chat"
+        tools:layout="@layout/fragment_chat_list" />
+    <fragment
+        android:id="@+id/navigation_contacts"
+        android:name="edu.uw.tcss450.group6project.ui.contacts.ContactListFragment"
+        android:label="@string/nav_contacts"
+        tools:layout="@layout/fragment_contact_list" />
+    <fragment
+        android:id="@+id/navigation_weather"
+        android:name="edu.uw.tcss450.group6project.ui.weather.WeatherFragment"
+        android:label="@string/nav_weather"
+        tools:layout="@layout/fragment_weather" />
 </navigation>
