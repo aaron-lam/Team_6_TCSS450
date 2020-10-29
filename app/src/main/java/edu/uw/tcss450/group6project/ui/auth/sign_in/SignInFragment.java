@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
+import edu.uw.tcss450.group6project.ui.auth.SignInFragmentDirections;
 
 /**
  * A simple {@link Fragment} subclass.
