@@ -26,10 +26,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_nickname" />
+        app:layout_constraintTop_toBottomOf="@+id/field_register_nickname" />
 
     <EditText
-        android:id="@+id/register_nickname"
+        android:id="@+id/field_register_nickname"
         android:layout_width="369dp"
         android:layout_height="42dp"
         android:layout_marginTop="16dp"

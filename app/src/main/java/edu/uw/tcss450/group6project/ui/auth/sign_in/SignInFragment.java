@@ -14,12 +14,13 @@ import android.view.ViewGroup;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
-import edu.uw.tcss450.group6project.ui.auth.SignInFragmentDirections;
+import edu.uw.tcss450.group6project.utils.SignInValidator;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SignInFragment extends Fragment {
+
     private FragmentSignInBinding binding;
 
     @Override
@@ -38,5 +39,17 @@ public class SignInFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.testHome.setOnClickListener(this::handleHome);
+
+        binding.buttonSigninRegister.setOnClickListener(v -> {
+            Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToRegisterFragment2());
+        });
+
+        binding.buttonSigninSubmit.setOnClickListener(v -> {
+            SignInValidator signInValidator = new SignInValidator(binding);
+
+            if (signInValidator.validateAll()) {
+                Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToMainActivity());
+            }
+        });
     }
 }
