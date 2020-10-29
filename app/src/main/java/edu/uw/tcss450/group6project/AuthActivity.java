@@ -1,8 +1,15 @@
 package edu.uw.tcss450.group6project;
 
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+
+import edu.uw.tcss450.group6project.ui.auth.sign_in.SignInFragmentDirections;
 
 public class AuthActivity extends AppCompatActivity {
 
