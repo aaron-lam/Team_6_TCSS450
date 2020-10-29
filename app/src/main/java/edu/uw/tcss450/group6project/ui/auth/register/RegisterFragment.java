@@ -9,16 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import edu.uw.tcss450.group6project.R;
+import edu.uw.tcss450.group6project.databinding.FragmentRegisterBinding;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class RegisterFragment extends Fragment {
 
+    private FragmentRegisterBinding binding;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false);
+        binding = FragmentRegisterBinding.inflate(inflater);
+        return binding.getRoot();
     }
 }
