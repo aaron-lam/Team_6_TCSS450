@@ -9,7 +9,7 @@ public class SignInValidator {
 
     String email, password;
     FragmentSignInBinding binding;
-    Pattern passCheck = Pattern.compile("((?=.*[a-z])(?=.*d)(?=.*[@#$%!&()])(?=.*[A-Z]).{6,16})");
+    Pattern passCheck = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$");
 
     public SignInValidator(FragmentSignInBinding binding) {
         this.binding = binding;
