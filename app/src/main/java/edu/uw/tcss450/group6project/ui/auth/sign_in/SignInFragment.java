@@ -5,12 +5,17 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
@@ -22,6 +27,14 @@ import edu.uw.tcss450.group6project.utils.SignInValidator;
 public class SignInFragment extends Fragment {
 
     private FragmentSignInBinding binding;
+    private SignInViewModel mSignInModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mSignInModel = new ViewModelProvider(getActivity())
+                .get(SignInViewModel.class);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,7 +44,7 @@ public class SignInFragment extends Fragment {
     }
 
     private void handleHome(View v) {
-        NavDirections action = SignInFragmentDirections.actionSignInFragmentToMainActivity();
+        NavDirections action = SignInFragmentDirections.actionSignInFragmentToMainActivity("testBypass","");
         Navigation.findNavController(v).navigate(action);
     }
 
@@ -48,8 +61,49 @@ public class SignInFragment extends Fragment {
             SignInValidator signInValidator = new SignInValidator(binding);
 
             if (signInValidator.validateAll()) {
-                Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToMainActivity());
+                verifyAuthWithServer();
             }
         });
+
+        mSignInModel.addResponseObserver(
+                getViewLifecycleOwner(),
+                this::observeResponse);
+    }
+
+    public void successfulSignIn(final String email, final String jwt) {
+        Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToMainActivity(email,jwt));
+    }
+
+    private void verifyAuthWithServer() {
+        mSignInModel.connect(
+                binding.fieldSigninEmail.getText().toString(),
+                binding.fieldSigninPassword.getText().toString());
+        //This is an Asynchronous call. No statements after should rely on the
+        //result of connect().
+    }
+
+    private void observeResponse(final JSONObject response) {
+        if (response.length() > 0) {
+            if (response.has("code")) {
+                try {
+                    binding.fieldSigninEmail.setError(
+                            "Error Authenticating: " +
+                                    response.getJSONObject("data").getString("message"));
+                } catch (JSONException e) {
+                    Log.e("JSON Parse Error", e.getMessage());
+                }
+            } else {
+                try {
+                    successfulSignIn(
+                            binding.fieldSigninEmail.getText().toString(),
+                            response.getString("token")
+                    );
+                } catch (JSONException e) {
+                    Log.e("JSON Parse Error", e.getMessage());
+                }
+            }
+        } else {
+            Log.d("JSON Response", "No Response");
+        }
     }
 }
