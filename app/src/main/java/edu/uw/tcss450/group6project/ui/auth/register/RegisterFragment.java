@@ -58,7 +58,7 @@ public class RegisterFragment extends Fragment {
         });
     }
 
-    private void successfulSignIn() {
+    private void successfulRegistration() {
         Navigation.findNavController(getView()).navigate(RegisterFragmentDirections.actionRegisterFragmentToSignInFragment());
     }
 
@@ -83,7 +83,7 @@ public class RegisterFragment extends Fragment {
                     Log.e("JSON Parse Error", e.getMessage());
                 }
             } else {
-                successfulSignIn();
+                successfulRegistration();
             }
         } else {
             Log.d("JSON Response", "No Response");
