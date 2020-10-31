@@ -15,7 +15,7 @@ public class RegisterValidator extends AppCompatActivity {
 
     String firstName, lastName, email, nickname, password, retypePassword;
     FragmentRegisterBinding binding;
-    Pattern passCheck = Pattern.compile("((?=.*[a-z])(?=.*d)(?=.*[@#$%!&()])(?=.*[A-Z]).{6,16})");
+    Pattern passCheck = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$");
 
     public RegisterValidator(FragmentRegisterBinding binding) {
         this.binding = binding;
