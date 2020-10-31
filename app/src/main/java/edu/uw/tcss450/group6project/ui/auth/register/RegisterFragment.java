@@ -21,7 +21,7 @@ import edu.uw.tcss450.group6project.databinding.FragmentRegisterBinding;
 import edu.uw.tcss450.group6project.utils.RegisterValidator;
 
 /**
- * A simple {@link Fragment} subclass.
+ *
  */
 public class RegisterFragment extends Fragment {
 
@@ -58,10 +58,16 @@ public class RegisterFragment extends Fragment {
         });
     }
 
+    /**
+     *
+     */
     private void successfulRegistration() {
         Navigation.findNavController(getView()).navigate(RegisterFragmentDirections.actionRegisterFragmentToSignInFragment());
     }
 
+    /**
+     *
+     */
     private void verifyAuthWithServer() {
         mRegisterModel.connect(
                 binding.fieldRegisterFirstName.getText().toString(),
@@ -72,6 +78,10 @@ public class RegisterFragment extends Fragment {
         //result of connect().
     }
 
+    /**
+     *
+     * @param response
+     */
     private void observeResponse(final JSONObject response) {
         if (response.length() > 0) {
             if (response.has("code")) {

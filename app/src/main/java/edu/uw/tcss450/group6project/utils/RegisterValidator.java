@@ -11,12 +11,19 @@ import java.util.regex.Pattern;
 
 import edu.uw.tcss450.group6project.databinding.FragmentRegisterBinding;
 
+/**
+ *
+ */
 public class RegisterValidator extends AppCompatActivity {
 
     String firstName, lastName, email, nickname, password, retypePassword;
     FragmentRegisterBinding binding;
     Pattern passCheck = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$");
 
+    /**
+     *
+     * @param binding
+     */
     public RegisterValidator(FragmentRegisterBinding binding) {
         this.binding = binding;
         firstName = binding.fieldRegisterFirstName.getText().toString();
@@ -27,6 +34,10 @@ public class RegisterValidator extends AppCompatActivity {
         retypePassword = binding.fieldRegisterRetypePassword.getText().toString();
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean validateAll() {
         boolean result = validateRetypePassword();
         result = result && validatePassword();
@@ -37,6 +48,10 @@ public class RegisterValidator extends AppCompatActivity {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean validateFirstName() {
         if (firstName.length() < 1) {
             binding.fieldRegisterFirstName.setError("Cannot be empty");
@@ -49,6 +64,10 @@ public class RegisterValidator extends AppCompatActivity {
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean validateLastName() {
         if (lastName.length() < 1) {
             binding.fieldRegisterLastName.setError("Cannot be empty");
@@ -61,6 +80,10 @@ public class RegisterValidator extends AppCompatActivity {
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean validateEmail() {
         if (email.length() < 1) {
             binding.fieldRegisterEmail.setError("Cannot be empty");
@@ -76,6 +99,10 @@ public class RegisterValidator extends AppCompatActivity {
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean validateNickname() {
         if (nickname.length() < 1) {
             binding.fieldRegisterNickname.setError("Cannot be empty");
@@ -88,6 +115,10 @@ public class RegisterValidator extends AppCompatActivity {
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean validatePassword() {
 
         Matcher m = passCheck.matcher(password);
@@ -106,6 +137,10 @@ public class RegisterValidator extends AppCompatActivity {
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean validateRetypePassword() {
         if (retypePassword.length() < 1) {
             binding.fieldRegisterRetypePassword.setError("Cannot be empty");

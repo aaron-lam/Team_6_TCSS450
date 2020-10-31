@@ -22,7 +22,7 @@ import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
 import edu.uw.tcss450.group6project.utils.SignInValidator;
 
 /**
- * A simple {@link Fragment} subclass.
+ *
  */
 public class SignInFragment extends Fragment {
 
@@ -41,11 +41,6 @@ public class SignInFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentSignInBinding.inflate(inflater, container, false);
         return binding.getRoot();
-    }
-
-    private void handleHome(View v) {
-        NavDirections action = SignInFragmentDirections.actionSignInFragmentToMainActivity("testBypass","");
-        Navigation.findNavController(v).navigate(action);
     }
 
     @Override
@@ -70,10 +65,27 @@ public class SignInFragment extends Fragment {
                 this::observeResponse);
     }
 
+    /**
+     *
+     * @param v
+     */
+    private void handleHome(View v) {
+        NavDirections action = SignInFragmentDirections.actionSignInFragmentToMainActivity("testBypass","");
+        Navigation.findNavController(v).navigate(action);
+    }
+
+    /**
+     *
+     * @param email
+     * @param jwt
+     */
     public void successfulSignIn(final String email, final String jwt) {
         Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToMainActivity(email,jwt));
     }
 
+    /**
+     *
+     */
     private void verifyAuthWithServer() {
         mSignInModel.connect(
                 binding.fieldSigninEmail.getText().toString(),
@@ -82,6 +94,10 @@ public class SignInFragment extends Fragment {
         //result of connect().
     }
 
+    /**
+     *
+     * @param response
+     */
     private void observeResponse(final JSONObject response) {
         if (response.length() > 0) {
             if (response.has("code")) {

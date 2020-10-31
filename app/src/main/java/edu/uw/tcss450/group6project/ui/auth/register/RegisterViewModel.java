@@ -21,21 +21,37 @@ import org.json.JSONObject;
 import java.nio.charset.Charset;
 import java.util.Objects;
 
+/**
+ *
+ */
 public class RegisterViewModel extends AndroidViewModel {
 
     private MutableLiveData<JSONObject> mResponse;
 
+    /**
+     *
+     * @param application
+     */
     public RegisterViewModel(@NonNull Application application) {
         super(application);
         mResponse = new MutableLiveData<>();
         mResponse.setValue(new JSONObject());
     }
 
+    /**
+     *
+     * @param owner
+     * @param observer
+     */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {
         mResponse.observe(owner, observer);
     }
 
+    /**
+     *
+     * @param error
+     */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {
             try {
@@ -60,6 +76,13 @@ public class RegisterViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     *
+     * @param first
+     * @param last
+     * @param email
+     * @param password
+     */
     public void connect(final String first,
                         final String last,
                         final String email,

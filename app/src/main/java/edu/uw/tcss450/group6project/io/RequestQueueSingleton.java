@@ -10,6 +10,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+/**
+ *
+ */
 public class RequestQueueSingleton {
     private static edu.uw.tcss450.group6project.io.RequestQueueSingleton instance;
     private static Context context;
@@ -38,6 +41,11 @@ public class RequestQueueSingleton {
                 });
     }
 
+    /**
+     *
+     * @param context
+     * @return
+     */
     public static synchronized edu.uw.tcss450.group6project.io.RequestQueueSingleton getInstance(Context context) {
         if (instance == null) {
             instance = new edu.uw.tcss450.group6project.io.RequestQueueSingleton(context);
@@ -45,6 +53,10 @@ public class RequestQueueSingleton {
         return instance;
     }
 
+    /**
+     *
+     * @return
+     */
     public RequestQueue getmRequestQueue() {
         if (mRequestQueue == null) {
             // getApplicationContext() is key, it keeps you from leaking the
@@ -54,10 +66,19 @@ public class RequestQueueSingleton {
         return mRequestQueue;
     }
 
+    /**
+     *
+     * @param req
+     * @param <T>
+     */
     public <T> void addToRequestQueue(Request<T> req) {
         getmRequestQueue().add(req);
     }
 
+    /**
+     *
+     * @return
+     */
     public ImageLoader getmImageLoader() {
         return mImageLoader;
     }

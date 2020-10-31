@@ -5,24 +5,39 @@ import java.util.regex.Pattern;
 
 import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
 
+/**
+ *
+ */
 public class SignInValidator {
 
     String email, password;
     FragmentSignInBinding binding;
     Pattern passCheck = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$");
 
+    /**
+     *
+     * @param binding
+     */
     public SignInValidator(FragmentSignInBinding binding) {
         this.binding = binding;
         email = binding.fieldSigninEmail.getText().toString();
         password = binding.fieldSigninPassword.getText().toString();
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean validateAll() {
         boolean result = validatePassword();
         result = result && validateEmail();
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean validateEmail() {
         if (email.length() < 1) {
             binding.fieldSigninEmail.setError("Cannot be empty");
@@ -38,6 +53,10 @@ public class SignInValidator {
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean validatePassword() {
 
         Matcher m = passCheck.matcher(password);
