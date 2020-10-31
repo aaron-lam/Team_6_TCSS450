@@ -85,6 +85,7 @@ public class RegisterViewModel extends AndroidViewModel {
      */
     public void connect(final String first,
                         final String last,
+                        final String nickname,
                         final String email,
                         final String password) {
         String url = "https://team6-tcss450-web-service.herokuapp.com/auth";
@@ -92,6 +93,7 @@ public class RegisterViewModel extends AndroidViewModel {
         try {
             body.put("first", first);
             body.put("last", last);
+            body.put("user", nickname);
             body.put("email", email);
             body.put("password", password);
         } catch (JSONException e) {

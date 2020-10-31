@@ -72,6 +72,7 @@ public class RegisterFragment extends Fragment {
         mRegisterModel.connect(
                 binding.fieldRegisterFirstName.getText().toString(),
                 binding.fieldRegisterLastName.getText().toString(),
+                binding.fieldRegisterNickname.getText().toString(),
                 binding.fieldRegisterEmail.getText().toString(),
                 binding.fieldRegisterPassword.getText().toString());
         //This is an Asynchronous call. No statements after should rely on the
