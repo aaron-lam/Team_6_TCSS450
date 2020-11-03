@@ -11,6 +11,12 @@ import androidx.navigation.Navigation;
 
 import edu.uw.tcss450.group6project.ui.auth.sign_in.SignInFragmentDirections;
 
+/**
+ * Activity for all authentication functionality.
+ *
+ * @author Chase
+ * @version 1.0
+ */
 public class AuthActivity extends AppCompatActivity {
 
     @Override

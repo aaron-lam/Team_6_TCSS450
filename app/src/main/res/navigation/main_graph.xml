@@ -12,8 +12,12 @@
     <fragment
         android:id="@+id/navigation_chat"
         android:name="edu.uw.tcss450.group6project.ui.chat.ChatListFragment"
-        android:label="@string/nav_chat"
-        tools:layout="@layout/fragment_chat_list" />
+        android:label="@string/all_chat"
+        tools:layout="@layout/fragment_chat_list" >
+        <action
+            android:id="@+id/action_navigation_chat_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_contacts"
         android:name="edu.uw.tcss450.group6project.ui.contacts.ContactListFragment"
@@ -24,4 +28,13 @@
         android:name="edu.uw.tcss450.group6project.ui.weather.WeatherFragment"
         android:label="@string/nav_weather"
         tools:layout="@layout/fragment_weather" />
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="edu.uw.tcss450.group6project.ui.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" >
+        <argument
+            android:name="chat"
+            app:argType="edu.uw.tcss450.group6project.ui.chat.Chat" />
+    </fragment>
 </navigation>
