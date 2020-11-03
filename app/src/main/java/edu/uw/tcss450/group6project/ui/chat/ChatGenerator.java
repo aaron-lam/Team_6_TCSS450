@@ -13,7 +13,15 @@ import java.util.List;
  * @version 2 November 2020
  */
 public class ChatGenerator {
+
+    /**
+     * An array of chats to be generated for testing purposes.
+     */
     private static final Chat[] CHATS;
+
+    /**
+     * The number of chats to generate.
+     */
     public static final int COUNT = 20;
 
     static {

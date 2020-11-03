@@ -12,7 +12,10 @@ import android.view.ViewGroup;
 import edu.uw.tcss450.group6project.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment to display a single chat between users.
+ *
+ * @author Robert M
+ * @version 3 November 2020
  */
 public class ChatFragment extends Fragment {
 

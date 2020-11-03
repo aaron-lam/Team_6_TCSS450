@@ -2,7 +2,6 @@ package edu.uw.tcss450.group6project.ui.chat;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,7 +15,14 @@ import java.util.List;
  */
 public class Chat implements Serializable {
 
+    /**
+     * List of participants in the chat.
+     */
     private final List<String> mParticipants;
+
+    /**
+     * List of messages in the chat.
+     */
     private final List<ChatMessage> mMessages;
 
     /**

@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import edu.uw.tcss450.group6project.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment to display a list of chats the user is in.
  *
  * @author Robert M.
  * @version 2 November 2020

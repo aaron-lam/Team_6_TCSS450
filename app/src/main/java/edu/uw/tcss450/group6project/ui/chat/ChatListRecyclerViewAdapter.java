@@ -55,10 +55,24 @@ public class ChatListRecyclerViewAdapter extends
 
     /**
      * Represents an individual row View from the list of rows in the Chat Recycler View.
+     *
+     * @author Robert M
+     * @version 3 November 2020
      */
     public class ChatListViewHolder extends RecyclerView.ViewHolder {
+        /**
+         * The view.
+         */
         public final View mView;
+
+        /**
+         * The binding for the chat list card.
+         */
         public FragmentChatlistCardBinding binding;
+
+        /**
+         * The chat in the card.
+         */
         private Chat mChat;
 
         /**
@@ -72,6 +86,11 @@ public class ChatListRecyclerViewAdapter extends
             binding = FragmentChatlistCardBinding.bind(view);
         }
 
+        /**
+         * Sets each card view for a chat in the recycler view.
+         *
+         * @param chat the chat to setup
+         */
         void setChat(final Chat chat) {
             mChat = chat;
             binding.buttonFullChat.setOnClickListener(view ->

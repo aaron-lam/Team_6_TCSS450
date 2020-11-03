@@ -71,6 +71,11 @@ public class ChatRecyclerViewAdapter extends
             binding = FragmentChatCardBinding.bind(view);
         }
 
+        /**
+         * Sets up each card in the recycler view.
+         *
+         * @param msg the chat message the belongs to the card
+         */
         void setChat(final ChatMessage msg) {
             mMessage = msg;
 
