@@ -12,6 +12,9 @@ import edu.uw.tcss450.group6project.R;
 
 /**
  * A simple {@link Fragment} subclass.
+ *
+ * @author Robert M
+ * @version 1.0
  */
 public class HomeFragment extends Fragment {
 

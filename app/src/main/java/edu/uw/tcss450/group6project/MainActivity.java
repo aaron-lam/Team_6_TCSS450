@@ -10,7 +10,16 @@ import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+/**
+ * An activity for all functions after authentication.
+ *
+ * @author Robert M
+ * @version 1.1
+ */
 public class MainActivity extends AppCompatActivity {
+    /**
+     * Configuration for a bottom navigation bar.
+     */
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override

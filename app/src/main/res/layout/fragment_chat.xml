@@ -11,4 +11,4 @@
     app:layoutManager="LinearLayoutManager"
     android:orientation="vertical"
     tools:context="edu.uw.tcss450.group6project.ui.chat.ChatListFragment"
-    tools:listitem="@layout/fragment_chatlist_card"/>
+    tools:listitem="@layout/fragment_chat_card"/>
