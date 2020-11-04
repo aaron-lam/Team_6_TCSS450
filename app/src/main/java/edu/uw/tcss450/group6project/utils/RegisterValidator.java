@@ -1,10 +1,12 @@
 package edu.uw.tcss450.group6project.utils;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentRegisterBinding;
 
 /** Used to make sure that registration parameters are valid before sending them to the web service.
@@ -14,16 +16,19 @@ import edu.uw.tcss450.group6project.databinding.FragmentRegisterBinding;
  */
 public class RegisterValidator extends AppCompatActivity {
 
-    String firstName, lastName, email, username, password, retypePassword;
+    String firstName, lastName, email, username, password, retypePassword, emptyFieldError;
     FragmentRegisterBinding binding;
+    FragmentActivity activity;
     Pattern passCheck = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$");
 
     /** Constructor.
      *
      * @param binding The ViewModel bindings for the register page.
      */
-    public RegisterValidator(FragmentRegisterBinding binding) {
+    public RegisterValidator(FragmentActivity activity, FragmentRegisterBinding binding) {
         this.binding = binding;
+        this.activity = activity;
+        emptyFieldError = activity.getResources().getString(R.string.all_empty_field_error);
         firstName = binding.fieldRegisterFirstName.getText().toString();
         lastName = binding.fieldRegisterLastName.getText().toString();
         email = binding.fieldRegisterEmail.getText().toString();
@@ -52,10 +57,11 @@ public class RegisterValidator extends AppCompatActivity {
      */
     private boolean validateFirstName() {
         if (firstName.length() < 1) {
-            binding.fieldRegisterFirstName.setError("Cannot be empty");
+            binding.fieldRegisterFirstName.setError(emptyFieldError);
             return false;
         } else if (!firstName.matches("^[a-zA-Z]*$")) {
-            binding.fieldRegisterFirstName.setError("Must only contain letters with no spaces");
+            binding.fieldRegisterFirstName.setError(activity
+                    .getResources().getString(R.string.register_must_only_contain_letters_error));
             return false;
         }
 
@@ -68,10 +74,11 @@ public class RegisterValidator extends AppCompatActivity {
      */
     private boolean validateLastName() {
         if (lastName.length() < 1) {
-            binding.fieldRegisterLastName.setError("Cannot be empty");
+            binding.fieldRegisterLastName.setError(emptyFieldError);
             return false;
         } else if (!lastName.matches("^[a-zA-Z]*$")) {
-            binding.fieldRegisterLastName.setError("Must only contain letters with no spaces");
+            binding.fieldRegisterLastName.setError(activity
+                    .getResources().getString(R.string.register_must_only_contain_letters_error));
             return false;
         }
 
@@ -84,13 +91,15 @@ public class RegisterValidator extends AppCompatActivity {
      */
     private boolean validateEmail() {
         if (email.length() < 1) {
-            binding.fieldRegisterEmail.setError("Cannot be empty");
+            binding.fieldRegisterEmail.setError(emptyFieldError);
             return false;
         } else if (email.length() < 5) {
-            binding.fieldRegisterEmail.setError("Must be a valid email");
+            binding.fieldRegisterEmail.setError(activity
+                    .getResources().getString(R.string.all_email_invalid_error));
             return false;
         } else if (!email.contains("@")) {
-            binding.fieldRegisterEmail.setError("Must contain an '@' symbol");
+            binding.fieldRegisterEmail.setError(activity
+                    .getResources().getString(R.string.all_email_no_at_symbol_error));
             return false;
         }
 
@@ -103,10 +112,11 @@ public class RegisterValidator extends AppCompatActivity {
      */
     private boolean validateUsername() {
         if (username.length() < 1) {
-            binding.fieldRegisterUsername.setError("Cannot be empty");
+            binding.fieldRegisterUsername.setError(emptyFieldError);
             return false;
         } else if (!username.matches("^[a-zA-Z]*$")) {
-            binding.fieldRegisterUsername.setError("Must only contain letters with no spaces");
+            binding.fieldRegisterUsername.setError(activity
+                    .getResources().getString(R.string.register_must_only_contain_letters_error));
             return false;
         }
 
@@ -122,13 +132,15 @@ public class RegisterValidator extends AppCompatActivity {
         Matcher m = passCheck.matcher(password);
 
         if (password.length() < 1) {
-            binding.fieldRegisterPassword.setError("Cannot be empty");
+            binding.fieldRegisterPassword.setError(emptyFieldError);
             return false;
         } else if (password.length() < 6) {
-            binding.fieldRegisterPassword.setError("Must be at least 6 characters long");
+            binding.fieldRegisterPassword.setError(activity
+                    .getResources().getString(R.string.all_password_length_error));
             return false;
         } else if (!m.matches()) {
-            binding.fieldRegisterPassword.setError("Must contain a lowercase, uppercase, number, and special character");
+            binding.fieldRegisterPassword.setError(activity
+                    .getResources().getString(R.string.all_password_requirements_error));
             return false;
         }
 
@@ -141,10 +153,11 @@ public class RegisterValidator extends AppCompatActivity {
      */
     private boolean validateRetypePassword() {
         if (retypePassword.length() < 1) {
-            binding.fieldRegisterRetypePassword.setError("Cannot be empty");
+            binding.fieldRegisterRetypePassword.setError(emptyFieldError);
             return false;
         } else if (!password.equals(retypePassword)) {
-            binding.fieldRegisterRetypePassword.setError("Passwords must match");
+            binding.fieldRegisterRetypePassword.setError(activity
+                    .getResources().getString(R.string.register_retype_password_error));
             return false;
         }
 

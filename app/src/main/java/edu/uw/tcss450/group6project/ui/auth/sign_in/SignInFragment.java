@@ -56,7 +56,7 @@ public class SignInFragment extends Fragment {
         });
 
         binding.buttonSigninSubmit.setOnClickListener(v -> {
-            SignInValidator signInValidator = new SignInValidator(binding);
+            SignInValidator signInValidator = new SignInValidator(getActivity(),binding);
 
             if (signInValidator.validateAll()) {
                 verifyAuthWithServer();

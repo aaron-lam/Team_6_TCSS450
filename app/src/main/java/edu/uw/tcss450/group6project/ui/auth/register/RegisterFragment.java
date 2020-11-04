@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentRegisterBinding;
 import edu.uw.tcss450.group6project.ui.auth.EmailVerificationDialog;
 import edu.uw.tcss450.group6project.utils.RegisterValidator;
@@ -50,7 +51,7 @@ public class RegisterFragment extends Fragment {
 
         binding.buttonRegisterSubmit.setOnClickListener(v -> {
 
-            RegisterValidator registerValidator = new RegisterValidator(binding);
+            RegisterValidator registerValidator = new RegisterValidator(getActivity(),binding);
 
             if (registerValidator.validateAll()) {
                 verifyAuthWithServer();
@@ -71,7 +72,8 @@ public class RegisterFragment extends Fragment {
      *
      */
     private void successfulRegistration() {
-        Navigation.findNavController(getView()).navigate(RegisterFragmentDirections.actionRegisterFragmentToSignInFragment());
+        Navigation.findNavController(getView()).navigate(RegisterFragmentDirections
+                .actionRegisterFragmentToSignInFragment());
     }
 
     /** This method makes a popup reminding the user to verify their email.
@@ -106,12 +108,10 @@ public class RegisterFragment extends Fragment {
                 try {
                     if (response.getJSONObject("data").getString("message").equals("Username exists")) {
                         binding.fieldRegisterUsername.setError(
-                                "Error Authenticating: " +
-                                        response.getJSONObject("data").getString("message"));
+                                "Error Authenticating: " + getString(R.string.register_username_exists_error));
                     } else {
                         binding.fieldRegisterEmail.setError(
-                                "Error Authenticating: " +
-                                        response.getJSONObject("data").getString("message"));
+                                "Error Authenticating: " + getString(R.string.register_email_exists_error));
                     }
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
