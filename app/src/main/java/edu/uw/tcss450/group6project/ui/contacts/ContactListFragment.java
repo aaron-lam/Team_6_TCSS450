@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import edu.uw.tcss450.group6project.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment for displaying the list of contacts.
  *
  * @author Robert M.
  * @version 1.0

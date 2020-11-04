@@ -10,9 +10,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
-/** Taken from Lab 3. Not sure exactly what it does.
+/** Taken from Lab 3. Handles the list of tasks to do asynchronously.
  *
  * @author Chase Alder
+ * @author Charles Bryan
  * @version 1.0
  */
 public class RequestQueueSingleton {
@@ -43,10 +44,10 @@ public class RequestQueueSingleton {
                 });
     }
 
-    /**
+    /** Getter, retrieves the current instance. Asynchronous.
      *
-     * @param context
-     * @return
+     * @param context The current context
+     * @return an instance of the class
      */
     public static synchronized edu.uw.tcss450.group6project.io.RequestQueueSingleton getInstance(Context context) {
         if (instance == null) {
@@ -55,9 +56,9 @@ public class RequestQueueSingleton {
         return instance;
     }
 
-    /**
+    /** Getter for the queue.
      *
-     * @return
+     * @return the current state of the queue
      */
     public RequestQueue getmRequestQueue() {
         if (mRequestQueue == null) {
@@ -68,18 +69,18 @@ public class RequestQueueSingleton {
         return mRequestQueue;
     }
 
-    /**
+    /** Adds a request to the queue.
      *
-     * @param req
-     * @param <T>
+     * @param req The request to be added
+     * @param <T> The type of request
      */
     public <T> void addToRequestQueue(Request<T> req) {
         getmRequestQueue().add(req);
     }
 
-    /**
+    /** Gets the ImageLoader
      *
-     * @return
+     * @return the ImageLoader
      */
     public ImageLoader getmImageLoader() {
         return mImageLoader;

@@ -1,4 +1,4 @@
-package edu.uw.tcss450.group6project.ui.auth.register;
+package edu.uw.tcss450.group6project.ui.auth;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

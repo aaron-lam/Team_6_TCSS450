@@ -19,7 +19,6 @@ public class SignInValidator {
     /** Constructor.
      *
      * @param binding The ViewModel bindings for the sign in page
-     * @author Chase Alder
      */
     public SignInValidator(FragmentSignInBinding binding) {
         this.binding = binding;
@@ -30,7 +29,6 @@ public class SignInValidator {
     /** Validates all fields.
      *
      * @return True if the inputs are all valid, false if any of them aren't.
-     * @author Chase Alder
      */
     public boolean validateAll() {
         boolean result = validatePassword();
@@ -41,7 +39,6 @@ public class SignInValidator {
     /** Ensures the inputted email is valid.
      *
      * @return Whether or not the inputted email is valid.
-     * @author Chase Alder
      */
     private boolean validateEmail() {
         if (email.length() < 1) {
@@ -61,7 +58,6 @@ public class SignInValidator {
     /** Ensures the inputted password is valid.
      *
      * @return Whether or not the inputted password is valid.
-     * @author Chase Alder
      */
     private boolean validatePassword() {
 

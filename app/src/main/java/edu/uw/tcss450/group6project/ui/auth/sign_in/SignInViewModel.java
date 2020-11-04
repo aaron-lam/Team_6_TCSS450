@@ -37,7 +37,6 @@ public class SignInViewModel extends AndroidViewModel {
     /** Constructor. From Lab 3.
      *
      * @param application
-     * @author Chase Alder
      */
     public SignInViewModel(@NonNull Application application) {
         super(application);
@@ -49,7 +48,6 @@ public class SignInViewModel extends AndroidViewModel {
      *
      * @param owner
      * @param observer
-     * @author Chase Alder
      */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {
@@ -60,7 +58,6 @@ public class SignInViewModel extends AndroidViewModel {
      *
      * @param email The inputted email
      * @param password The inputted password
-     * @author Chase Alder
      */
     public void connect(final String email, final String password) {
         String url = "https://team6-tcss450-web-service.herokuapp.com/auth";
@@ -94,7 +91,6 @@ public class SignInViewModel extends AndroidViewModel {
     /** Used to handle an error in case Volley throws one when a request is made. From Lab 3.
      *
      * @param error The error thrown by Volley.
-     * @author Chase Alder
      */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {

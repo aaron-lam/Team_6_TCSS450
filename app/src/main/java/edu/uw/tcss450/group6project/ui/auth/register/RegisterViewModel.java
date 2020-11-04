@@ -33,7 +33,6 @@ public class RegisterViewModel extends AndroidViewModel {
     /** Constructor. From Lab 3.
      *
      * @param application
-     * @author Chase Alder
      */
     public RegisterViewModel(@NonNull Application application) {
         super(application);
@@ -45,7 +44,6 @@ public class RegisterViewModel extends AndroidViewModel {
      *
      * @param owner
      * @param observer
-     * @author Chase Alder
      */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {
@@ -55,7 +53,6 @@ public class RegisterViewModel extends AndroidViewModel {
     /** Used to handle an error in case Volley throws one when a request is made. From Lab 3.
      *
      * @param error
-     * @author Chase Alder
      */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {
@@ -87,7 +84,6 @@ public class RegisterViewModel extends AndroidViewModel {
      * @param last  Last name from field
      * @param email Email from field
      * @param password Password from field
-     * @author Chase Alder
      */
     public void connect(final String first,
                         final String last,

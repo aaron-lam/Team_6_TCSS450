@@ -17,9 +17,8 @@ import android.view.ViewGroup;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
-import edu.uw.tcss450.group6project.ui.auth.register.EmailVerificationDialog;
+import edu.uw.tcss450.group6project.ui.auth.EmailVerificationDialog;
 import edu.uw.tcss450.group6project.utils.SignInValidator;
 
 /** This fragment represents the sign in page.
@@ -75,7 +74,6 @@ public class SignInFragment extends Fragment {
     /** This is a method used for testing. It skips directly to the home page without needing to sign in.
      *
      * @param v is the current view
-     * @author Robert Mangrum
      */
     private void handleHome(View v) {
         NavDirections action = SignInFragmentDirections.actionSignInFragmentToMainActivity("testBypass","");
@@ -86,7 +84,6 @@ public class SignInFragment extends Fragment {
      *
      * @param email The user's email
      * @param jwt The web authentication token
-     * @author Chase Alder
      */
     public void successfulSignIn(final String email, final String jwt) {
         Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToMainActivity(email,jwt));
@@ -94,7 +91,6 @@ public class SignInFragment extends Fragment {
 
     /** This method sends the users credentials to the web service for authentication.
      *
-     * @author Chase Alder
      */
     private void verifyAuthWithServer() {
         mSignInModel.connect(
@@ -106,7 +102,6 @@ public class SignInFragment extends Fragment {
 
     /** This makes a popup reminding the user to verify their email.
      *
-     * @author Chase Alder
      */
     private void verificationPopup() {
         EmailVerificationDialog dialog = new EmailVerificationDialog();
@@ -117,7 +112,6 @@ public class SignInFragment extends Fragment {
      * If the user's email is not yet verified, it will put up a popup.
      *
      * @param response the JSON object response from the server
-     * @author Chase Alder
      */
     private void observeResponse(final JSONObject response) {
         if (response.length() > 0) {

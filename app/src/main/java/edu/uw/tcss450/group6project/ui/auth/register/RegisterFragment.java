@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -18,8 +16,8 @@ import android.view.ViewGroup;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentRegisterBinding;
+import edu.uw.tcss450.group6project.ui.auth.EmailVerificationDialog;
 import edu.uw.tcss450.group6project.utils.RegisterValidator;
 
 /** This fragment represents the new user registration page.
