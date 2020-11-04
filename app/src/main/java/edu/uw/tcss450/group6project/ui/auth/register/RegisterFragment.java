@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -27,10 +29,12 @@ public class RegisterFragment extends Fragment {
 
     private FragmentRegisterBinding binding;
     private RegisterViewModel mRegisterModel;
+    boolean firstCall;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firstCall = true;
         mRegisterModel = new ViewModelProvider(getActivity())
                 .get(RegisterViewModel.class);
     }
@@ -47,14 +51,20 @@ public class RegisterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.buttonRegisterSubmit.setOnClickListener(v -> {
+
             RegisterValidator registerValidator = new RegisterValidator(binding);
 
             if (registerValidator.validateAll()) {
                 verifyAuthWithServer();
             }
 
-            mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
-                    this::observeResponse);
+            // For some reason, if this gets called more than once (aka the user attempts registration is rejected, and must try
+            // again) then the program crashes. This boolean is here so it only runs once.
+            if (firstCall) {
+                mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
+                        this::observeResponse);
+                firstCall = false;
+            }
         });
     }
 
@@ -62,7 +72,17 @@ public class RegisterFragment extends Fragment {
      *
      */
     private void successfulRegistration() {
-        Navigation.findNavController(getView()).navigate(RegisterFragmentDirections.actionRegisterFragmentToSignInFragment());
+        NavDirections action = RegisterFragmentDirections.actionRegisterFragmentToSignInFragment();
+        NavController cont = Navigation.findNavController(getView());
+        cont.navigate(action);
+    }
+
+    /**
+     *
+     */
+    private void verificationPopup() {
+        EmailVerificationDialog dialog = new EmailVerificationDialog();
+        dialog.show(getActivity().getSupportFragmentManager(),"Email Verification Reminder");
     }
 
     /**
@@ -94,6 +114,7 @@ public class RegisterFragment extends Fragment {
                     Log.e("JSON Parse Error", e.getMessage());
                 }
             } else {
+                verificationPopup();
                 successfulRegistration();
             }
         } else {

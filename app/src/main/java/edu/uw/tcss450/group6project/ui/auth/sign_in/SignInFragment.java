@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
+import edu.uw.tcss450.group6project.ui.auth.register.EmailVerificationDialog;
 import edu.uw.tcss450.group6project.utils.SignInValidator;
 
 /**
@@ -28,10 +29,12 @@ public class SignInFragment extends Fragment {
 
     private FragmentSignInBinding binding;
     private SignInViewModel mSignInModel;
+    boolean firstCall;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firstCall = true;
         mSignInModel = new ViewModelProvider(getActivity())
                 .get(SignInViewModel.class);
     }
@@ -60,9 +63,12 @@ public class SignInFragment extends Fragment {
             }
         });
 
-        mSignInModel.addResponseObserver(
-                getViewLifecycleOwner(),
-                this::observeResponse);
+        if (firstCall) {
+            mSignInModel.addResponseObserver(
+                    getViewLifecycleOwner(),
+                    this::observeResponse);
+            firstCall = false;
+        }
     }
 
     /**
@@ -96,12 +102,23 @@ public class SignInFragment extends Fragment {
 
     /**
      *
+     */
+    private void verificationPopup() {
+        EmailVerificationDialog dialog = new EmailVerificationDialog();
+        dialog.show(getActivity().getSupportFragmentManager(),"Email Verification Reminder");
+    }
+
+    /**
+     *
      * @param response
      */
     private void observeResponse(final JSONObject response) {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
+                    if ((int)response.get("code") == 400) {
+                        verificationPopup();
+                    }
                     binding.fieldSigninEmail.setError(
                             "Error Authenticating: " +
                                     response.getJSONObject("data").getString("message"));
