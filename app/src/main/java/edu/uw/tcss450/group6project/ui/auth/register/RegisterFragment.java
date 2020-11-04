@@ -104,9 +104,15 @@ public class RegisterFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    binding.fieldRegisterEmail.setError(
-                            "Error Authenticating: " +
-                                    response.getJSONObject("data").getString("message"));
+                    if (response.getJSONObject("data").getString("message").equals("Username exists")) {
+                        binding.fieldRegisterUsername.setError(
+                                "Error Authenticating: " +
+                                        response.getJSONObject("data").getString("message"));
+                    } else {
+                        binding.fieldRegisterEmail.setError(
+                                "Error Authenticating: " +
+                                        response.getJSONObject("data").getString("message"));
+                    }
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
                 }
