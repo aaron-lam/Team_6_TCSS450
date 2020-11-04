@@ -16,7 +16,7 @@
     <!-- Register page -->
     <string name="register_first_name_hint">First Name</string>
     <string name="register_last_name_hint">Last Name</string>
-    <string name="register_nickname_hint">Nickname</string>
+    <string name="register_username_hint">Username</string>
     <string name="register_retype_password_hint">Retype Password</string>
 
     <!-- Nav Bar -->

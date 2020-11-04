@@ -1,10 +1,6 @@
 package edu.uw.tcss450.group6project.utils;
 
-import android.view.View;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,7 +14,7 @@ import edu.uw.tcss450.group6project.databinding.FragmentRegisterBinding;
  */
 public class RegisterValidator extends AppCompatActivity {
 
-    String firstName, lastName, email, nickname, password, retypePassword;
+    String firstName, lastName, email, username, password, retypePassword;
     FragmentRegisterBinding binding;
     Pattern passCheck = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$");
 
@@ -31,7 +27,7 @@ public class RegisterValidator extends AppCompatActivity {
         firstName = binding.fieldRegisterFirstName.getText().toString();
         lastName = binding.fieldRegisterLastName.getText().toString();
         email = binding.fieldRegisterEmail.getText().toString();
-        nickname = binding.fieldRegisterNickname.getText().toString();
+        username = binding.fieldRegisterUsername.getText().toString();
         password = binding.fieldRegisterPassword.getText().toString();
         retypePassword = binding.fieldRegisterRetypePassword.getText().toString();
     }
@@ -44,7 +40,7 @@ public class RegisterValidator extends AppCompatActivity {
         boolean result = validateRetypePassword();
         result = result && validatePassword();
         result = result && validateEmail();
-        result = result && validateNickname();
+        result = result && validateUsername();
         result = result && validateLastName();
         result = result & validateFirstName();
         return result;
@@ -101,16 +97,16 @@ public class RegisterValidator extends AppCompatActivity {
         return true;
     }
 
-    /** Ensures the inputted nickname is valid.
+    /** Ensures the inputted username is valid.
      *
-     * @return Whether or not the inputted nickname is valid.
+     * @return Whether or not the inputted username is valid.
      */
-    private boolean validateNickname() {
-        if (nickname.length() < 1) {
-            binding.fieldRegisterNickname.setError("Cannot be empty");
+    private boolean validateUsername() {
+        if (username.length() < 1) {
+            binding.fieldRegisterUsername.setError("Cannot be empty");
             return false;
-        } else if (!nickname.matches("^[a-zA-Z]*$")) {
-            binding.fieldRegisterNickname.setError("Must only contain letters with no spaces");
+        } else if (!username.matches("^[a-zA-Z]*$")) {
+            binding.fieldRegisterUsername.setError("Must only contain letters with no spaces");
             return false;
         }
 
