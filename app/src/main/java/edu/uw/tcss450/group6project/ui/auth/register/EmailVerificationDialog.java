@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+/** This is used to create the popup that reminds the user to verify their email
+ *
+ */
 public class EmailVerificationDialog extends AppCompatDialogFragment {
 
     @NonNull

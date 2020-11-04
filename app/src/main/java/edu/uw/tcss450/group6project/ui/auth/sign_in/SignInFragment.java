@@ -22,14 +22,15 @@ import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
 import edu.uw.tcss450.group6project.ui.auth.register.EmailVerificationDialog;
 import edu.uw.tcss450.group6project.utils.SignInValidator;
 
-/**
+/** This fragment represents the sign in page.
  *
+ * @author Robert Mangrum & Chase Alder
  */
 public class SignInFragment extends Fragment {
 
     private FragmentSignInBinding binding;
     private SignInViewModel mSignInModel;
-    boolean firstCall;
+    boolean firstCall; // This tells the class whether the "Sign In" button has been clicked yet.
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,26 +72,29 @@ public class SignInFragment extends Fragment {
         }
     }
 
-    /**
+    /** This is a method used for testing. It skips directly to the home page without needing to sign in.
      *
-     * @param v
+     * @param v is the current view
+     * @author Robert Mangrum
      */
     private void handleHome(View v) {
         NavDirections action = SignInFragmentDirections.actionSignInFragmentToMainActivity("testBypass","");
         Navigation.findNavController(v).navigate(action);
     }
 
-    /**
+    /** This is called when a user's sign in attempt has been successfully authenticated.
      *
-     * @param email
-     * @param jwt
+     * @param email The user's email
+     * @param jwt The web authentication token
+     * @author Chase Alder
      */
     public void successfulSignIn(final String email, final String jwt) {
         Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToMainActivity(email,jwt));
     }
 
-    /**
+    /** This method sends the users credentials to the web service for authentication.
      *
+     * @author Chase Alder
      */
     private void verifyAuthWithServer() {
         mSignInModel.connect(
@@ -100,17 +104,20 @@ public class SignInFragment extends Fragment {
         //result of connect().
     }
 
-    /**
+    /** This makes a popup reminding the user to verify their email.
      *
+     * @author Chase Alder
      */
     private void verificationPopup() {
         EmailVerificationDialog dialog = new EmailVerificationDialog();
         dialog.show(getActivity().getSupportFragmentManager(),"Email Verification Reminder");
     }
 
-    /**
+    /** Checks the response from the web service after attempting to sign in.
+     * If the user's email is not yet verified, it will put up a popup.
      *
-     * @param response
+     * @param response the JSON object response from the server
+     * @author Chase Alder
      */
     private void observeResponse(final JSONObject response) {
         if (response.length() > 0) {

@@ -11,8 +11,10 @@ import java.util.regex.Pattern;
 
 import edu.uw.tcss450.group6project.databinding.FragmentRegisterBinding;
 
-/**
+/** Used to make sure that registration parameters are valid before sending them to the web service.
  *
+ * @author Chase Alder
+ * @version 1.0
  */
 public class RegisterValidator extends AppCompatActivity {
 
@@ -20,9 +22,10 @@ public class RegisterValidator extends AppCompatActivity {
     FragmentRegisterBinding binding;
     Pattern passCheck = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$");
 
-    /**
+    /** Constructor.
      *
-     * @param binding
+     * @param binding The ViewModel bindings for the register page.
+     * @author Chase Alder
      */
     public RegisterValidator(FragmentRegisterBinding binding) {
         this.binding = binding;
@@ -34,9 +37,10 @@ public class RegisterValidator extends AppCompatActivity {
         retypePassword = binding.fieldRegisterRetypePassword.getText().toString();
     }
 
-    /**
+    /** Validates all fields.
      *
-     * @return
+     * @return True if the inputs are all valid, false if any of them aren't.
+     * @author Chase Alder
      */
     public boolean validateAll() {
         boolean result = validateRetypePassword();
@@ -48,9 +52,10 @@ public class RegisterValidator extends AppCompatActivity {
         return result;
     }
 
-    /**
+    /** Ensures the inputted first name is valid.
      *
-     * @return
+     * @return Whether or not the inputted first name is valid.
+     * @author Chase Alder
      */
     private boolean validateFirstName() {
         if (firstName.length() < 1) {
@@ -64,9 +69,10 @@ public class RegisterValidator extends AppCompatActivity {
         return true;
     }
 
-    /**
+    /** Ensures the inputted last name is valid.
      *
-     * @return
+     * @return Whether or not the inputted last name is valid.
+     * @author Chase Alder
      */
     private boolean validateLastName() {
         if (lastName.length() < 1) {
@@ -80,9 +86,10 @@ public class RegisterValidator extends AppCompatActivity {
         return true;
     }
 
-    /**
+    /** Ensures the inputted email is valid.
      *
-     * @return
+     * @return Whether or not the inputted email is valid.
+     * @author Chase Alder
      */
     private boolean validateEmail() {
         if (email.length() < 1) {
@@ -99,9 +106,10 @@ public class RegisterValidator extends AppCompatActivity {
         return true;
     }
 
-    /**
+    /** Ensures the inputted nickname is valid.
      *
-     * @return
+     * @return Whether or not the inputted nickname is valid.
+     * @author Chase Alder
      */
     private boolean validateNickname() {
         if (nickname.length() < 1) {
@@ -115,9 +123,10 @@ public class RegisterValidator extends AppCompatActivity {
         return true;
     }
 
-    /**
+    /** Ensures the inputted password is valid.
      *
-     * @return
+     * @return Whether or not the inputted password is valid.
+     * @author Chase Alder
      */
     private boolean validatePassword() {
 
@@ -137,9 +146,10 @@ public class RegisterValidator extends AppCompatActivity {
         return true;
     }
 
-    /**
+    /** Ensures the inputted "retype password" is valid.
      *
-     * @return
+     * @return Whether or not the inputted "retype password" is valid.
+     * @author Chase Alder
      */
     private boolean validateRetypePassword() {
         if (retypePassword.length() < 1) {

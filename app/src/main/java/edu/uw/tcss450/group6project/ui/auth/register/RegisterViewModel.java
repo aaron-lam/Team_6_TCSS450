@@ -21,16 +21,19 @@ import org.json.JSONObject;
 import java.nio.charset.Charset;
 import java.util.Objects;
 
-/**
+/** Holds information for the RegisterFragment class that needs to persist.
  *
+ * @author Chase Alder
+ * @version 1.0
  */
 public class RegisterViewModel extends AndroidViewModel {
 
     private MutableLiveData<JSONObject> mResponse;
 
-    /**
+    /** Constructor. From Lab 3.
      *
      * @param application
+     * @author Chase Alder
      */
     public RegisterViewModel(@NonNull Application application) {
         super(application);
@@ -38,19 +41,21 @@ public class RegisterViewModel extends AndroidViewModel {
         mResponse.setValue(new JSONObject());
     }
 
-    /**
+    /** Adds an observer to execute when a message is received from the web service. From Lab 3.
      *
      * @param owner
      * @param observer
+     * @author Chase Alder
      */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {
         mResponse.observe(owner, observer);
     }
 
-    /**
+    /** Used to handle an error in case Volley throws one when a request is made. From Lab 3.
      *
      * @param error
+     * @author Chase Alder
      */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {
@@ -76,12 +81,13 @@ public class RegisterViewModel extends AndroidViewModel {
         }
     }
 
-    /**
+    /** Sends a request to the web service to register a user. From Lab 3.
      *
-     * @param first
-     * @param last
-     * @param email
-     * @param password
+     * @param first First name from field
+     * @param last  Last name from field
+     * @param email Email from field
+     * @param password Password from field
+     * @author Chase Alder
      */
     public void connect(final String first,
                         final String last,

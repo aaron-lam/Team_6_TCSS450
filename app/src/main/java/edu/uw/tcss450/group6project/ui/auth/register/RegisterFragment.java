@@ -22,14 +22,14 @@ import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentRegisterBinding;
 import edu.uw.tcss450.group6project.utils.RegisterValidator;
 
-/**
+/** This fragment represents the new user registration page.
  *
  */
 public class RegisterFragment extends Fragment {
 
     private FragmentRegisterBinding binding;
     private RegisterViewModel mRegisterModel;
-    boolean firstCall;
+    boolean firstCall; // This tells the class whether the "Register" button has been clicked yet.
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,8 +58,9 @@ public class RegisterFragment extends Fragment {
                 verifyAuthWithServer();
             }
 
-            // For some reason, if this gets called more than once (aka the user attempts registration is rejected, and must try
-            // again) then the program crashes. This boolean is here so it only runs once.
+            // For some reason, if this gets called more than once (aka the user attempts registration
+            // is rejected, and must try again) then the program crashes. This boolean is here so it
+            // only runs once.
             if (firstCall) {
                 mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
                         this::observeResponse);
@@ -68,16 +69,14 @@ public class RegisterFragment extends Fragment {
         });
     }
 
-    /**
+    /** This method navigates to the sign in page after a successful registration.
      *
      */
     private void successfulRegistration() {
-        NavDirections action = RegisterFragmentDirections.actionRegisterFragmentToSignInFragment();
-        NavController cont = Navigation.findNavController(getView());
-        cont.navigate(action);
+        Navigation.findNavController(getView()).navigate(RegisterFragmentDirections.actionRegisterFragmentToSignInFragment());
     }
 
-    /**
+    /** This method makes a popup reminding the user to verify their email.
      *
      */
     private void verificationPopup() {
@@ -85,7 +84,7 @@ public class RegisterFragment extends Fragment {
         dialog.show(getActivity().getSupportFragmentManager(),"Email Verification Reminder");
     }
 
-    /**
+    /** This sends a message to the web service with the current information in the registration fields.
      *
      */
     private void verifyAuthWithServer() {
@@ -99,9 +98,9 @@ public class RegisterFragment extends Fragment {
         //result of connect().
     }
 
-    /**
+    /** Handles the response from the web service after attempting registration.
      *
-     * @param response
+     * @param response The response from the web service.
      */
     private void observeResponse(final JSONObject response) {
         if (response.length() > 0) {

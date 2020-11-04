@@ -10,8 +10,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
-/**
+/** Taken from Lab 3. Not sure exactly what it does.
  *
+ * @author Chase Alder
+ * @version 1.0
  */
 public class RequestQueueSingleton {
     private static edu.uw.tcss450.group6project.io.RequestQueueSingleton instance;

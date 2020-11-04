@@ -25,16 +25,19 @@ import java.util.Objects;
 
 import edu.uw.tcss450.group6project.io.RequestQueueSingleton;
 
-/**
+/** Holds information for the SignInFragment class that needs to persist.
  *
+ * @author Chase Alder
+ * @version 1.0
  */
 public class SignInViewModel extends AndroidViewModel {
 
     private MutableLiveData<JSONObject> mResponse;
 
-    /**
+    /** Constructor. From Lab 3.
      *
      * @param application
+     * @author Chase Alder
      */
     public SignInViewModel(@NonNull Application application) {
         super(application);
@@ -42,20 +45,22 @@ public class SignInViewModel extends AndroidViewModel {
         mResponse.setValue(new JSONObject());
     }
 
-    /**
+    /** Adds an observer to execute when a message is received from the web service. From Lab 3.
      *
      * @param owner
      * @param observer
+     * @author Chase Alder
      */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {
         mResponse.observe(owner, observer);
     }
 
-    /**
+    /** Sends a request to the web service to sign in a user. From Lab 3.
      *
-     * @param email
-     * @param password
+     * @param email The inputted email
+     * @param password The inputted password
+     * @author Chase Alder
      */
     public void connect(final String email, final String password) {
         String url = "https://team6-tcss450-web-service.herokuapp.com/auth";
@@ -86,9 +91,10 @@ public class SignInViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
-    /**
+    /** Used to handle an error in case Volley throws one when a request is made. From Lab 3.
      *
-     * @param error
+     * @param error The error thrown by Volley.
+     * @author Chase Alder
      */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {

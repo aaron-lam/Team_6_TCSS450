@@ -5,8 +5,10 @@ import java.util.regex.Pattern;
 
 import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
 
-/**
+/** Used to make sure that sign in parameters are valid before sending them to the web service.
  *
+ * @author Chase Alder
+ * @version 1.0
  */
 public class SignInValidator {
 
@@ -14,9 +16,10 @@ public class SignInValidator {
     FragmentSignInBinding binding;
     Pattern passCheck = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$");
 
-    /**
+    /** Constructor.
      *
-     * @param binding
+     * @param binding The ViewModel bindings for the sign in page
+     * @author Chase Alder
      */
     public SignInValidator(FragmentSignInBinding binding) {
         this.binding = binding;
@@ -24,9 +27,10 @@ public class SignInValidator {
         password = binding.fieldSigninPassword.getText().toString();
     }
 
-    /**
+    /** Validates all fields.
      *
-     * @return
+     * @return True if the inputs are all valid, false if any of them aren't.
+     * @author Chase Alder
      */
     public boolean validateAll() {
         boolean result = validatePassword();
@@ -34,9 +38,10 @@ public class SignInValidator {
         return result;
     }
 
-    /**
+    /** Ensures the inputted email is valid.
      *
-     * @return
+     * @return Whether or not the inputted email is valid.
+     * @author Chase Alder
      */
     private boolean validateEmail() {
         if (email.length() < 1) {
@@ -53,9 +58,10 @@ public class SignInValidator {
         return true;
     }
 
-    /**
+    /** Ensures the inputted password is valid.
      *
-     * @return
+     * @return Whether or not the inputted password is valid.
+     * @author Chase Alder
      */
     private boolean validatePassword() {
 
