@@ -27,57 +27,57 @@ import edu.uw.tcss450.group6project.utils.SignInValidator;
  */
 public class SignInFragment extends Fragment {
 
-    private FragmentSignInBinding binding;
+    private FragmentSignInBinding mBinding;
     private SignInViewModel mSignInModel;
-    boolean firstCall; // This tells the class whether the "Sign In" button has been clicked yet.
+    boolean mFirstCall; // This tells the class whether the "Sign In" button has been clicked yet.
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firstCall = true;
+        mFirstCall = true;
         mSignInModel = new ViewModelProvider(getActivity())
                 .get(SignInViewModel.class);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentSignInBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+        mBinding = FragmentSignInBinding.inflate(inflater, container, false);
+        return mBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.testHome.setOnClickListener(this::handleHome);
+        mBinding.testHome.setOnClickListener(this::handleHome);
 
-        binding.buttonSigninRegister.setOnClickListener(v -> {
+        mBinding.buttonSigninRegister.setOnClickListener(button -> {
             Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToRegisterFragment2());
         });
 
-        binding.buttonSigninSubmit.setOnClickListener(v -> {
-            SignInValidator signInValidator = new SignInValidator(getActivity(),binding);
+        mBinding.buttonSigninSubmit.setOnClickListener(button -> {
+            SignInValidator signInValidator = new SignInValidator(getActivity(), mBinding);
 
             if (signInValidator.validateAll()) {
                 verifyAuthWithServer();
             }
         });
 
-        if (firstCall) {
+        if (mFirstCall) {
             mSignInModel.addResponseObserver(
                     getViewLifecycleOwner(),
                     this::observeResponse);
-            firstCall = false;
+            mFirstCall = false;
         }
     }
 
     /** This is a method used for testing. It skips directly to the home page without needing to sign in.
      *
-     * @param v is the current view
+     * @param view is the current view
      */
-    private void handleHome(View v) {
+    private void handleHome(View view) {
         NavDirections action = SignInFragmentDirections.actionSignInFragmentToMainActivity("testBypass","");
-        Navigation.findNavController(v).navigate(action);
+        Navigation.findNavController(view).navigate(action);
     }
 
     /** This is called when a user's sign in attempt has been successfully authenticated.
@@ -94,8 +94,8 @@ public class SignInFragment extends Fragment {
      */
     private void verifyAuthWithServer() {
         mSignInModel.connect(
-                binding.fieldSigninEmail.getText().toString(),
-                binding.fieldSigninPassword.getText().toString());
+                mBinding.fieldSigninEmail.getText().toString(),
+                mBinding.fieldSigninPassword.getText().toString());
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
     }
@@ -117,10 +117,10 @@ public class SignInFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    if ((int)response.get("code") == 400) {
+                    if ((int) response.get("code") == 400) {
                         verificationPopup();
                     }
-                    binding.fieldSigninEmail.setError(
+                    mBinding.fieldSigninEmail.setError(
                             "Error Authenticating: " +
                                     response.getJSONObject("data").getString("message"));
                 } catch (JSONException e) {
@@ -129,7 +129,7 @@ public class SignInFragment extends Fragment {
             } else {
                 try {
                     successfulSignIn(
-                            binding.fieldSigninEmail.getText().toString(),
+                            mBinding.fieldSigninEmail.getText().toString(),
                             response.getString("token")
                     );
                 } catch (JSONException e) {

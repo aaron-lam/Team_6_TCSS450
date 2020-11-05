@@ -15,20 +15,20 @@ import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
  */
 public class SignInValidator {
 
-    String email, password;
-    FragmentSignInBinding binding;
-    FragmentActivity activity;
-    Pattern passCheck = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$");
+    private String mEmail, mPassword;
+    private FragmentSignInBinding mBinding;
+    private FragmentActivity mActivity;
+    private Pattern mPassCheck = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$");
 
     /** Constructor.
      *
      * @param binding The ViewModel bindings for the sign in page
      */
     public SignInValidator(FragmentActivity activity, FragmentSignInBinding binding) {
-        this.binding = binding;
-        this.activity = activity;
-        email = binding.fieldSigninEmail.getText().toString();
-        password = binding.fieldSigninPassword.getText().toString();
+        this.mBinding = binding;
+        this.mActivity = activity;
+        mEmail = binding.fieldSigninEmail.getText().toString();
+        mPassword = binding.fieldSigninPassword.getText().toString();
     }
 
     /** Validates all fields.
@@ -46,16 +46,16 @@ public class SignInValidator {
      * @return Whether or not the inputted email is valid.
      */
     private boolean validateEmail() {
-        if (email.length() < 1) {
-            binding.fieldSigninEmail.setError(activity
+        if (mEmail.length() < 1) {
+            mBinding.fieldSigninEmail.setError(mActivity
                     .getResources().getString(R.string.all_empty_field_error));
             return false;
-        } else if (email.length() < 5) {
-            binding.fieldSigninEmail.setError(activity
+        } else if (mEmail.length() < 5) {
+            mBinding.fieldSigninEmail.setError(mActivity
                     .getResources().getString(R.string.all_email_invalid_error));
             return false;
-        } else if (!email.contains("@")) {
-            binding.fieldSigninEmail.setError(activity
+        } else if (!mEmail.contains("@")) {
+            mBinding.fieldSigninEmail.setError(mActivity
                     .getResources().getString(R.string.all_email_no_at_symbol_error));
             return false;
         }
@@ -69,18 +69,18 @@ public class SignInValidator {
      */
     private boolean validatePassword() {
 
-        Matcher m = passCheck.matcher(password);
+        Matcher m = mPassCheck.matcher(mPassword);
 
-        if (password.length() < 1) {
-            binding.fieldSigninPassword.setError(activity
+        if (mPassword.length() < 1) {
+            mBinding.fieldSigninPassword.setError(mActivity
                     .getResources().getString(R.string.all_empty_field_error));
             return false;
-        } else if (password.length() < 6) {
-            binding.fieldSigninPassword.setError(activity
+        } else if (mPassword.length() < 6) {
+            mBinding.fieldSigninPassword.setError(mActivity
                     .getResources().getString(R.string.all_password_length_error));
             return false;
         } else if (!m.matches()) {
-            binding.fieldSigninPassword.setError(activity
+            mBinding.fieldSigninPassword.setError(mActivity
                     .getResources().getString(R.string.all_password_requirements_error));
             return false;
         }
