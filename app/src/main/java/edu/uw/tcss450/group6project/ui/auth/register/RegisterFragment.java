@@ -26,32 +26,32 @@ import edu.uw.tcss450.group6project.utils.RegisterValidator;
  */
 public class RegisterFragment extends Fragment {
 
-    private FragmentRegisterBinding binding;
+    private FragmentRegisterBinding mBinding;
     private RegisterViewModel mRegisterModel;
-    boolean firstCall; // This tells the class whether the "Register" button has been clicked yet.
+    boolean mFirstCall; // This tells the class whether the "Register" button has been clicked yet.
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firstCall = true;
+        mFirstCall = true;
         mRegisterModel = new ViewModelProvider(getActivity())
                 .get(RegisterViewModel.class);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull  LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentRegisterBinding.inflate(inflater);
-        return binding.getRoot();
+        mBinding = FragmentRegisterBinding.inflate(inflater);
+        return mBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.buttonRegisterSubmit.setOnClickListener(v -> {
+        mBinding.buttonRegisterSubmit.setOnClickListener(button -> {
 
-            RegisterValidator registerValidator = new RegisterValidator(getActivity(),binding);
+            RegisterValidator registerValidator = new RegisterValidator(getActivity(), mBinding);
 
             if (registerValidator.validateAll()) {
                 verifyAuthWithServer();
@@ -60,10 +60,10 @@ public class RegisterFragment extends Fragment {
             // For some reason, if this gets called more than once (aka the user attempts registration
             // is rejected, and must try again) then the program crashes. This boolean is here so it
             // only runs once.
-            if (firstCall) {
+            if (mFirstCall) {
                 mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
                         this::observeResponse);
-                firstCall = false;
+                mFirstCall = false;
             }
         });
     }
@@ -89,11 +89,11 @@ public class RegisterFragment extends Fragment {
      */
     private void verifyAuthWithServer() {
         mRegisterModel.connect(
-                binding.fieldRegisterFirstName.getText().toString(),
-                binding.fieldRegisterLastName.getText().toString(),
-                binding.fieldRegisterUsername.getText().toString(),
-                binding.fieldRegisterEmail.getText().toString(),
-                binding.fieldRegisterPassword.getText().toString());
+                mBinding.fieldRegisterFirstName.getText().toString(),
+                mBinding.fieldRegisterLastName.getText().toString(),
+                mBinding.fieldRegisterUsername.getText().toString(),
+                mBinding.fieldRegisterEmail.getText().toString(),
+                mBinding.fieldRegisterPassword.getText().toString());
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
     }
@@ -107,10 +107,10 @@ public class RegisterFragment extends Fragment {
             if (response.has("code")) {
                 try {
                     if (response.getJSONObject("data").getString("message").equals("Username exists")) {
-                        binding.fieldRegisterUsername.setError(
+                        mBinding.fieldRegisterUsername.setError(
                                 "Error Authenticating: " + getString(R.string.register_username_exists_error));
                     } else {
-                        binding.fieldRegisterEmail.setError(
+                        mBinding.fieldRegisterEmail.setError(
                                 "Error Authenticating: " + getString(R.string.register_email_exists_error));
                     }
                 } catch (JSONException e) {
