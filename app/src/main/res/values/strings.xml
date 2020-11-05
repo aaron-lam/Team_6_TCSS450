@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Universal  -->
-    <string name="all_emailAddress">Email Address</string>
+    <string name="all_email_address">Email Address</string>
     <string name="all_password">Password</string>
     <string name="all_register">Register</string>
     <string name="all_signIn">Sign In</string>
