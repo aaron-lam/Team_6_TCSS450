@@ -33,28 +33,28 @@
         <TextView
             android:id="@+id/text_preview"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="44dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingBottom="8dp"
-            android:textAppearance="?attr/textAppearanceListItem"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_full_chat"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_participants" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button_full_chat"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="45dp"
+            android:layout_height="37dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/chat_goto"
-            android:textColor="@color/primaryTextColor"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_participants"
-            tools:visibility="visible" />
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/chat_message_36dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
