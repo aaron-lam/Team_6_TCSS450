@@ -12,13 +12,14 @@
     <string name="all_email_no_at_symbol_error">Must contain an \'@\' symbol</string>
     <string name="all_password_length_error">Must be at least 6 characters long</string>
     <string name="all_password_requirements_error">Must contain a lowercase, uppercase, number, and special character</string>
+    <string name="all_retype_password_error">Passwords must match</string>
 
-    <!-- Sign In page -->
+    <!-- Sign In Page -->
     <string name="sign_in_email_hint">Email</string>
     <string name="sign_in_password_hint">Password</string>
     <string name="title_activity_auth">AuthActivity</string>
 
-    <!-- Register page -->
+    <!-- Register Page -->
     <string name="register_first_name_hint">First Name</string>
     <string name="register_last_name_hint">Last Name</string>
     <string name="register_username_hint">Username</string>
@@ -26,7 +27,13 @@
     <string name="register_username_exists_error">Username already in use</string>
     <string name="register_email_exists_error">Email already in use</string>
     <string name="register_must_only_contain_letters_error">Must only contain letters with no spaces</string>
-    <string name="register_retype_password_error">Passwords must match</string>
+
+    <!-- Password Change Page -->
+    <string name="password_change_old_password_hint">Old Password</string>
+    <string name="password_change_new_password_hint">New Password</string>
+    <string name="password_change_retype_password_hint">Retype New Password</string>
+    <string name="password_change_submit_button">Submit</string>
+
 
     <!-- Nav Bar -->
     <string name="nav_home">Home</string>

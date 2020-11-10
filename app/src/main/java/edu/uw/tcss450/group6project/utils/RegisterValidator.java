@@ -157,7 +157,7 @@ public class RegisterValidator extends AppCompatActivity {
             return false;
         } else if (!mPassword.equals(mRetypePassword)) {
             mBinding.fieldRegisterRetypePassword.setError(mActivity
-                    .getResources().getString(R.string.register_retype_password_error));
+                    .getResources().getString(R.string.all_retype_password_error));
             return false;
         }
 

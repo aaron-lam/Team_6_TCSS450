@@ -92,8 +92,8 @@ public class RegisterFragment extends Fragment {
                 mBinding.fieldRegisterFirstName.getText().toString(),
                 mBinding.fieldRegisterLastName.getText().toString(),
                 mBinding.fieldRegisterUsername.getText().toString(),
-                mBinding.fieldRegisterEmail.getText().toString(),
-                mBinding.fieldRegisterPassword.getText().toString());
+                mBinding.fieldRegisterEmail.getText().toString(),"");
+                //mBinding.fieldRegisterPassword.getText().toString());
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
     }
