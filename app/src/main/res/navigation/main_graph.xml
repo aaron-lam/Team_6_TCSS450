@@ -28,11 +28,6 @@
             app:destination="@id/chatFragment" />
     </fragment>
     <fragment
-        android:id="@+id/navigation_weather"
-        android:name="edu.uw.tcss450.group6project.ui.weather.WeatherFragment"
-        android:label="@string/nav_weather"
-        tools:layout="@layout/fragment_weather" />
-    <fragment
         android:id="@+id/chatFragment"
         android:name="edu.uw.tcss450.group6project.ui.chat.ChatFragment"
         android:label="@string/all_chat"
@@ -41,4 +36,9 @@
             android:name="chat"
             app:argType="edu.uw.tcss450.group6project.ui.chat.Chat" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_weather"
+        android:name="edu.uw.tcss450.group6project.ui.weather.WeatherTabFragment"
+        android:label="@string/nav_weather"
+        tools:layout="@layout/fragment_weather_tab" />
 </navigation>
