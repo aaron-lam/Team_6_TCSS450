@@ -78,12 +78,19 @@ public class SignInFragment extends Fragment {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
                 mBuilder.setTitle(R.string.forgot_password_title);
                 View mView = getLayoutInflater().inflate(R.layout.dialog_forgot_password,null);
+
+                // Grabbing references to all the elements in the fragment
                 EditText mEmail = (EditText) mView.findViewById(R.id.field_forgot_password_email);
                 Button mSubmit = (Button) mView.findViewById(R.id.button_forgot_password_submit);
+                Button mCancel = (Button) mView.findViewById(R.id.button_forgot_password_cancel);
 
+                // Assembling the dialog?
                 mBuilder.setView(mView);
-                AlertDialog dialog = mBuilder.create();
-                dialog.show();
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+
+                // Cancel button functionality
+                mCancel.setOnClickListener(button -> mDialog.cancel());
             }
         });
 
