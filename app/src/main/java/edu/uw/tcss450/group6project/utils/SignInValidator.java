@@ -27,8 +27,8 @@ public class SignInValidator {
     public SignInValidator(FragmentActivity activity, FragmentSignInBinding binding) {
         this.mBinding = binding;
         this.mActivity = activity;
-        mEmail = binding.fieldSigninEmail.getText().toString();
-        mPassword = binding.fieldSigninPassword.getText().toString();
+        mEmail = binding.fieldSignInEmail.getText().toString();
+        mPassword = binding.fieldSignInPassword.getText().toString();
     }
 
     /** Validates all fields.
@@ -47,15 +47,15 @@ public class SignInValidator {
      */
     private boolean validateEmail() {
         if (mEmail.length() < 1) {
-            mBinding.fieldSigninEmail.setError(mActivity
+            mBinding.fieldSignInEmail.setError(mActivity
                     .getResources().getString(R.string.all_empty_field_error));
             return false;
         } else if (mEmail.length() < 5) {
-            mBinding.fieldSigninEmail.setError(mActivity
+            mBinding.fieldSignInEmail.setError(mActivity
                     .getResources().getString(R.string.all_email_invalid_error));
             return false;
         } else if (!mEmail.contains("@")) {
-            mBinding.fieldSigninEmail.setError(mActivity
+            mBinding.fieldSignInEmail.setError(mActivity
                     .getResources().getString(R.string.all_email_no_at_symbol_error));
             return false;
         }
@@ -72,15 +72,15 @@ public class SignInValidator {
         Matcher m = mPassCheck.matcher(mPassword);
 
         if (mPassword.length() < 1) {
-            mBinding.fieldSigninPassword.setError(mActivity
+            mBinding.fieldSignInPassword.setError(mActivity
                     .getResources().getString(R.string.all_empty_field_error));
             return false;
         } else if (mPassword.length() < 6) {
-            mBinding.fieldSigninPassword.setError(mActivity
+            mBinding.fieldSignInPassword.setError(mActivity
                     .getResources().getString(R.string.all_password_length_error));
             return false;
         } else if (!m.matches()) {
-            mBinding.fieldSigninPassword.setError(mActivity
+            mBinding.fieldSignInPassword.setError(mActivity
                     .getResources().getString(R.string.all_password_requirements_error));
             return false;
         }

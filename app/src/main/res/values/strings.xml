@@ -18,6 +18,7 @@
     <string name="sign_in_email_hint">Email</string>
     <string name="sign_in_password_hint">Password</string>
     <string name="title_activity_auth">AuthActivity</string>
+    <string name="sign_in_forgot_password_text">Forgot Password</string>
 
     <!-- Register Page -->
     <string name="register_first_name_hint">First Name</string>

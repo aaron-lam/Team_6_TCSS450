@@ -51,15 +51,22 @@ public class SignInFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mBinding.testHome.setOnClickListener(this::handleHome);
 
-        mBinding.buttonSigninRegister.setOnClickListener(button -> {
+        mBinding.buttonSignInRegister.setOnClickListener(button -> {
             Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToRegisterFragment2());
         });
 
-        mBinding.buttonSigninSubmit.setOnClickListener(button -> {
+        mBinding.buttonSignInSubmit.setOnClickListener(button -> {
             SignInValidator signInValidator = new SignInValidator(getActivity(), mBinding);
 
             if (signInValidator.validateAll()) {
                 verifyAuthWithServer();
+            }
+        });
+
+        mBinding.buttonSignInForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("CLICKED");
             }
         });
 
@@ -94,8 +101,8 @@ public class SignInFragment extends Fragment {
      */
     private void verifyAuthWithServer() {
         mSignInModel.connect(
-                mBinding.fieldSigninEmail.getText().toString(),
-                mBinding.fieldSigninPassword.getText().toString());
+                mBinding.fieldSignInEmail.getText().toString(),
+                mBinding.fieldSignInPassword.getText().toString());
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
     }
@@ -120,7 +127,7 @@ public class SignInFragment extends Fragment {
                     if ((int) response.get("code") == 400) {
                         verificationPopup();
                     }
-                    mBinding.fieldSigninEmail.setError(
+                    mBinding.fieldSignInEmail.setError(
                             "Error Authenticating: " +
                                     response.getJSONObject("data").getString("message"));
                 } catch (JSONException e) {
@@ -129,7 +136,7 @@ public class SignInFragment extends Fragment {
             } else {
                 try {
                     successfulSignIn(
-                            mBinding.fieldSigninEmail.getText().toString(),
+                            mBinding.fieldSignInEmail.getText().toString(),
                             response.getString("token")
                     );
                 } catch (JSONException e) {
