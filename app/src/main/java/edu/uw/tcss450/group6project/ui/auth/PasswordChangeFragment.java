@@ -12,8 +12,7 @@ import android.view.ViewGroup;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentPasswordChangeBinding;
-import edu.uw.tcss450.group6project.utils.PasswordChangeValidator;
-import edu.uw.tcss450.group6project.utils.RegisterValidator;
+import edu.uw.tcss450.group6project.utils.Validator;
 
 /**
  *
@@ -35,9 +34,13 @@ public class PasswordChangeFragment extends Fragment {
 
         mBinding.buttonPasswordChangeSubmit.setOnClickListener(v -> {
 
-            PasswordChangeValidator passwordChangeValidator = new PasswordChangeValidator(getActivity(), mBinding);
+            Validator validator = new Validator(getActivity(),
+                    mBinding.fieldPasswordChangeEmail,
+                    mBinding.fieldPasswordChangeOldPassword,
+                    mBinding.fieldPasswordChangeNewPassword,
+                    mBinding.fieldPasswordChangeRetypePassword);
 
-            if (passwordChangeValidator.validateAll()) {
+            if (validator.validateAll()) {
                 // do stuff here
             }
 

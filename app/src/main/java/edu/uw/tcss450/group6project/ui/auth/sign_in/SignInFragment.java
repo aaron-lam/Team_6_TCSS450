@@ -26,7 +26,7 @@ import edu.uw.tcss450.group6project.AuthActivity;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
 import edu.uw.tcss450.group6project.ui.auth.EmailVerificationDialog;
-import edu.uw.tcss450.group6project.utils.SignInValidator;
+import edu.uw.tcss450.group6project.utils.Validator;
 
 /** This fragment represents the sign in page.
  *
@@ -65,9 +65,9 @@ public class SignInFragment extends Fragment {
         });
 
         mBinding.buttonSignInSubmit.setOnClickListener(button -> {
-            SignInValidator signInValidator = new SignInValidator(getActivity(), mBinding);
+            Validator validator = new Validator(getActivity(), mBinding.fieldSignInEmail, mBinding.fieldSignInPassword);
 
-            if (signInValidator.validateAll()) {
+            if (validator.validateAll()) {
                 verifyAuthWithServer();
             }
         });

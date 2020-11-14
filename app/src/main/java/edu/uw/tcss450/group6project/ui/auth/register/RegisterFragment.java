@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentRegisterBinding;
 import edu.uw.tcss450.group6project.ui.auth.EmailVerificationDialog;
-import edu.uw.tcss450.group6project.utils.RegisterValidator;
+import edu.uw.tcss450.group6project.utils.Validator;
 
 /** This fragment represents the new user registration page.
  *
@@ -51,9 +51,15 @@ public class RegisterFragment extends Fragment {
 
         mBinding.buttonRegisterSubmit.setOnClickListener(button -> {
 
-            RegisterValidator registerValidator = new RegisterValidator(getActivity(), mBinding);
+            Validator validator = new Validator(getActivity(),
+                    mBinding.fieldRegisterFirstName,
+                    mBinding.fieldRegisterLastName,
+                    mBinding.fieldRegisterUsername,
+                    mBinding.fieldRegisterEmail,
+                    mBinding.fieldRegisterPassword,
+                    mBinding.fieldRegisterRetypePassword);
 
-            if (registerValidator.validateAll()) {
+            if (validator.validateAll()) {
                 verifyAuthWithServer();
             }
 
@@ -92,8 +98,8 @@ public class RegisterFragment extends Fragment {
                 mBinding.fieldRegisterFirstName.getText().toString(),
                 mBinding.fieldRegisterLastName.getText().toString(),
                 mBinding.fieldRegisterUsername.getText().toString(),
-                mBinding.fieldRegisterEmail.getText().toString(),"");
-                //mBinding.fieldRegisterPassword.getText().toString());
+                mBinding.fieldRegisterEmail.getText().toString(),
+                mBinding.fieldRegisterPassword.getText().toString());
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
     }
