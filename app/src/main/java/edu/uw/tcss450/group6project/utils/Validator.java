@@ -26,7 +26,7 @@ public class Validator extends AppCompatActivity {
      *
      * @param // binding The ViewModel bindings for the register page.
      */
-    public Validator(FragmentActivity activity, EditText firstName, EditText lastName, EditText email, EditText username, EditText password, EditText retypePassword) {
+    public Validator(FragmentActivity activity, EditText firstName, EditText lastName, EditText username, EditText email, EditText password, EditText retypePassword) {
         this.mActivity = activity;
         this.mFirstName = firstName;
         this.mLastName = lastName;
@@ -195,7 +195,7 @@ public class Validator extends AppCompatActivity {
         if(!validatePassword(mRetypeNewPassword))
             return false;
 
-        if (!mNewPassword.getText().toString().equals(mRetypeNewPassword)) {
+        if (!mNewPassword.getText().toString().equals(mRetypeNewPassword.getText().toString())) {
             mRetypeNewPassword.setError(mActivity
                     .getResources().getString(R.string.all_retype_password_error));
             return false;

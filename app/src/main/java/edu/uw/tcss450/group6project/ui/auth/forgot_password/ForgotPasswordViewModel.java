@@ -1,7 +1,6 @@
-package edu.uw.tcss450.group6project.ui.auth.sign_in;
+package edu.uw.tcss450.group6project.ui.auth.forgot_password;
 
 import android.app.Application;
-import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -19,18 +18,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import edu.uw.tcss450.group6project.io.RequestQueueSingleton;
 
-/** Holds information for the SignInFragment class that needs to persist.
- *
- * @author Chase Alder
- * @version 1.0
- */
-public class SignInViewModel extends AndroidViewModel {
+public class ForgotPasswordViewModel extends AndroidViewModel {
 
     private MutableLiveData<JSONObject> mResponse;
 
@@ -38,7 +30,7 @@ public class SignInViewModel extends AndroidViewModel {
      *
      * @param application
      */
-    public SignInViewModel(@NonNull Application application) {
+    public ForgotPasswordViewModel(@NonNull Application application) {
         super(application);
         mResponse = new MutableLiveData<>();
         mResponse.setValue(new JSONObject());
@@ -54,32 +46,19 @@ public class SignInViewModel extends AndroidViewModel {
         mResponse.observe(owner, observer);
     }
 
-    /** Sends a request to the web service to sign in a user. From Lab 3.
-     *
-     * @param email The inputted email
-     * @param password The inputted password
-     */
-    public void connectSignIn(final String email, final String password) {
-        String url = "https://team6-tcss450-web-service.herokuapp.com/auth";
+    public void connectForgotPassword(final String email) {
+
+        // NOT SURE IF THIS IS THE RIGHT WAY TO DO THIS
+        String url = "https://team6-tcss450-web-service.herokuapp.com/password/reset" +
+                "?email="+email;
 
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
                 null, //no body for this get request
                 mResponse::setValue,
-                this::handleError) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                // add headers <key,value>
-                String credentials = email + ":" + password;
-                String auth = "Basic "
-                        + Base64.encodeToString(credentials.getBytes(),
-                        Base64.NO_WRAP);
-                headers.put("Authorization", auth);
-                return headers;
-            }
-        };
+                this::handleError);
+
         request.setRetryPolicy(new DefaultRetryPolicy(
                 10_000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
