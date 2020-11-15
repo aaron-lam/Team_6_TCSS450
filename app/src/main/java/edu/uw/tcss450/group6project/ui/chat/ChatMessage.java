@@ -14,6 +14,9 @@ import java.util.Date;
  */
 public class ChatMessage implements Serializable {
 
+    /** String containing of the email of the message's author. */
+    private final String mEmail;
+
     /**
      * A String containing the username of the chat message's author.
      */
@@ -40,6 +43,7 @@ public class ChatMessage implements Serializable {
      * @author Robert M
      */
     public static class Builder {
+        private final String mEmail;
         private final String mUsername;
         private final String mMessage;
         private final Date mTimestamp;
@@ -48,11 +52,13 @@ public class ChatMessage implements Serializable {
         /**
          *  Constructs a new builder.
          *
+         * @param email the email of the chat message's author
          * @param username the username of the chat message's author
          * @param message the content of the chat message
          * @param timestamp the date/time the message was created
          */
-        public Builder(String username, String message, Date timestamp) {
+        public Builder(String email, String username, String message, Date timestamp) {
+            this.mEmail = email;
             this.mUsername = username;
             this.mMessage = message;
             this.mTimestamp = timestamp;
@@ -85,10 +91,19 @@ public class ChatMessage implements Serializable {
      * @param builder the Builder used to help create the ChatMessage
      */
     private ChatMessage(final Builder builder) {
+        this.mEmail = builder.mEmail;
         this.mUsername = builder.mUsername;
         this.mMessage = builder.mMessage;
         this.mTimeStamp = builder.mTimestamp;
         this.mRead = builder.mRead;
+    }
+
+    /**
+     * Getter method for the email of the chat message's author.
+     * @return the email address
+     */
+    public String getEmail() {
+        return mEmail;
     }
 
     /**

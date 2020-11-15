@@ -26,7 +26,7 @@ public class ChatGenerator {
 
     static {
         ChatMessage msg = new ChatMessage
-                .Builder("Jim",
+                .Builder("cfb3@uw.edu", "Jim",
                 "This is a fake chat for the purposes of testing.\n Hi, how are you? \n This is some more text to make sure you don't see it",
                 new Date())
                 .build();
