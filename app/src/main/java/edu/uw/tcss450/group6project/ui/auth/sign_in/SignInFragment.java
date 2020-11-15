@@ -91,6 +91,16 @@ public class SignInFragment extends Fragment {
 
                 // Cancel button functionality
                 mCancel.setOnClickListener(button -> mDialog.cancel());
+
+                // Submit button functionality
+                mSubmit.setOnClickListener(button -> {
+                    Validator validator = new Validator(getActivity(), mEmail);
+
+                    if (validator.validateAll()) {
+                        // TODO
+                        // At this point form validation is complete
+                    }
+                });
             }
         });
 

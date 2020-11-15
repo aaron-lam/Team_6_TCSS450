@@ -36,19 +36,6 @@ public class Validator extends AppCompatActivity {
         this.mRetypeNewPassword = retypePassword;
     }
 
-    /** Constructor for sign in
-     *
-     * @param activity
-     * @param email
-     * @param password
-     */
-    public Validator(FragmentActivity activity, EditText email, EditText password) {
-        this.mActivity = activity;
-        this.mEmail = email;
-        this.mNewPassword = password;
-    }
-
-
     /** Constructor for password change
      *
      * @param activity
@@ -63,6 +50,28 @@ public class Validator extends AppCompatActivity {
         this.mOldPassword = oldPassword;
         this.mNewPassword = newPassword;
         this.mRetypeNewPassword = retypeNewPassword;
+    }
+
+    /** Constructor for sign in
+     *
+     * @param activity
+     * @param email
+     * @param password
+     */
+    public Validator(FragmentActivity activity, EditText email, EditText password) {
+        this.mActivity = activity;
+        this.mEmail = email;
+        this.mNewPassword = password;
+    }
+
+    /** Constructor for "forgot password"
+     *
+     * @param activity
+     * @param email
+     */
+    public Validator(FragmentActivity activity, EditText email) {
+        this.mActivity = activity;
+        this.mEmail = email;
     }
 
     /** Validates all fields.
