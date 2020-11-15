@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -13,8 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -33,7 +36,7 @@ public class WeatherTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_weather_tab, container, false);
     }
 
@@ -44,6 +47,13 @@ public class WeatherTabFragment extends Fragment {
         createWeatherTab(view);
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.weather_top_menu, menu);
+        //Add code to search here
+    }
 
     private void createWeatherTab(View view) {
 
@@ -70,29 +80,27 @@ public class WeatherTabFragment extends Fragment {
         return new int[] {cloud, cloud, rain, sun, rain, snow, sun};
     }
 
+    class WeatherPagerAdapter extends FragmentStateAdapter {
 
+        int[] mIcons;
+        int[] mTemps;
 
-}
+        public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, int[] temps) {
+            super(fragment);
+            mIcons = icons;
+            mTemps = temps;
+        }
 
-class WeatherPagerAdapter extends FragmentStateAdapter {
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            return new WeatherFragment(mIcons[position], mTemps[position]);
+        }
 
-    int[] mIcons;
-    int[] mTemps;
+        @Override
+        public int getItemCount() {
+            return 7;
+        }
 
-    public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, int[] temps) {
-        super(fragment);
-        mIcons = icons;
-        mTemps = temps;
-    }
-
-    @NonNull
-    @Override
-    public Fragment createFragment(int position) {
-        return new WeatherFragment(mIcons[position], mTemps[position]);
-    }
-
-    @Override
-    public int getItemCount() {
-        return 7;
     }
 }
