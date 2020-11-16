@@ -25,10 +25,11 @@ import edu.uw.tcss450.group6project.databinding.FragmentWeatherBinding;
  */
 public class WeatherFragment extends Fragment {
 
-    private int mTemperature;
     private int mIcon;
+    private double mTemperature;
 
-    public WeatherFragment(int icon, int temp) {
+
+    public WeatherFragment(int icon, double temp) {
         mIcon = icon;
         mTemperature = temp;
     }

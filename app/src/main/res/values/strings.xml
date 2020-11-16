@@ -52,4 +52,11 @@
     <!-- Contact List -->
     <string name="contact_delete">Delete</string>
     <string name="contact_chat">Open Chat</string>
+
+    <!-- JSON Keys  -->
+    <string name="keys_json_data">data</string>
+    <string name="keys_json_weather_day">day</string>
+    <string name="keys_json_weather_weather">weather</string>
+    <string name="keys_json_weather_temp">temp</string>
+
 </resources>

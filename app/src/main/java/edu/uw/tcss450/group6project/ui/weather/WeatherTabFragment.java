@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -23,8 +24,12 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import edu.uw.tcss450.group6project.R;
+import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
 
 /**
  * A fragment to navigate between single day
@@ -32,6 +37,15 @@ import edu.uw.tcss450.group6project.R;
  */
 public class WeatherTabFragment extends Fragment {
 
+    private WeatherTabViewModel mModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mModel = new ViewModelProvider(getActivity()).get(WeatherTabViewModel.class);
+        //Hard coded values for sprint 2 testing purposes
+        mModel.connectLocation(47.25, -122.46);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,7 +58,13 @@ public class WeatherTabFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        createWeatherTab(view);
+        FragmentWeatherTabBinding binding = FragmentWeatherTabBinding.bind(getView());
+        mModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherDataList -> {
+            if(!weatherDataList.isEmpty()) {
+                createWeatherTab(view, weatherDataList);
+                binding.layoutWait.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -55,11 +75,19 @@ public class WeatherTabFragment extends Fragment {
         //Add code to search here
     }
 
-    private void createWeatherTab(View view) {
+    private void createWeatherTab(View view, List<WeatherData> weatherDataList) {
 
-        String[] weatherTabText = {"Today", "Fri 13", "Sat 14", "Sun 15", "Mon 16", "Tue 17", "Wed 18"};
-        int[] weatherTabIcons = createIcons();
-        int[] weatherTemp = {47, 52, 48 ,59, 35, 20, 102};
+        Map<String, Integer> mIconMap = createIconMap();
+        String[] weatherTabText = new String[7];
+        int[] weatherTabIcons = new int[7];
+        double[] weatherTemp = new double[7];
+
+        for(int i = 0; i < 7; i++) {
+            WeatherData data = weatherDataList.get(i);
+            weatherTabText[i] = data.getDay();
+            weatherTabIcons[i] = mIconMap.get(data.getWeather());
+            weatherTemp[i] = data.getTemp();
+        }
 
         ViewPager2 viewPager = view.findViewById(R.id.view_pager);
         viewPager.setAdapter(new WeatherPagerAdapter(this, weatherTabIcons, weatherTemp));
@@ -72,20 +100,23 @@ public class WeatherTabFragment extends Fragment {
         }).attach();
     }
 
-    private int[] createIcons() {
-        int sun = R.drawable.weather_sun_24dp;
-        int cloud = R.drawable.weather_cloud_24dp;
-        int rain = R.drawable.weather_rain_24dp;
-        int snow = R.drawable.weather_snow_24dp;
-        return new int[] {cloud, cloud, rain, sun, rain, snow, sun};
+    private Map<String, Integer> createIconMap() {
+
+        Map<String, Integer> iconMap = new HashMap<>();
+        iconMap.put("Clouds", R.drawable.weather_cloud_24dp);
+        iconMap.put("Snow", R.drawable.weather_snow_24dp);
+        iconMap.put("Rain", R.drawable.weather_rain_24dp);
+        iconMap.put("Clear", R.drawable.weather_sun_24dp);
+
+        return iconMap;
     }
 
     class WeatherPagerAdapter extends FragmentStateAdapter {
 
         int[] mIcons;
-        int[] mTemps;
+        double[] mTemps;
 
-        public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, int[] temps) {
+        public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, double[] temps) {
             super(fragment);
             mIcons = icons;
             mTemps = temps;
