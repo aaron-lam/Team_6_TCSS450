@@ -1,19 +1,28 @@
 package edu.uw.tcss450.group6project.ui.weather;
 
+import android.icu.util.Calendar;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.Date;
 
 import edu.uw.tcss450.group6project.R;
 
@@ -27,7 +36,7 @@ public class WeatherTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_weather_tab, container, false);
     }
 
@@ -35,41 +44,63 @@ public class WeatherTabFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewPager2 viewPager = view.findViewById(R.id.view_pager);
-        viewPager.setAdapter(new WeatherPagerAdapter(this));
+        createWeatherTab(view);
+    }
 
-        String[] weatherTabText = {"Single Day", "Week View"};
-        int[] weatherTabIcons = {R.drawable.weather_calendar_24dp, R.drawable.weather_snow_24dp};
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.weather_top_menu, menu);
+        //Add code to search here
+    }
+
+    private void createWeatherTab(View view) {
+
+        String[] weatherTabText = {"Today", "Fri 13", "Sat 14", "Sun 15", "Mon 16", "Tue 17", "Wed 18"};
+        int[] weatherTabIcons = createIcons();
+        int[] weatherTemp = {47, 52, 48 ,59, 35, 20, 102};
+
+        ViewPager2 viewPager = view.findViewById(R.id.view_pager);
+        viewPager.setAdapter(new WeatherPagerAdapter(this, weatherTabIcons, weatherTemp));
 
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-                tab.setText(weatherTabText[position]);
-                tab.setIcon(weatherTabIcons[position]);
-            }).attach();
-
-    }
-}
-
-class WeatherPagerAdapter extends FragmentStateAdapter {
-
-    public WeatherPagerAdapter(@NonNull Fragment fragment) {
-        super(fragment);
+            tab.setText(weatherTabText[position]);
+            tab.setIcon(weatherTabIcons[position]);
+        }).attach();
     }
 
-    @NonNull
-    @Override
-    public Fragment createFragment(int position) {
+    private int[] createIcons() {
+        int sun = R.drawable.weather_sun_24dp;
+        int cloud = R.drawable.weather_cloud_24dp;
+        int rain = R.drawable.weather_rain_24dp;
+        int snow = R.drawable.weather_snow_24dp;
+        return new int[] {cloud, cloud, rain, sun, rain, snow, sun};
+    }
 
-        switch (position) {
-            case 0:
-                return new WeatherFragment();
-            default:
-                return new WeatherWeekFragment();
+    class WeatherPagerAdapter extends FragmentStateAdapter {
+
+        int[] mIcons;
+        int[] mTemps;
+
+        public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, int[] temps) {
+            super(fragment);
+            mIcons = icons;
+            mTemps = temps;
         }
-    }
 
-    @Override
-    public int getItemCount() {
-        return 2;
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            return new WeatherFragment(mIcons[position], mTemps[position]);
+        }
+
+        @Override
+        public int getItemCount() {
+            return 7;
+        }
+
     }
 }
