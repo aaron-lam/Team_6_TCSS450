@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -25,6 +26,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Date;
 
 import edu.uw.tcss450.group6project.R;
+import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
 
 /**
  * A fragment to navigate between single day
@@ -32,6 +34,15 @@ import edu.uw.tcss450.group6project.R;
  */
 public class WeatherTabFragment extends Fragment {
 
+    private WeatherTabViewModel mModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mModel = new ViewModelProvider(getActivity()).get(WeatherTabViewModel.class);
+        //Hard coded values for sprint 2 testing purposes
+        mModel.connectLocation(41.2, -144.3);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,7 +55,13 @@ public class WeatherTabFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        createWeatherTab(view);
+        FragmentWeatherTabBinding binding = FragmentWeatherTabBinding.bind(getView());
+        mModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherDataList -> {
+            if(!weatherDataList.isEmpty()) {
+                createWeatherTab(view);
+                binding.layoutWait.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
