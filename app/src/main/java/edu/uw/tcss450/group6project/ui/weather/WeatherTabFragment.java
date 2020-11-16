@@ -44,7 +44,7 @@ public class WeatherTabFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mModel = new ViewModelProvider(getActivity()).get(WeatherTabViewModel.class);
         //Hard coded values for sprint 2 testing purposes
-        mModel.connectLocation(47.48, -122.21);
+        mModel.connectLocation(47.25, -122.46);
     }
 
     @Override
