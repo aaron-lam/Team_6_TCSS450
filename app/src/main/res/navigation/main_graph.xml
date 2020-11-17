@@ -41,4 +41,9 @@
         android:name="edu.uw.tcss450.group6project.ui.weather.WeatherTabFragment"
         android:label="@string/nav_weather"
         tools:layout="@layout/fragment_weather_tab" />
+    <fragment
+        android:id="@+id/passwordChangeFragment"
+        android:name="edu.uw.tcss450.group6project.ui.change_password.ChangePasswordFragment"
+        android:label="fragment_password_change"
+        tools:layout="@layout/fragment_password_change" />
 </navigation>

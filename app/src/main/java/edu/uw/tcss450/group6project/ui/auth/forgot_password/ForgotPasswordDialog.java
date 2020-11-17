@@ -50,7 +50,7 @@ public class ForgotPasswordDialog implements View.OnClickListener {
         Button mSubmit = (Button) mView.findViewById(R.id.button_forgot_password_submit);
         Button mCancel = (Button) mView.findViewById(R.id.button_forgot_password_cancel);
 
-        // Assembling the dialog?
+        // Assembling the dialog
         mBuilder.setView(mView);
         mDialog = mBuilder.create();
         mDialog.show();
