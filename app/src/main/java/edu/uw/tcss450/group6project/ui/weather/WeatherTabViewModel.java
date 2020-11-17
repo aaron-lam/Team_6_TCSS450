@@ -27,9 +27,14 @@ import java.util.function.IntFunction;
 
 import edu.uw.tcss450.group6project.R;
 
+/**
+ * View Model class for persistent Weather Data
+ */
 public class WeatherTabViewModel extends AndroidViewModel {
 
+    /** List of weather data retrieved from server */
     private MutableLiveData<List<WeatherData>> mWeatherDataList;
+
 
     public WeatherTabViewModel(@NonNull Application application) {
         super(application);
@@ -37,6 +42,11 @@ public class WeatherTabViewModel extends AndroidViewModel {
         mWeatherDataList.setValue(new ArrayList<>());
     }
 
+    /**
+     * Requests weather data based on a location.
+     * @param latitude latitude of request
+     * @param longitude longitude of request
+     */
     public void connectLocation(double latitude, double longitude) {
         String url = "https://team6-tcss450-web-service.herokuapp.com/weather/location";
         Request request = new JsonObjectRequest(
@@ -63,11 +73,21 @@ public class WeatherTabViewModel extends AndroidViewModel {
                 .add(request);
     }
 
+    /**
+     * Register as an observer to listen to retrieval of weather data.
+     * @param owner the fragments lifecycle owner
+     * @param observer the observer
+     */
     public void addWeatherDataListObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super List<WeatherData>> observer) {
         mWeatherDataList.observe(owner, observer);
     }
 
+    /**
+     * When a successful call is made to the server. Parses the retrieved JSON
+     * and stores the data in the view model.
+     * @param result JSON retrieved from server containing weather data
+     */
     private void handleResult(final JSONObject result) {
         IntFunction<String> getString =
                 getApplication().getResources()::getString;
@@ -86,9 +106,9 @@ public class WeatherTabViewModel extends AndroidViewModel {
                             jsonBlog.getString(
                                     getString.apply(
                                             R.string.keys_json_weather_weather)),
-                            Double.parseDouble(jsonBlog.getString(
+                            jsonBlog.getDouble(
                                     getString.apply(
-                                            R.string.keys_json_weather_temp))))
+                                            R.string.keys_json_weather_temp)))
                             .build();
                     if (!mWeatherDataList.getValue().contains(post)) {
                         mWeatherDataList.getValue().add(post);
@@ -105,12 +125,14 @@ public class WeatherTabViewModel extends AndroidViewModel {
         mWeatherDataList.setValue(mWeatherDataList.getValue());
     }
 
+    /**
+     * Handles errors when making requests to the server.
+     * @param error the error message
+     */
     private void handleError(VolleyError error) {
         //you should add much better error handling in a production release.
         //i.e. YOUR PROJECT
         Log.e("CONNECTION ERROR", error.getLocalizedMessage());
         throw new IllegalStateException(error.getMessage());
     }
-
-
 }
