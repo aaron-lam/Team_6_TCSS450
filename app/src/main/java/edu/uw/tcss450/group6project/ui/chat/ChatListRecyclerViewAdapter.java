@@ -60,19 +60,14 @@ public class ChatListRecyclerViewAdapter extends
      * @version 3 November 2020
      */
     public class ChatListViewHolder extends RecyclerView.ViewHolder {
-        /**
-         * The view.
-         */
+
+        /** The view. */
         public final View mView;
 
-        /**
-         * The binding for the chat list card.
-         */
+        /** The binding for the chat list card. */
         public FragmentChatlistCardBinding binding;
 
-        /**
-         * The chat in the card.
-         */
+        /** The chat in the card. */
         private Chat mChat;
 
         /**

@@ -25,11 +25,7 @@ public class ChatGenerator {
     public static final int COUNT = 20;
 
     static {
-        ChatMessage msg = new ChatMessage
-                .Builder("cfb3@uw.edu", "Jim",
-                "This is a fake chat for the purposes of testing.\n Hi, how are you? \n This is some more text to make sure you don't see it",
-                new Date())
-                .build();
+
 
         List<String> users = new ArrayList<>();
         List<ChatMessage> msgList = new ArrayList<>();
@@ -40,6 +36,11 @@ public class ChatGenerator {
         users.add("Tito");
 
         for(int i = 0; i < COUNT; i++) {
+            ChatMessage msg = new ChatMessage
+                    .Builder(i, "cfb3@uw.edu",
+                    "This is a fake chat for the purposes of testing.\n Hi, how are you? \n This is some more text to make sure you don't see it",
+                    new Date())
+                    .build();
             msgList.add(msg);
         }
 
