@@ -21,6 +21,7 @@ import edu.uw.tcss450.group6project.databinding.FragmentWeatherBinding;
  * A fragment for displaying the weather.
  *
  * @author Robert M
+ * @author Anthony N
  * @version 1.0
  */
 public class WeatherFragment extends Fragment {

@@ -37,6 +37,7 @@ import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
  */
 public class WeatherTabFragment extends Fragment {
 
+    /** Model for the weather data*/
     private WeatherTabViewModel mModel;
 
     @Override
@@ -75,6 +76,11 @@ public class WeatherTabFragment extends Fragment {
         //Add code to search here
     }
 
+    /**
+     * Creates the tabs that display weather information.
+     * @param view View to build the tabs on
+     * @param weatherDataList Data to display on the tabs
+     */
     private void createWeatherTab(View view, List<WeatherData> weatherDataList) {
 
         Map<String, Integer> mIconMap = createIconMap();
@@ -100,6 +106,10 @@ public class WeatherTabFragment extends Fragment {
         }).attach();
     }
 
+    /**
+     * Creates a mapping of weather conditions to an icon
+     * @return Map of weather icons
+     */
     private Map<String, Integer> createIconMap() {
 
         Map<String, Integer> iconMap = new HashMap<>();
@@ -111,11 +121,20 @@ public class WeatherTabFragment extends Fragment {
         return iconMap;
     }
 
+    /**
+     * Adapter class that handles which day on the tab list to display
+     */
     class WeatherPagerAdapter extends FragmentStateAdapter {
 
         int[] mIcons;
         double[] mTemps;
 
+        /**
+         * Constructor for Weather Adapter.
+         * @param fragment fragment to display on. (Weather)
+         * @param icons array of icons that represent the weather conditions for the week
+         * @param temps array of temperatures for the week
+         */
         public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, double[] temps) {
             super(fragment);
             mIcons = icons;
@@ -132,6 +151,5 @@ public class WeatherTabFragment extends Fragment {
         public int getItemCount() {
             return 7;
         }
-
     }
 }
