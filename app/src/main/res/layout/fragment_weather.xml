@@ -7,68 +7,37 @@
     android:layout_height="match_parent"
     tools:context=".ui.weather.WeatherFragment">
 
-    <ImageView
-        android:id="@+id/image_view_weather"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/weather_snow_24dp"
-        app:layout_constraintBottom_toTopOf="@+id/text_view_forecast"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
-        android:id="@+id/text_view_weather"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Current Weather"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/primaryColor"
-        app:layout_constraintBottom_toBottomOf="@+id/image_view_weather"
-        app:layout_constraintEnd_toStartOf="@+id/image_view_weather"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/image_view_forecast"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:id="@+id/label_weather_date"
+        android:layout_width="330dp"
+        android:layout_height="43dp"
         android:layout_marginStart="4dp"
-        android:src="@drawable/weather_calendar_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="132dp"
+        android:text="Current Weather"
+        android:textColor="@color/primaryColor"
+        android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/weather_currentWeather"
+        android:layout_width="92dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/navbar_weather_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:id="@+id/text_view_forecast"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Forecast"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/primaryColor"
-        app:layout_constraintBottom_toBottomOf="@+id/image_view_forecast"
+        android:id="@+id/text_weatherDisplay"
+        android:layout_width="309dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="96dp"
+        android:text="Tacoma, WA: 47°F"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image_view_forecast" />
+        app:layout_constraintTop_toBottomOf="@+id/label_weather_date" />
 
-    <EditText
-        android:id="@+id/field_zip_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:ems="10"
-        android:hint="Zip Code"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_view_forecast" />
-
-    <Button
-        android:id="@+id/button_zip_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Update"
-        app:layout_constraintBottom_toBottomOf="@+id/field_zip_code"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/field_zip_code" />
 </androidx.constraintlayout.widget.ConstraintLayout>
