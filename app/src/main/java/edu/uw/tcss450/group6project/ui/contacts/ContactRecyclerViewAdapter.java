@@ -15,7 +15,7 @@ import java.util.List;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentContactCardBinding;
-import edu.uw.tcss450.group6project.ui.chat.Chat;
+import edu.uw.tcss450.group6project.ui.chat.ChatRoom;
 
 /**
  * A RecyclerViewAdapter to create scrolling list view of contacts.
@@ -117,7 +117,7 @@ public class ContactRecyclerViewAdapter extends
         private void createChat(final View button) {
             List<String> participants = new ArrayList<>();
             participants.add(binding.textContactName.getText().toString());
-            Chat newChat = new Chat(participants);
+            ChatRoom newChat = new ChatRoom(participants);
             Navigation.findNavController(mView).navigate
                     (ContactListFragmentDirections.actionNavigationContactsToChatFragment(newChat));
         }

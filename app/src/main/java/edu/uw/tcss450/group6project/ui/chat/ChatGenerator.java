@@ -17,7 +17,7 @@ public class ChatGenerator {
     /**
      * An array of chats to be generated for testing purposes.
      */
-    private static final Chat[] CHATS;
+    private static final ChatRoom[] CHATS;
 
     /**
      * The number of chats to generate.
@@ -44,9 +44,9 @@ public class ChatGenerator {
             msgList.add(msg);
         }
 
-        CHATS = new Chat[COUNT];
+        CHATS = new ChatRoom[COUNT];
         for (int i = 0; i < CHATS.length; i++) {
-            CHATS[i] = new Chat(users, msgList);
+            CHATS[i] = new ChatRoom(users, msgList);
         }
     }
 
@@ -55,7 +55,7 @@ public class ChatGenerator {
      *
      * @return the list of Chats
      */
-    public static List<Chat> getChatList() {
+    public static List<ChatRoom> getChatList() {
         return Arrays.asList(CHATS);
     }
 
@@ -64,7 +64,7 @@ public class ChatGenerator {
      *
      * @return the array of Chats
      */
-    public static Chat[] getCHATS() {
+    public static ChatRoom[] getCHATS() {
         return Arrays.copyOf(CHATS, CHATS.length);
     }
 
