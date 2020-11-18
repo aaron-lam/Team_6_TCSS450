@@ -54,8 +54,8 @@ public class RegisterFragment extends Fragment {
             Validator validator = new Validator(getActivity(),
                     mBinding.fieldRegisterFirstName,
                     mBinding.fieldRegisterLastName,
-                    mBinding.fieldRegisterUsername,
                     mBinding.fieldRegisterEmail,
+                    mBinding.fieldRegisterUsername,
                     mBinding.fieldRegisterPassword,
                     mBinding.fieldRegisterRetypePassword);
 

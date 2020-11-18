@@ -195,7 +195,7 @@ public class Validator extends AppCompatActivity {
         if(!validatePassword(mRetypeNewPassword))
             return false;
 
-        if (!mNewPassword.getText().toString().equals(mRetypeNewPassword)) {
+        if (!mNewPassword.getText().toString().equals(mRetypeNewPassword.getText().toString())) {
             mRetypeNewPassword.setError(mActivity
                     .getResources().getString(R.string.all_retype_password_error));
             return false;

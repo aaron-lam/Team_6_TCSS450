@@ -28,7 +28,7 @@ public class ChatMessage implements Serializable {
     /**
      * A Date Object representing the time the message was created.
      */
-    private final Date mTimeStamp;
+    //private final Date mTimeStamp;
 
     /**
      * A boolean representing whether the message has been read.  Default value is false (unread).
@@ -45,7 +45,7 @@ public class ChatMessage implements Serializable {
         private final int mMessageID;
         private final String mEmail;
         private final String mMessage;
-        private final Date mTimestamp;
+        //private final Date mTimestamp;
         private boolean mRead = false;
 
         /**
@@ -56,11 +56,11 @@ public class ChatMessage implements Serializable {
          * @param message the content of the chat message
          * @param timestamp the date/time the message was created
          */
-        public Builder(int messageID, String email, String message, Date timestamp) {
+        public Builder(int messageID, String email, String message) {
             this.mMessageID = messageID;
             this.mEmail = email;
             this.mMessage = message;
-            this.mTimestamp = timestamp;
+            //this.mTimestamp = timestamp;
         }
 
         /**
@@ -93,7 +93,7 @@ public class ChatMessage implements Serializable {
         this.mMessageID = builder.mMessageID;
         this.mEmail = builder.mEmail;
         this.mMessage = builder.mMessage;
-        this.mTimeStamp = builder.mTimestamp;
+        //this.mTimeStamp = builder.mTimestamp;
         this.mRead = builder.mRead;
     }
 
@@ -123,14 +123,14 @@ public class ChatMessage implements Serializable {
         return mMessage;
     }
 
-    /**
-     * Getter method for the chat message's creation date/time.
-     *
-     * @return the date/time the message was created
-     */
-    public Date getTimeStamp() {
-        return mTimeStamp;
-    }
+//    /**
+//     * Getter method for the chat message's creation date/time.
+//     *
+//     * @return the date/time the message was created
+//     */
+//    public Date getTimeStamp() {
+//        return mTimeStamp;
+//    }
 
     /**
      * Getter method for whether the message has been read or not.

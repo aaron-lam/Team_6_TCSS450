@@ -90,11 +90,10 @@ public class ChatListRecyclerViewAdapter extends
             mChat = chat;
             binding.buttonFullChat.setOnClickListener(view ->
                     Navigation.findNavController(mView).navigate
-                    (ChatListFragmentDirections.actionNavigationChatToChatFragment(chat)));
+                    (ChatListFragmentDirections.actionNavigationChatToChatFragment(chat.getChatRoomID())));
 
             binding.textParticipants.setText(chat.participantsAsString());
             binding.textPreview.setText(chat.getLastMessage());
         }
-
     }
 }

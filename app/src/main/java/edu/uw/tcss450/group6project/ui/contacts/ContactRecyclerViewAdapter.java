@@ -117,9 +117,10 @@ public class ContactRecyclerViewAdapter extends
         private void createChat(final View button) {
             List<String> participants = new ArrayList<>();
             participants.add(binding.textContactName.getText().toString());
-            ChatRoom newChat = new ChatRoom(participants);
-            Navigation.findNavController(mView).navigate
-                    (ContactListFragmentDirections.actionNavigationContactsToChatFragment(newChat));
+            //TODO add functionality to create chat
+//            ChatRoom newChat = new ChatRoom(participants);
+//            Navigation.findNavController(mView).navigate
+//                    (ContactListFragmentDirections.actionNavigationContactsToChatFragment(newChat));
         }
 
         /**

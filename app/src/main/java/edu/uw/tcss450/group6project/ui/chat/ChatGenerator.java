@@ -38,8 +38,7 @@ public class ChatGenerator {
         for(int i = 0; i < COUNT; i++) {
             ChatMessage msg = new ChatMessage
                     .Builder(i, "cfb3@uw.edu",
-                    "This is a fake chat for the purposes of testing.\n Hi, how are you? \n This is some more text to make sure you don't see it",
-                    new Date())
+                    "This is a fake chat for the purposes of testing.\n Hi, how are you? \n This is some more text to make sure you don't see it")
                     .build();
             msgList.add(msg);
         }
