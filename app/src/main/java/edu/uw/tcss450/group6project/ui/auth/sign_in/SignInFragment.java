@@ -123,7 +123,7 @@ public class SignInFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    if ((int) response.get("code") == 400) {
+                    if (response.getJSONObject("data").getString("message").equals("Email is not verified yet")) {
                         verificationPopup();
                     }
                     mBinding.fieldSignInEmail.setError(
