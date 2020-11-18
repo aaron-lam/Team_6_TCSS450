@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,15 @@ public class ChatListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FragmentChatListBinding binding = FragmentChatListBinding.bind(view);
-        binding.listRoot.setAdapter(new ChatListRecyclerViewAdapter(mChatRoomModel.getChatRooms()));
+        final RecyclerView rv = binding.listRoot;
+        rv.setAdapter(new ChatListRecyclerViewAdapter(mChatRoomModel.getChatRooms()));
         binding.layoutWait.setVisibility(View.GONE);
+
+        //if any of the chats receive messages, update the preview
+        mChatRoomModel.addRoomObserver(getViewLifecycleOwner(),
+                newMessage -> {
+                    rv.getAdapter().notifyDataSetChanged();
+                    rv.scrollToPosition(rv.getAdapter().getItemCount() - 1);
+                });
     }
 }

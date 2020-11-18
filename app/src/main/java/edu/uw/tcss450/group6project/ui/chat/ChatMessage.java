@@ -1,5 +1,8 @@
 package edu.uw.tcss450.group6project.ui.chat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -82,6 +85,21 @@ public class ChatMessage implements Serializable {
         public ChatMessage build() {
             return new ChatMessage(this);
         }
+    }
+
+
+    /**
+     * Static factory method to turn a properly formatted JSON String into a
+     * ChatMessage object.
+     * @param cmAsJson the String to be parsed into a ChatMessage Object.
+     * @return a ChatMessage Object with the details contained in the JSON String.
+     * @throws JSONException when cmAsString cannot be parsed into a ChatMessage.
+     */
+    public static ChatMessage createFromJsonString(final String cmAsJson) throws JSONException {
+        final JSONObject msg = new JSONObject(cmAsJson);
+        return new ChatMessage.Builder(msg.getInt("messageid"),
+                msg.getString("message"),
+                msg.getString("email")).build(); //TODO Add timestamp
     }
 
     /**

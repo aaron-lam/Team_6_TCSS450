@@ -32,6 +32,9 @@ public class ChatFragment extends Fragment {
     /** Model to store info about chatrooms the user is in*/
     private ChatRoomViewModel mChatRoomViewModel;
 
+    private ChatSendViewModel mSendModel;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class ChatFragment extends Fragment {
 
         ViewModelProvider provider = new ViewModelProvider(getActivity());
         mUserModel = provider.get(UserInfoViewModel.class);
+        mSendModel = provider.get(ChatSendViewModel.class);
         mChatRoomViewModel = provider.get(ChatRoomViewModel.class);
         mChatRoomViewModel.getFirstMessages(mChatRoomID, mUserModel.getJWT());
     }
@@ -57,7 +61,7 @@ public class ChatFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FragmentChatBinding binding = FragmentChatBinding.bind(getView());
+        FragmentChatBinding binding = FragmentChatBinding.bind(view);
 
 
         //Send the chat messages to the recycler view
@@ -78,5 +82,15 @@ public class ChatFragment extends Fragment {
                     rv.scrollToPosition(rv.getAdapter().getItemCount() - 1);
                     binding.swipeContainer.setRefreshing(false);
                 });
+
+        //Send button was clicked. Send the message via the SendViewModel
+        binding.buttonSend.setOnClickListener(button -> {
+            mSendModel.sendMessage(mChatRoomID,
+                    mUserModel.getJWT(),
+                    binding.editMessage.getText().toString());
+        });
+        //when we get the response back from the server, clear the edittext
+        mSendModel.addResponseObserver(getViewLifecycleOwner(), response ->
+                binding.editMessage.setText(""));
     }
 }

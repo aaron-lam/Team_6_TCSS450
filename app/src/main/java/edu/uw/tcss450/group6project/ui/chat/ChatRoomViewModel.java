@@ -43,6 +43,19 @@ public class ChatRoomViewModel extends AndroidViewModel {
         mChatRooms = new HashMap<>();
     }
 
+
+    /**
+     * Register as an observer to listen to changes in ALL the chat rooms.
+     * @param owner the fragments lifecycle owner
+     * @param observer the observer
+     */
+    public void addRoomObserver(@NonNull LifecycleOwner owner,
+                                   @NonNull Observer<? super List<ChatMessage>> observer) {
+        for(ChatRoom cRoom : mChatRooms.values()) {
+            cRoom.observe(owner, observer);
+        }
+    }
+
     /**
      * Register as an observer to listen to a specific chat room's list of messages.
      * @param chatId the chatId of the chat to observer
@@ -128,8 +141,6 @@ public class ChatRoomViewModel extends AndroidViewModel {
      * @param jwt the users signed JWT
      */
     public void getFirstMessages(final int chatId, final String jwt) {
-
-        Log.d("Loading First Message", "Hello");
 
         String url = getApplication().getResources().getString(R.string.base_url) +
                 "messages/" + chatId;
