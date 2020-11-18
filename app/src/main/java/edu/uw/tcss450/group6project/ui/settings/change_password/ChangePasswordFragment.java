@@ -1,5 +1,7 @@
-package edu.uw.tcss450.group6project.ui.change_password;
+package edu.uw.tcss450.group6project.ui.settings.change_password;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,7 +19,6 @@ import org.json.JSONObject;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentPasswordChangeBinding;
-import edu.uw.tcss450.group6project.ui.auth.register.RegisterViewModel;
 import edu.uw.tcss450.group6project.utils.Validator;
 
 /**
@@ -40,8 +41,8 @@ public class ChangePasswordFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.fragment_password_change, container, false);
+        mBinding = FragmentPasswordChangeBinding.inflate(inflater, container, false);
+        return mBinding.getRoot();
     }
 
     @Override
@@ -75,9 +76,18 @@ public class ChangePasswordFragment extends Fragment {
         mChangePasswordModel.connect(
                 mBinding.fieldPasswordChangeEmail.getText().toString(),
                 mBinding.fieldPasswordChangeOldPassword.getText().toString(),
-                mBinding.fieldPasswordChangeOldPassword.getText().toString());
+                mBinding.fieldPasswordChangeNewPassword.getText().toString());
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
+    }
+
+    private void successConfirmationDialog() {
+        AlertDialog.Builder successDialog  = new AlertDialog.Builder(getContext());
+        successDialog.setMessage("Your password was successfully changed!");
+        successDialog.setTitle("Password Change Successful");
+        successDialog.setPositiveButton("Ok", (dialog, which) -> {});
+        successDialog.setCancelable(true);
+        successDialog.create().show();
     }
 
     /**
@@ -95,12 +105,16 @@ public class ChangePasswordFragment extends Fragment {
                     } else if (response.getJSONObject("data").getString("message").equals("Email is not verified yet")) {
                         mBinding.fieldPasswordChangeEmail.setError(
                                 "Error Authenticating: " + "Email is not verified yet");
+                    } else if (response.getJSONObject("data").getString("message").equals("Credentials did not match")) {
+                        mBinding.fieldPasswordChangeEmail.setError(
+                                "Error Authenticating: " + "Credentials did not match");
                     }
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
                 }
             } else {
-                // do stuff here
+                successConfirmationDialog();
+                getActivity().onBackPressed(); // close the fragment
             }
         } else {
             Log.d("JSON Response", "No Response");

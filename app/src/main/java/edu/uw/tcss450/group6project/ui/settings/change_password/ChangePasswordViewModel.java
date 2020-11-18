@@ -1,4 +1,4 @@
-package edu.uw.tcss450.group6project.ui.change_password;
+package edu.uw.tcss450.group6project.ui.settings.change_password;
 
 import android.app.Application;
 import android.util.Log;
@@ -27,6 +27,8 @@ public class ChangePasswordViewModel extends AndroidViewModel {
 
     public ChangePasswordViewModel(@NonNull Application application) {
         super(application);
+        mResponse = new MutableLiveData<>();
+        mResponse.setValue(new JSONObject());
     }
 
     /** Adds an observer to execute when a message is received from the web service. From Lab 3.
