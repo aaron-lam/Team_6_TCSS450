@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group6project.ui.chat;
 
+import androidx.annotation.Nullable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -98,8 +100,8 @@ public class ChatMessage implements Serializable {
     public static ChatMessage createFromJsonString(final String cmAsJson) throws JSONException {
         final JSONObject msg = new JSONObject(cmAsJson);
         return new ChatMessage.Builder(msg.getInt("messageid"),
-                msg.getString("message"),
-                msg.getString("email")).build(); //TODO Add timestamp
+                msg.getString("email"),
+                msg.getString("message")).build(); //TODO Add timestamp
     }
 
     /**
@@ -157,6 +159,21 @@ public class ChatMessage implements Serializable {
      */
     public boolean isRead() {
         return mRead;
+    }
+
+
+    /**
+     * Provides equality solely based on MessageId.
+     * @param other the other object to check for equality
+     * @return true if other message ID matches this message ID, false otherwise
+     */
+    @Override
+    public boolean equals(@Nullable Object other) {
+        boolean result = false;
+        if (other instanceof ChatMessage) {
+            result = mMessageID == ((ChatMessage) other).mMessageID;
+        }
+        return result;
     }
 
 }

@@ -54,7 +54,7 @@ public class ChatRoom implements Serializable {
             if(!mParticipants.contains(message.getEmail())) {
                 mParticipants.add(message.getEmail());
             }
-            messageList.add(0, message);
+            messageList.add(message);
             mMessages.setValue(messageList);
         }
     }
