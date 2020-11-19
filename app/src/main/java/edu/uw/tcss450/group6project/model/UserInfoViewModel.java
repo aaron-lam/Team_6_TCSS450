@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+
 public class UserInfoViewModel extends ViewModel {
 
     private final String mEmail;

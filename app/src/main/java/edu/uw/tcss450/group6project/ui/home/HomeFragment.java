@@ -15,8 +15,8 @@ import java.util.List;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentHomeBinding;
+import edu.uw.tcss450.group6project.ui.chat.Chat;
 import edu.uw.tcss450.group6project.ui.chat.ChatGenerator;
-import edu.uw.tcss450.group6project.ui.chat.ChatRoom;
 
 /**
  * A fragment for displaying the home landing page
@@ -45,16 +45,12 @@ public class HomeFragment extends Fragment {
      */
     private void setRecentChat() {
         FragmentHomeBinding binding = FragmentHomeBinding.bind(getView());
-        List<ChatRoom> chats = ChatGenerator.getChatList();
+        List<Chat> chats = ChatGenerator.getChatList();
         TextView[] recentParticipants = {binding.textParticipant1, binding.textParticipant2, binding.textParticipant3};
         TextView[] recentMessages = {binding.textMessage1, binding.textMessage2, binding.textMessage3};
         for(int i = 0; i < 3; i++) {
             recentParticipants[i].setText(chats.get(i).getParticipants().toString());
             recentMessages[i].setText(chats.get(i).getLastMessage());
         }
-
-
     }
-
-
 }

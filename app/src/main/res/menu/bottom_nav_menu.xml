@@ -3,11 +3,11 @@
 
     <item android:id="@+id/navigation_home"
         android:icon="@drawable/navbar_home_24dp"
-        android:title="@string/nav_home" />
+        android:title="@string/nav_home_title" />
 
     <item android:id="@+id/navigation_contacts"
         android:icon="@drawable/navbar_contacts_24"
-        android:title="@string/nav_contacts" />
+        android:title="@string/nav_contacts_title" />
 
     <item android:id="@+id/navigation_chat"
         android:icon="@drawable/navbar_chat_24dp"
@@ -15,6 +15,6 @@
 
     <item android:id="@+id/navigation_weather"
         android:icon="@drawable/navbar_weather_24dp"
-        android:title="@string/nav_weather" />
+        android:title="@string/nav_weather_title" />
 
 </menu>

@@ -54,8 +54,8 @@ public class RegisterFragment extends Fragment {
             Validator validator = new Validator(getActivity(),
                     mBinding.fieldRegisterFirstName,
                     mBinding.fieldRegisterLastName,
-                    mBinding.fieldRegisterEmail,
                     mBinding.fieldRegisterUsername,
+                    mBinding.fieldRegisterEmail,
                     mBinding.fieldRegisterPassword,
                     mBinding.fieldRegisterRetypePassword);
 
@@ -86,6 +86,7 @@ public class RegisterFragment extends Fragment {
      *
      */
     private void verificationPopup() {
+
         EmailVerificationDialog dialog = new EmailVerificationDialog();
         dialog.show(getActivity().getSupportFragmentManager(),"Email Verification Reminder");
     }

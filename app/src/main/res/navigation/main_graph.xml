@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
     app:startDestination="@id/navigation_home">
+
     <fragment
         android:id="@+id/navigation_home"
         android:name="edu.uw.tcss450.group6project.ui.home.HomeFragment"
-        android:label="@string/nav_home"
+        android:label="@string/nav_home_title"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/navigation_chat"
@@ -21,7 +22,7 @@
     <fragment
         android:id="@+id/navigation_contacts"
         android:name="edu.uw.tcss450.group6project.ui.contacts.ContactListFragment"
-        android:label="@string/nav_contacts"
+        android:label="@string/nav_contacts_title"
         tools:layout="@layout/fragment_contact_list" >
         <action
             android:id="@+id/action_navigation_contacts_to_chatFragment"
@@ -33,12 +34,17 @@
         android:label="@string/all_chat"
         tools:layout="@layout/fragment_chat">
         <argument
-            android:name="ChatRoomID"
-            app:argType="integer" />
+            android:name="chat"
+            app:argType="edu.uw.tcss450.group6project.ui.chat.Chat" />
     </fragment>
     <fragment
         android:id="@+id/navigation_weather"
         android:name="edu.uw.tcss450.group6project.ui.weather.WeatherTabFragment"
-        android:label="@string/nav_weather"
+        android:label="@string/nav_weather_title"
         tools:layout="@layout/fragment_weather_tab" />
+    <fragment
+        android:id="@+id/passwordChangeFragment"
+        android:name="edu.uw.tcss450.group6project.ui.settings.change_password.ChangePasswordFragment"
+        android:label="fragment_password_change"
+        tools:layout="@layout/fragment_password_change" />
 </navigation>

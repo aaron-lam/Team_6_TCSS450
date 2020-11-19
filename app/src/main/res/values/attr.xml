@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="chatlist_card_background_color" format="color" />
+    <attr name="contact_card_background_color" format="color" />
+    <attr name="title_text_color" format="color" />
+</resources>
