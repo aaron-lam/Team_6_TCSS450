@@ -32,10 +32,10 @@
     <string name="register_email_exists_error">Email already in use</string>
     <string name="register_must_only_contain_letters_error">Must only contain letters with no spaces</string>
 
-    <!-- Password Change Page -->
-    <string name="password_change_old_password_hint">Old Password</string>
-    <string name="password_change_new_password_hint">New Password</string>
-    <string name="password_change_retype_password_hint">Retype New Password</string>
+    <!-- Change Password Page -->
+    <string name="change_password_old_password_hint">Old Password</string>
+    <string name="change_password_new_password_hint">New Password</string>
+    <string name="change_password_retype_password_hint">Retype New Password</string>
 
     <!-- Forgot Password Popup -->
     <string name="forgot_password_title">Password Recovery</string>

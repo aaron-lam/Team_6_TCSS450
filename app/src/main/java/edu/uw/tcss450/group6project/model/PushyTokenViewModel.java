@@ -27,9 +27,15 @@ import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.io.RequestQueueSingleton;
 import me.pushy.sdk.Pushy;
 
+/**
+ * View Model class to track the Push Token for the device.
+ * @author Charles Bryan
+ */
 public class PushyTokenViewModel extends AndroidViewModel {
 
+    /** The pushy token for the device. */
     private final MutableLiveData<String> mPushyToken;
+    /** Stores errors that occur with getting pushy token*/
     private final MutableLiveData<JSONObject> mResponse;
 
     public PushyTokenViewModel(@NonNull Application application) {
@@ -55,6 +61,9 @@ public class PushyTokenViewModel extends AndroidViewModel {
         mResponse.observe(owner, observer);
     }
 
+    /**
+     * Retrives the Pushy token for the device.
+     */
     public void retrieveToken() {
         if (!Pushy.isRegistered(getApplication().getApplicationContext())) {
 
@@ -144,6 +153,10 @@ public class PushyTokenViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    /**
+     * Catches errors that occur when requesting a Pushy Token.
+     * @param error error response from Pushy
+     */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {
             try {

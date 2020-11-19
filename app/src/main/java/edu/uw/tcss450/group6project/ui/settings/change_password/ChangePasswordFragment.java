@@ -21,8 +21,9 @@ import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentPasswordChangeBinding;
 import edu.uw.tcss450.group6project.utils.Validator;
 
-/**
+/** The page that shows when a user wants to change their password
  *
+ * @author Chase Alder
  */
 public class ChangePasswordFragment extends Fragment {
 
@@ -69,7 +70,7 @@ public class ChangePasswordFragment extends Fragment {
         });
     }
 
-    /**
+    /** Sends the change password request to the web service asynchronously
      *
      */
     private void verifyAuthWithServer() {
@@ -81,6 +82,9 @@ public class ChangePasswordFragment extends Fragment {
         //result of connect().
     }
 
+    /** Popup that tells the user that their password was successfully changed
+     *
+     */
     private void successConfirmationDialog() {
         AlertDialog.Builder successDialog  = new AlertDialog.Builder(getContext());
         successDialog.setMessage("Your password was successfully changed!");
@@ -90,31 +94,30 @@ public class ChangePasswordFragment extends Fragment {
         successDialog.create().show();
     }
 
-    /**
+    /** Reacts to the response from the web service
      *
-     * @param response
+     * @param response the response from the web service
      */
     private void observeResponse(final JSONObject response) {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    // TODO Fix these errors so they're not hardcoded and instead use strings
                     if (response.getJSONObject("data").getString("message").equals("User not found")) {
                         mBinding.fieldPasswordChangeEmail.setError(
-                                "Error Authenticating: " + "User was not found");
+                                "Error Authenticating: " + response.getJSONObject("data").getString("message"));
                     } else if (response.getJSONObject("data").getString("message").equals("Email is not verified yet")) {
                         mBinding.fieldPasswordChangeEmail.setError(
-                                "Error Authenticating: " + "Email is not verified yet");
+                                "Error Authenticating: " + response.getJSONObject("data").getString("message"));
                     } else if (response.getJSONObject("data").getString("message").equals("Credentials did not match")) {
                         mBinding.fieldPasswordChangeEmail.setError(
-                                "Error Authenticating: " + "Credentials did not match");
+                                "Error Authenticating: " + response.getJSONObject("data").getString("message"));
                     }
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
                 }
             } else {
                 successConfirmationDialog();
-                getActivity().onBackPressed(); // close the fragment
+                getActivity().onBackPressed();
             }
         } else {
             Log.d("JSON Response", "No Response");

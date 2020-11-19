@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 
+/** Activity for the settings page
+ *
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     SharedPreferences sp;

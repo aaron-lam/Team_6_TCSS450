@@ -15,6 +15,10 @@ import androidx.navigation.Navigation;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentSettingsHomeBinding;
 
+/** The settings page
+ *
+ * @author Chase Alder
+ */
 public class SettingsHomeFragment extends Fragment {
 
     private FragmentSettingsHomeBinding mBinding;

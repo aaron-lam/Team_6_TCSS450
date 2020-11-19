@@ -22,6 +22,10 @@ import org.json.JSONObject;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.utils.Validator;
 
+/** This is a popup that allows the user to reset their password.
+ *
+ * @author Chase Alder
+ */
 public class ForgotPasswordDialog implements View.OnClickListener {
 
     private Fragment signInFragment;
@@ -31,6 +35,10 @@ public class ForgotPasswordDialog implements View.OnClickListener {
     private AlertDialog mDialog;
     private ForgotPasswordViewModel mForgotPasswordModel;
 
+    /** Basic constructor
+     *
+     * @param fragment the current fragment
+     */
     public ForgotPasswordDialog(Fragment fragment) {
         mFirstCall = true;
         signInFragment = fragment;
@@ -75,12 +83,21 @@ public class ForgotPasswordDialog implements View.OnClickListener {
         });
     }
 
+    /** This calls the connect method, which send the request to the web service and waits
+     * for a response.
+     *
+     * @param email the email of the account that is trying to reset their password
+     */
     private void verifyForgotPasswordWithServer(String email) {
         mForgotPasswordModel.connectForgotPassword(email);
         //This is an Asynchronous call. No statements after should rely on the
         //result of connectForgotPassword().
     }
 
+    /** Reacts to the response from the web service after the request is made
+     *
+     * @param response the response from the web service
+     */
     private void observeResponse(final JSONObject response) {
         if (response.length() > 0) {
             if (response.has("code")) {
@@ -105,6 +122,9 @@ public class ForgotPasswordDialog implements View.OnClickListener {
         }
     }
 
+    /** This is a dialog that lets the user know how to complete their password reset after
+     * a successful request has been made.
+     */
     public static class ResetVerificationDialog extends AppCompatDialogFragment {
 
         @NonNull

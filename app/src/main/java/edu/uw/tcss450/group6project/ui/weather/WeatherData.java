@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Class that encapsulates Weather Data received from the server.
+ * @author Anthony Nguyen
  */
 public class WeatherData implements Serializable {
 

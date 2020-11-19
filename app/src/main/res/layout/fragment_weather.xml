@@ -7,18 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.weather.WeatherFragment">
 
-    <TextView
-        android:id="@+id/label_weather_date"
-        android:layout_width="330dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="132dp"
-        android:text="Current Weather"
-        android:textColor="?attr/title_text_color"
-        android:textSize="34sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/weather_currentWeather"
         android:layout_width="92dp"
@@ -33,11 +21,11 @@
         android:id="@+id/text_weatherDisplay"
         android:layout_width="309dp"
         android:layout_height="51dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="96dp"
         android:text="Tacoma, WA: 47°F"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_weather_date" />
+        app:layout_constraintHorizontal_bias="0.156"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="155dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

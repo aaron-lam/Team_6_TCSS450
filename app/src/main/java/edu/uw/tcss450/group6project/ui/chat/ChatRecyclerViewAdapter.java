@@ -167,8 +167,6 @@ public class ChatRecyclerViewAdapter extends
                                 .build());
                 card.requestLayout();
             }
-
         }
-
     }
 }
