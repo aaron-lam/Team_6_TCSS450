@@ -20,7 +20,7 @@ public class Validator extends AppCompatActivity {
     private EditText mFirstName, mLastName, mEmail, mUsername, mOldPassword, mNewPassword, mRetypeNewPassword;
     final private String mEmptyFieldError = "Cannot be empty";
     private FragmentActivity mActivity;
-    private Pattern mPassCheck = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$");
+    private Pattern mPassCheck = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!^#%*?&()])[A-Za-z\\d@$#!^%*?&()]{6,}$");
 
     /** Constructor for registration.
      *
