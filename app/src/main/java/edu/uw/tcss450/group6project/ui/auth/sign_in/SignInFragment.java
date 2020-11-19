@@ -1,7 +1,5 @@
 package edu.uw.tcss450.group6project.ui.auth.sign_in;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,23 +10,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.uw.tcss450.group6project.AuthActivity;
-import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
 import edu.uw.tcss450.group6project.model.PushyTokenViewModel;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.auth.EmailVerificationDialog;
+import edu.uw.tcss450.group6project.ui.auth.forgot_password.ForgotPasswordDialog;
 import edu.uw.tcss450.group6project.utils.Validator;
 
 /** This fragment represents the sign in page.
@@ -78,42 +72,13 @@ public class SignInFragment extends Fragment {
             Validator validator = new Validator(getActivity(), mBinding.fieldSignInEmail, mBinding.fieldSignInPassword);
 
             if (validator.validateAll()) {
-                verifyAuthWithServer();
+                verifySignInWithServer();
             }
         });
 
-        mBinding.buttonSignInForgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-                mBuilder.setTitle(R.string.forgot_password_title);
-                View mView = getLayoutInflater().inflate(R.layout.dialog_forgot_password,null);
+        mBinding.buttonSignInForgotPassword.setOnClickListener(new ForgotPasswordDialog(this));
 
-                // Grabbing references to all the elements in the fragment
-                EditText mEmail = (EditText) mView.findViewById(R.id.field_forgot_password_email);
-                Button mSubmit = (Button) mView.findViewById(R.id.button_forgot_password_submit);
-                Button mCancel = (Button) mView.findViewById(R.id.button_forgot_password_cancel);
-
-                // Assembling the dialog?
-                mBuilder.setView(mView);
-                AlertDialog mDialog = mBuilder.create();
-                mDialog.show();
-
-                // Cancel button functionality
-                mCancel.setOnClickListener(button -> mDialog.cancel());
-
-                // Submit button functionality
-                mSubmit.setOnClickListener(button -> {
-                    Validator validator = new Validator(getActivity(), mEmail);
-
-                    if (validator.validateAll()) {
-                        // TODO
-                        // At this point form validation is complete
-                    }
-                });
-            }
-        });
-
+        // This makes sure that the response observer doesn't get added every subsequent call
         if (mFirstCall) {
             mSignInModel.addResponseObserver(
                     getViewLifecycleOwner(),
@@ -149,12 +114,12 @@ public class SignInFragment extends Fragment {
     /** This method sends the users credentials to the web service for authentication.
      *
      */
-    private void verifyAuthWithServer() {
-        mSignInModel.connect(
+    private void verifySignInWithServer() {
+        mSignInModel.connectSignIn(
                 mBinding.fieldSignInEmail.getText().toString(),
                 mBinding.fieldSignInPassword.getText().toString());
         //This is an Asynchronous call. No statements after should rely on the
-        //result of connect().
+        //result of connectSignIn().
     }
 
     /** This makes a popup reminding the user to verify their email.
@@ -174,7 +139,7 @@ public class SignInFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    if ((int) response.get("code") == 400) {
+                    if (response.getJSONObject("data").getString("message").equals("Email is not verified yet")) {
                         verificationPopup();
                     }
                     mBinding.fieldSignInEmail.setError(

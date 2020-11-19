@@ -86,6 +86,7 @@ public class RegisterFragment extends Fragment {
      *
      */
     private void verificationPopup() {
+
         EmailVerificationDialog dialog = new EmailVerificationDialog();
         dialog.show(getActivity().getSupportFragmentManager(),"Email Verification Reminder");
     }
