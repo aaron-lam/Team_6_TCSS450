@@ -25,6 +25,10 @@ import java.util.Objects;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.io.RequestQueueSingleton;
 
+/**
+ * View Model to handle sending messages to the web service.
+ * @author Charles Bryan
+ */
 public class ChatSendViewModel extends AndroidViewModel {
 
     private final MutableLiveData<JSONObject> mResponse;

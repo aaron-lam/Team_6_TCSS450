@@ -39,6 +39,9 @@ public class AuthActivity extends AppCompatActivity {
         initiatePushyTokenRequest();
     }
 
+    /**
+     * Retrieves the Push Token for the device.
+     */
     private void initiatePushyTokenRequest() {
         new ViewModelProvider(this).get(PushyTokenViewModel.class).retrieveToken();
     }

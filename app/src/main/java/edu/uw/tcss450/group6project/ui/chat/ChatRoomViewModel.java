@@ -27,6 +27,11 @@ import java.util.Objects;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.io.RequestQueueSingleton;
 
+/**
+ * View Model to store information about the chat rooms the user is in
+ * and messages sent by and to the user.
+ * @author Charles Bryan, Anthony Nguyen
+ */
 public class ChatRoomViewModel extends AndroidViewModel {
 
     /**
@@ -88,12 +93,20 @@ public class ChatRoomViewModel extends AndroidViewModel {
         return mChatRooms.get(chatId);
     }
 
+    /**
+     * Returns all the chat rooms loaded in the view model.
+     * @return List of chat rooms.
+     */
     public List<ChatRoom> getChatRooms() {
         List<ChatRoom> rooms = new ArrayList<>(mChatRooms.values());
-        Log.d("Get Chat Rooms", Integer.toString(mChatRooms.size()));
         return new ArrayList<>(mChatRooms.values());
     }
 
+    /**
+     * Requests all the chat rooms that the user is a member of
+     * @param email email of the user
+     * @param jwt jwt of the user
+     */
     public void loadChatRooms(final String email, final String jwt) {
 
         String url = "https://team6-tcss450-web-service.herokuapp.com/chats/email/" + email;
@@ -122,7 +135,6 @@ public class ChatRoomViewModel extends AndroidViewModel {
         RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
                 .addToRequestQueue(request);
 
-        Log.d("Chat Room View Model", "Finished Loading Chat Rooms");
     }
 
 
@@ -227,6 +239,12 @@ public class ChatRoomViewModel extends AndroidViewModel {
         room.addMessage(message);
     }
 
+    /**
+     * Method to handle a successful request of chat rooms the user is a member of.
+     * Stores chat rooms in the view model and requests recent messages from these chat rooms.
+     * @param response
+     * @param jwt
+     */
     private void handleChatRoomSuccess(final JSONObject response, final String jwt) {
         if(!response.has("rowCount") || !response.has("rows")) {
             throw new IllegalStateException("Unexpected response in ChatViewModel: " + response);
@@ -249,7 +267,11 @@ public class ChatRoomViewModel extends AndroidViewModel {
         }
     }
 
-
+    /**
+     * Method to handle a successful request of messages in a specified chat room.
+     * Stores the messages sent into the view model.
+     * @param response
+     */
     private void handleChatMessagesSuccess(final JSONObject response) {
         List<ChatMessage> list;
         if (!response.has("chatId")) {
@@ -284,6 +306,11 @@ public class ChatRoomViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     * Handles unsuccessful request to the web service.
+     * No Client Behavior, just sends error messages to the android logs.
+     * @param error error from the load.
+     */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {
             Log.e("NETWORK ERROR", error.getMessage());

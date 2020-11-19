@@ -12,8 +12,11 @@ import java.util.List;
 
 public class ChatRoom implements Serializable {
 
+    /** List of participants in the current chat. */
     private final List<String> mParticipants;
+    /** Mutable View Model that stores a list of messages sent*/
     private MutableLiveData<List<ChatMessage>> mMessages;
+    /** The Room ID of the chat room. */
     private int mChatRoomID;
 
     /**
@@ -48,6 +51,10 @@ public class ChatRoom implements Serializable {
         mMessages.setValue(messages);
     }
 
+    /**
+     * Adds a message to this chat room.
+     * @param message new message to be added.
+     */
     public void addMessage(ChatMessage message) {
         List<ChatMessage> messageList = mMessages.getValue();
         if(!messageList.contains(message)) {
@@ -59,6 +66,10 @@ public class ChatRoom implements Serializable {
         }
     }
 
+    /**
+     * Getter method for the ID of the chat room.
+     * @return id of chat room
+     */
     public int getChatRoomID() {
         return mChatRoomID;
     }
@@ -72,10 +83,19 @@ public class ChatRoom implements Serializable {
         return mParticipants;
     }
 
+    /**
+     * Getter method for the messages in the chat room.
+     * @return messages in the chat room
+     */
     public List<ChatMessage> getMessages() {
         return mMessages.getValue();
     }
 
+    /**
+     * Setter method to update messages
+     * Notifies observers of the chat room of the changes.
+     * @param messages
+     */
     public void setMessages(List<ChatMessage> messages) {
         mMessages.setValue(messages);
     }
