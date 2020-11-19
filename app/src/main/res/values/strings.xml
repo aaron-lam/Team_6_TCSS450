@@ -72,4 +72,8 @@
     <string name="keys_json_contact_first">firstname</string>
     <string name="keys_json_contact_last">lastname</string>
     <string name="keys_json_contact_username">username</string>
+
+    <!-- URL for webservice -->
+    <string name="base_url">https://team6-tcss450-web-service.herokuapp.com/</string>
+
 </resources>
