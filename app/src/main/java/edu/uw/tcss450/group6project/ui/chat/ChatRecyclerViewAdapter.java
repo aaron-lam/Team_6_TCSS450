@@ -1,11 +1,18 @@
 package edu.uw.tcss450.group6project.ui.chat;
 
+import android.content.res.Resources;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.shape.CornerFamily;
 
 import java.util.List;
 
@@ -21,18 +28,21 @@ import edu.uw.tcss450.group6project.databinding.FragmentChatCardBinding;
 public class ChatRecyclerViewAdapter extends
         RecyclerView.Adapter<ChatRecyclerViewAdapter.ChatViewHolder> {
 
-    /**
-     * A list of chats.
-     */
+    /** A list of chats. */
     private final List<ChatMessage> mMessages;
+
+    /** Email of the user. */
+    private final String mEmail;
+
 
     /**
      * Parameterized constructor method taking a list of chats.
      *
-     * @param items the list of chats
+     * @param messages the list of chats
      */
-    public ChatRecyclerViewAdapter(List<ChatMessage> items) {
-        this.mMessages = items;
+    public ChatRecyclerViewAdapter(List<ChatMessage> messages, String email) {
+        mMessages = messages;
+        mEmail = email;
     }
 
     @NonNull
@@ -65,7 +75,7 @@ public class ChatRecyclerViewAdapter extends
          *
          * @param view the view
          */
-        public ChatViewHolder(View view) {
+        public ChatViewHolder(@NonNull View view) {
             super(view);
             mView = view;
             binding = FragmentChatCardBinding.bind(view);
@@ -77,10 +87,87 @@ public class ChatRecyclerViewAdapter extends
          * @param msg the chat message the belongs to the card
          */
         void setChat(final ChatMessage msg) {
+
+            final Resources res = mView.getContext().getResources();
+            final MaterialCardView card = (MaterialCardView) binding.cardRoot;
+
+            int standard = (int) res.getDimension(R.dimen.chat_margin);
+            int extended = (int) res.getDimension(R.dimen.chat_margin_sided);
+
             mMessage = msg;
 
-            binding.textParticipants.setText(msg.getUsername());
-            binding.textPreview.setText(msg.getMessage());
+            if(mEmail.equals(msg.getEmail())) {
+                //This message is from the user. Format it as such
+                binding.textMessage.setText(msg.getMessage());
+                ViewGroup.MarginLayoutParams layoutParams =
+                        (ViewGroup.MarginLayoutParams) card.getLayoutParams();
+                //Set the left margin
+                layoutParams.setMargins(extended, standard, standard, standard);
+                //Set this View to the right (end) side
+                ((FrameLayout.LayoutParams) card.getLayoutParams()).gravity = Gravity.END;
+
+                card.setCardBackgroundColor(
+                        ColorUtils.setAlphaComponent(
+                                res.getColor(R.color.themeOneLightColor, null),
+                                16));
+
+                binding.textMessage.setTextColor(
+                        res.getColor(R.color.themeOneSecondaryTextColor, null));
+
+                card.setStrokeWidth(standard / 5);
+                card.setStrokeColor(ColorUtils.setAlphaComponent(
+                        res.getColor(R.color.themeOneLightColor, null),
+                        200));
+
+                //Round the corners on the left side
+                card.setShapeAppearanceModel(
+                        card.getShapeAppearanceModel()
+                                .toBuilder()
+                                .setTopLeftCorner(CornerFamily.ROUNDED,standard * 2)
+                                .setBottomLeftCorner(CornerFamily.ROUNDED,standard * 2)
+                                .setBottomRightCornerSize(0)
+                                .setTopRightCornerSize(0)
+                                .build());
+
+                card.requestLayout();
+            } else {
+                //This message is from another user. Format it as such
+                binding.textMessage.setText(msg.getEmail() +
+                        ": " + msg.getMessage());
+                ViewGroup.MarginLayoutParams layoutParams =
+                        (ViewGroup.MarginLayoutParams) card.getLayoutParams();
+
+                //Set the right margin
+                layoutParams.setMargins(standard, standard, extended, standard);
+                // Set this View to the left (start) side
+                ((FrameLayout.LayoutParams) card.getLayoutParams()).gravity =
+                        Gravity.START;
+
+                card.setCardBackgroundColor(
+                        ColorUtils.setAlphaComponent(
+                                res.getColor(R.color.themeOneSecondaryLightColor, null),
+                                16));
+
+                card.setStrokeWidth(standard / 5);
+                card.setStrokeColor(ColorUtils.setAlphaComponent(
+                        res.getColor(R.color.themeOneSecondaryLightColor, null),
+                        200));
+
+                binding.textMessage.setTextColor(
+                        res.getColor(R.color.themeOneSecondaryTextColor, null));
+
+                //Round the corners on the right side
+                card.setShapeAppearanceModel(
+                        card.getShapeAppearanceModel()
+                                .toBuilder()
+                                .setTopRightCorner(CornerFamily.ROUNDED,standard * 2)
+                                .setBottomRightCorner(CornerFamily.ROUNDED,standard * 2)
+                                .setBottomLeftCornerSize(0)
+                                .setTopLeftCornerSize(0)
+                                .build());
+                card.requestLayout();
+            }
+
         }
 
     }

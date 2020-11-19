@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group6project.ui.auth.sign_in;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,8 +20,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
+import edu.uw.tcss450.group6project.model.PushyTokenViewModel;
+import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.auth.EmailVerificationDialog;
-import edu.uw.tcss450.group6project.utils.SignInValidator;
+import edu.uw.tcss450.group6project.ui.auth.forgot_password.ForgotPasswordDialog;
+import edu.uw.tcss450.group6project.utils.Validator;
 
 /** This fragment represents the sign in page.
  *
@@ -27,16 +32,24 @@ import edu.uw.tcss450.group6project.utils.SignInValidator;
  */
 public class SignInFragment extends Fragment {
 
+    private SharedPreferences sp;
     private FragmentSignInBinding mBinding;
     private SignInViewModel mSignInModel;
-    boolean mFirstCall; // This tells the class whether the "Sign In" button has been clicked yet.
+    private PushyTokenViewModel mPushyTokenViewModel;
+    private UserInfoViewModel mUserViewModel;
+    boolean mFirstSignInPress; // This tells the class whether the "Sign In" button has been clicked yet.
+
+    private String m_Text = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFirstCall = true;
+        mFirstSignInPress = true;
         mSignInModel = new ViewModelProvider(getActivity())
                 .get(SignInViewModel.class);
+
+        mPushyTokenViewModel = new ViewModelProvider(getActivity())
+                .get(PushyTokenViewModel.class);
     }
 
     @Override
@@ -51,25 +64,64 @@ public class SignInFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mBinding.testHome.setOnClickListener(this::handleHome);
 
-        mBinding.buttonSigninRegister.setOnClickListener(button -> {
+        mBinding.buttonSignInRegister.setOnClickListener(button -> {
             Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToRegisterFragment2());
         });
 
-        mBinding.buttonSigninSubmit.setOnClickListener(button -> {
-            SignInValidator signInValidator = new SignInValidator(getActivity(), mBinding);
+        mBinding.buttonSignInSubmit.setOnClickListener(button -> {
+            Validator validator = new Validator(getActivity(), mBinding.fieldSignInEmail, mBinding.fieldSignInPassword);
 
-            if (signInValidator.validateAll()) {
-                verifyAuthWithServer();
+            if (validator.validateAll()) {
+                verifySignInWithServer();
             }
         });
 
-        if (mFirstCall) {
+        mBinding.buttonSignInForgotPassword.setOnClickListener(new ForgotPasswordDialog(this));
+
+        // This makes sure that the response observer doesn't get added every subsequent call
+        if (mFirstSignInPress) {
             mSignInModel.addResponseObserver(
                     getViewLifecycleOwner(),
                     this::observeResponse);
-            mFirstCall = false;
+            mFirstSignInPress = false;
+        }
+
+        mPushyTokenViewModel.addTokenObserver(getViewLifecycleOwner(), token ->
+                mBinding.buttonSignInSubmit.setEnabled(!token.isEmpty()));
+        mPushyTokenViewModel.addResponseObserver(
+                getViewLifecycleOwner(),
+                this::observePushyPutResponse);
+    }
+
+    /**
+     * Helper to abstract the request to send the pushy token to the web service
+     */
+    private void sendPushyToken() {
+        mPushyTokenViewModel.sendTokenToWebservice(mUserViewModel.getJWT());
+    }
+
+    /**
+     * An observer on the HTTP Response from the web server. This observer should be
+     * attached to PushyTokenViewModel.
+     *
+     * @param response the Response from the server
+     */
+    private void observePushyPutResponse(final JSONObject response) {
+        if (response.length() > 0) {
+            if (response.has("code")) {
+                //this error cannot be fixed by the user changing credentials...
+                mBinding.fieldSignInEmail.setError(
+                        "Error Authenticating on Push Token. Please contact support");
+            } else {
+                successfulSignIn(
+                        mBinding.fieldSignInEmail.getText().toString(),
+                        mUserViewModel.getJWT()
+                );
+            }
         }
     }
+
+
 
     /** This is a method used for testing. It skips directly to the home page without needing to sign in.
      *
@@ -92,12 +144,12 @@ public class SignInFragment extends Fragment {
     /** This method sends the users credentials to the web service for authentication.
      *
      */
-    private void verifyAuthWithServer() {
-        mSignInModel.connect(
-                mBinding.fieldSigninEmail.getText().toString(),
-                mBinding.fieldSigninPassword.getText().toString());
+    private void verifySignInWithServer() {
+        mSignInModel.connectSignIn(
+                mBinding.fieldSignInEmail.getText().toString(),
+                mBinding.fieldSignInPassword.getText().toString());
         //This is an Asynchronous call. No statements after should rely on the
-        //result of connect().
+        //result of connectSignIn().
     }
 
     /** This makes a popup reminding the user to verify their email.
@@ -117,10 +169,10 @@ public class SignInFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    if ((int) response.get("code") == 400) {
+                    if (response.getJSONObject("data").getString("message").equals("Email is not verified yet")) {
                         verificationPopup();
                     }
-                    mBinding.fieldSigninEmail.setError(
+                    mBinding.fieldSignInEmail.setError(
                             "Error Authenticating: " +
                                     response.getJSONObject("data").getString("message"));
                 } catch (JSONException e) {
@@ -128,10 +180,12 @@ public class SignInFragment extends Fragment {
                 }
             } else {
                 try {
-                    successfulSignIn(
-                            mBinding.fieldSigninEmail.getText().toString(),
-                            response.getString("token")
-                    );
+                    mUserViewModel = new ViewModelProvider(getActivity(),
+                            new UserInfoViewModel.UserInfoViewModelFactory(
+                                    mBinding.fieldSignInEmail.getText().toString(),
+                                    response.getString("token")
+                            )).get(UserInfoViewModel.class);
+                    sendPushyToken();
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
                 }

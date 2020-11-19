@@ -1,46 +1,68 @@
 package edu.uw.tcss450.group6project.ui.contacts;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 /**
  * Represents a confirmed contact on the user's contact list.
  *
- * @author Robert M
+ * @author Robert M, Aaron L
  * @version 12 November 2020
  */
-public class Contact {
+public class Contact implements Serializable {
 
     /**
      * The contact's first name.
      */
-    private String mFirstName;
+    private final String mFirstName;
 
     /**
      * The contact's last name.
      */
-    private String mLastName;
+    private final String mLastName;
 
     /**
      * The contact's user name (display name).
      */
-    private String mUserName;
+    private final String mUserName;
 
     /**
-     * Private parameter-less constructor to prevent use.
+     * Helper class for building immutable Contact object.
+     *
+     * @author Aaron L
      */
-    private Contact() {
-        // Empty constructor
+    public static class Builder {
+        private final String mFirstName;
+        private final String mLastName;
+        private final String mUserName;
+
+
+        /**
+         * Constructs a new Builder.
+         *
+         * @param firstName contact's first name
+         * @param lastName contact's last name
+         * @param userName contact's username
+         */
+        public Builder(String firstName, String lastName, String userName) {
+            this.mFirstName = firstName;
+            this.mLastName = lastName;
+            this.mUserName = userName;
+        }
+
+        public Contact build() {
+            return new Contact(this);
+        }
     }
 
     /**
      * Parameterized constructor requiring the contact's first and last names and user name.
      *
-     * @param first contact's first name
-     * @param last contact's last name
-     * @param user contact's user name
      */
-    public Contact (final String first, final String last, final String user) {
-        mFirstName = first;
-        mLastName = last;
-        mUserName = user;
+    private Contact (final Builder builder) {
+        mFirstName = builder.mFirstName;
+        mLastName = builder.mLastName;
+        mUserName = builder.mUserName;
     }
 
     /**

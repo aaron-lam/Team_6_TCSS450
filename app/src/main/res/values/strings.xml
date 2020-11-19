@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">Group6Project</string>
 
     <!-- Universal  -->
     <string name="all_email_address">Email Address</string>
@@ -12,13 +13,17 @@
     <string name="all_email_no_at_symbol_error">Must contain an \'@\' symbol</string>
     <string name="all_password_length_error">Must be at least 6 characters long</string>
     <string name="all_password_requirements_error">Must contain a lowercase, uppercase, number, and special character</string>
+    <string name="all_retype_password_error">Passwords must match</string>
+    <string name="all_submit_button">Submit</string>
+    <string name="all_cancel_button">Cancel</string>
 
-    <!-- Sign In page -->
+    <!-- Sign In Page -->
     <string name="sign_in_email_hint">Email</string>
     <string name="sign_in_password_hint">Password</string>
     <string name="title_activity_auth">AuthActivity</string>
+    <string name="sign_in_forgot_password_text">Forgot Password</string>
 
-    <!-- Register page -->
+    <!-- Register Page -->
     <string name="register_first_name_hint">First Name</string>
     <string name="register_last_name_hint">Last Name</string>
     <string name="register_username_hint">Username</string>
@@ -26,12 +31,20 @@
     <string name="register_username_exists_error">Username already in use</string>
     <string name="register_email_exists_error">Email already in use</string>
     <string name="register_must_only_contain_letters_error">Must only contain letters with no spaces</string>
-    <string name="register_retype_password_error">Passwords must match</string>
+
+    <!-- Password Change Page -->
+    <string name="password_change_old_password_hint">Old Password</string>
+    <string name="password_change_new_password_hint">New Password</string>
+    <string name="password_change_retype_password_hint">Retype New Password</string>
+
+    <!-- Forgot Password Popup -->
+    <string name="forgot_password_title">Password Recovery</string>
+    <string name="forgot_password_instructions">Enter your account\'s email below and press submit, then check your inbox for a message with instructions on how to reset your password.</string>
 
     <!-- Nav Bar -->
-    <string name="nav_home">Home</string>
-    <string name="nav_weather">Weather</string>
-    <string name="nav_contacts">Contacts</string>
+    <string name="nav_home_title">Home</string>
+    <string name="nav_weather_title">Weather</string>
+    <string name="nav_contacts_title">Contacts</string>
 
     <!-- Chat List -->
     <string name="chat_goto">Open chat</string>
@@ -39,9 +52,28 @@
     <!-- Contact List -->
     <string name="contact_delete">Delete</string>
     <string name="contact_chat">Open Chat</string>
+    <string name="contact_empty_list_toast">Your contact list is empty</string>
 
+    <!-- Settings Page -->
+    <string name="settings_change_password_button">Change Password</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_change_theme_title">Theme</string>
+    <string name="settings_change_theme_option_one">Purple</string>
+    <string name="settings_change_theme_option_two">Blue</string>
+    <string name="settings_change_theme_option_three">Green</string>
 
-    <string name="app_name">Group6Project</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- JSON Keys  -->
+    <string name="keys_json_data">data</string>
+    <string name="keys_json_weather_day">day</string>
+    <string name="keys_json_weather_weather">weather</string>
+    <string name="keys_json_weather_temp">temp</string>
+
+    <string name="keys_json_contacts">contacts</string>
+    <string name="keys_json_contact_first">firstname</string>
+    <string name="keys_json_contact_last">lastname</string>
+    <string name="keys_json_contact_username">username</string>
+
+    <!-- URL for webservice -->
+    <string name="base_url">https://team6-tcss450-web-service.herokuapp.com/</string>
+
 </resources>

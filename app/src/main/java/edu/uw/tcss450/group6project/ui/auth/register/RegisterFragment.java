@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentRegisterBinding;
 import edu.uw.tcss450.group6project.ui.auth.EmailVerificationDialog;
-import edu.uw.tcss450.group6project.utils.RegisterValidator;
+import edu.uw.tcss450.group6project.utils.Validator;
 
 /** This fragment represents the new user registration page.
  *
@@ -51,9 +51,15 @@ public class RegisterFragment extends Fragment {
 
         mBinding.buttonRegisterSubmit.setOnClickListener(button -> {
 
-            RegisterValidator registerValidator = new RegisterValidator(getActivity(), mBinding);
+            Validator validator = new Validator(getActivity(),
+                    mBinding.fieldRegisterFirstName,
+                    mBinding.fieldRegisterLastName,
+                    mBinding.fieldRegisterUsername,
+                    mBinding.fieldRegisterEmail,
+                    mBinding.fieldRegisterPassword,
+                    mBinding.fieldRegisterRetypePassword);
 
-            if (registerValidator.validateAll()) {
+            if (validator.validateAll()) {
                 verifyAuthWithServer();
             }
 
@@ -80,6 +86,7 @@ public class RegisterFragment extends Fragment {
      *
      */
     private void verificationPopup() {
+
         EmailVerificationDialog dialog = new EmailVerificationDialog();
         dialog.show(getActivity().getSupportFragmentManager(),"Email Verification Reminder");
     }
