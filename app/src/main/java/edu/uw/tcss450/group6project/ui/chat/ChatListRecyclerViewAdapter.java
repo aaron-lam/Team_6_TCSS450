@@ -25,14 +25,14 @@ public class ChatListRecyclerViewAdapter extends
     /**
      * A list of chats.
      */
-    private final List<ChatRoom> mChats;
+    private final List<Chat> mChats;
 
     /**
      * Parameterized constructor method taking a list of chats.
      *
      * @param items the list of chats
      */
-    public ChatListRecyclerViewAdapter(List<ChatRoom> items) {
+    public ChatListRecyclerViewAdapter(List<Chat> items) {
         this.mChats = items;
     }
 
@@ -60,15 +60,20 @@ public class ChatListRecyclerViewAdapter extends
      * @version 3 November 2020
      */
     public class ChatListViewHolder extends RecyclerView.ViewHolder {
-
-        /** The view. */
+        /**
+         * The view.
+         */
         public final View mView;
 
-        /** The binding for the chat list card. */
+        /**
+         * The binding for the chat list card.
+         */
         public FragmentChatlistCardBinding binding;
 
-        /** The chat in the card. */
-        private ChatRoom mChat;
+        /**
+         * The chat in the card.
+         */
+        private Chat mChat;
 
         /**
          * Constructs the Chat view.
@@ -86,14 +91,15 @@ public class ChatListRecyclerViewAdapter extends
          *
          * @param chat the chat to setup
          */
-        void setChat(final ChatRoom chat) {
+        void setChat(final Chat chat) {
             mChat = chat;
             binding.buttonFullChat.setOnClickListener(view ->
                     Navigation.findNavController(mView).navigate
-                    (ChatListFragmentDirections.actionNavigationChatToChatFragment(chat.getChatRoomID())));
+                    (ChatListFragmentDirections.actionNavigationChatToChatFragment(chat)));
 
             binding.textParticipants.setText(chat.participantsAsString());
             binding.textPreview.setText(chat.getLastMessage());
         }
+
     }
 }

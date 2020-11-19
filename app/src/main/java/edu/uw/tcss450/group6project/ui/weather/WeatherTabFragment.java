@@ -91,7 +91,7 @@ public class WeatherTabFragment extends Fragment {
         for(int i = 0; i < 7; i++) {
             WeatherData data = weatherDataList.get(i);
             weatherTabText[i] = data.getDay();
-            weatherTabIcons[i] = mIconMap.getOrDefault(data.getWeather(), R.drawable.weather_sun_24dp);
+            weatherTabIcons[i] = mIconMap.get(data.getWeather());
             weatherTemp[i] = data.getTemp();
         }
 

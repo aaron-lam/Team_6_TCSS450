@@ -64,13 +64,8 @@
     <string name="keys_json_weather_weather">weather</string>
     <string name="keys_json_weather_temp">temp</string>
 
-    <!-- URL for webservice -->
-    <string name="base_url">https://team6-tcss450-web-service.herokuapp.com/</string>
-
-
     <string name="keys_json_contacts">contacts</string>
     <string name="keys_json_contact_first">firstname</string>
     <string name="keys_json_contact_last">lastname</string>
     <string name="keys_json_contact_username">username</string>
-
 </resources>
