@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group6project.ui.auth.sign_in;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,16 +30,17 @@ import edu.uw.tcss450.group6project.utils.Validator;
  */
 public class SignInFragment extends Fragment {
 
+    private SharedPreferences sp;
     private FragmentSignInBinding mBinding;
     private SignInViewModel mSignInModel;
-    boolean mFirstCall; // This tells the class whether the "Sign In" button has been clicked yet.
+    boolean mFirstSignInPress; // This tells the class whether the "Sign In" button has been clicked yet.
 
     private String m_Text = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFirstCall = true;
+        mFirstSignInPress = true;
         mSignInModel = new ViewModelProvider(getActivity())
                 .get(SignInViewModel.class);
     }
@@ -69,11 +72,11 @@ public class SignInFragment extends Fragment {
         mBinding.buttonSignInForgotPassword.setOnClickListener(new ForgotPasswordDialog(this));
 
         // This makes sure that the response observer doesn't get added every subsequent call
-        if (mFirstCall) {
+        if (mFirstSignInPress) {
             mSignInModel.addResponseObserver(
                     getViewLifecycleOwner(),
                     this::observeResponse);
-            mFirstCall = false;
+            mFirstSignInPress = false;
         }
     }
 

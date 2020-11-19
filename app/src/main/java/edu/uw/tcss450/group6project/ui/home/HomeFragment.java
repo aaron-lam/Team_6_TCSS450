@@ -52,9 +52,5 @@ public class HomeFragment extends Fragment {
             recentParticipants[i].setText(chats.get(i).getParticipants().toString());
             recentMessages[i].setText(chats.get(i).getLastMessage());
         }
-
-
     }
-
-
 }

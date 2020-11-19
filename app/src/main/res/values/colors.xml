@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -9,35 +10,35 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- Purple Theme -->
-    <color name="primaryColor">#4527a0</color>
-    <color name="primaryLightColor">#7953d2</color>
-    <color name="primaryDarkColor">#000070</color>
-    <color name="secondaryColor">#fdd835</color>
-    <color name="secondaryLightColor">#ffff6b</color>
-    <color name="secondaryDarkColor">#c6a700</color>
-    <color name="primaryTextColor">#ffffff</color>
-    <color name="secondaryTextColor">#000000</color>
+    <color name="themeOnePrimary">#4527a0</color>
+    <color name="themeOneLightColor">#7953d2</color>
+    <color name="themeOneDarkColor">#000070</color>
+    <color name="themeOneSecondaryColor">#fdd835</color>
+    <color name="themeOneSecondaryLightColor">#ffff6b</color>
+    <color name="themeOneSecondaryDarkColor">#c6a700</color>
+    <color name="themeOnePrimaryTextColor">#ffffff</color>
+    <color name="themeOneSecondaryTextColor">#000000</color>
 
 
     <!-- Blue Theme -->
-<!--    <color name="primaryColor">#1976d2</color>-->
-<!--    <color name="primaryLightColor">#63a4ff</color>-->
-<!--    <color name="primaryDarkColor">#004ba0</color>-->
-<!--    <color name="secondaryColor">#607d8b</color>-->
-<!--    <color name="secondaryLightColor">#8eacbb</color>-->
-<!--    <color name="secondaryDarkColor">#34515e</color>-->
-<!--    <color name="primaryTextColor">#ffffff</color>-->
-<!--    <color name="secondaryTextColor">#000000</color>-->
+    <color name="themeTwoPrimary">#1976d2</color>
+    <color name="themeTwoLightColor">#63a4ff</color>
+    <color name="themeTwoDarkColor">#004ba0</color>
+    <color name="themeTwoSecondaryColor">#607d8b</color>
+    <color name="themeTwoSecondaryLightColor">#8eacbb</color>
+    <color name="themeTwoSecondaryDarkColor">#34515e</color>
+    <color name="themeTwoPrimaryTextColor">#ffffff</color>
+    <color name="themeTwoSecondaryTextColor">#000000</color>
 
 
     <!-- Green Theme -->
-<!--    <color name="primaryColor">#64ba69</color>-->
-<!--    <color name="primaryLightColor">#96ed98</color>-->
-<!--    <color name="primaryDarkColor">#31893d</color>-->
-<!--    <color name="secondaryColor">#2e7d32</color>-->
-<!--    <color name="secondaryLightColor">#60ad5e</color>-->
-<!--    <color name="secondaryDarkColor">#005005</color>-->
-<!--    <color name="primaryTextColor">#000000</color>-->
-<!--    <color name="secondaryTextColor">#ffffff</color>-->
+    <color name="themeThreePrimary">#64ba69</color>
+    <color name="themeThreeLightColor">#96ed98</color>
+    <color name="themeThreeDarkColor">#31893d</color>
+    <color name="themeThreeSecondaryColor">#2e7d32</color>
+    <color name="themeThreeSecondaryLightColor">#60ad5e</color>
+    <color name="themeThreeSecondaryDarkColor">#005005</color>
+    <color name="themeThreePrimaryTextColor">#ffffff</color>
+    <color name="themeThreeSecondaryTextColor">#ffffff</color>
 
 </resources>

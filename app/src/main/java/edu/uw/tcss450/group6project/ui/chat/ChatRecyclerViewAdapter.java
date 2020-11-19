@@ -94,7 +94,6 @@ public class ChatRecyclerViewAdapter extends
             int standard = (int) res.getDimension(R.dimen.chat_margin);
             int extended = (int) res.getDimension(R.dimen.chat_margin_sided);
 
-
             mMessage = msg;
 
             if(mEmail.equals(msg.getEmail())) {
@@ -109,15 +108,15 @@ public class ChatRecyclerViewAdapter extends
 
                 card.setCardBackgroundColor(
                         ColorUtils.setAlphaComponent(
-                                res.getColor(R.color.primaryLightColor, null),
+                                res.getColor(R.color.themeOneLightColor, null),
                                 16));
 
                 binding.textMessage.setTextColor(
-                        res.getColor(R.color.secondaryTextColor, null));
+                        res.getColor(R.color.themeOneSecondaryTextColor, null));
 
                 card.setStrokeWidth(standard / 5);
                 card.setStrokeColor(ColorUtils.setAlphaComponent(
-                        res.getColor(R.color.primaryLightColor, null),
+                        res.getColor(R.color.themeOneLightColor, null),
                         200));
 
                 //Round the corners on the left side
@@ -146,16 +145,16 @@ public class ChatRecyclerViewAdapter extends
 
                 card.setCardBackgroundColor(
                         ColorUtils.setAlphaComponent(
-                                res.getColor(R.color.secondaryLightColor, null),
+                                res.getColor(R.color.themeOneSecondaryLightColor, null),
                                 16));
 
                 card.setStrokeWidth(standard / 5);
                 card.setStrokeColor(ColorUtils.setAlphaComponent(
-                        res.getColor(R.color.secondaryLightColor, null),
+                        res.getColor(R.color.themeOneSecondaryLightColor, null),
                         200));
 
                 binding.textMessage.setTextColor(
-                        res.getColor(R.color.secondaryTextColor, null));
+                        res.getColor(R.color.themeOneSecondaryTextColor, null));
 
                 //Round the corners on the right side
                 card.setShapeAppearanceModel(

@@ -56,6 +56,10 @@
     <!-- Settings Page -->
     <string name="settings_change_password_button">Change Password</string>
     <string name="settings_title">Settings</string>
+    <string name="settings_change_theme_title">Theme</string>
+    <string name="settings_change_theme_option_one">Purple</string>
+    <string name="settings_change_theme_option_two">Blue</string>
+    <string name="settings_change_theme_option_three">Green</string>
 
     <!-- JSON Keys  -->
     <string name="keys_json_data">data</string>
