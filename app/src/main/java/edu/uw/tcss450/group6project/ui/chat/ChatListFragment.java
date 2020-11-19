@@ -51,7 +51,6 @@ public class ChatListFragment extends Fragment {
         FragmentChatListBinding binding = FragmentChatListBinding.bind(view);
         final RecyclerView rv = binding.listRoot;
         rv.setAdapter(new ChatListRecyclerViewAdapter(mChatRoomModel.getChatRooms()));
-        binding.layoutWait.setVisibility(View.GONE);
 
         //if any of the chats receive messages, update the preview
         mChatRoomModel.addRoomObserver(getViewLifecycleOwner(),
