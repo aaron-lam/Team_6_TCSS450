@@ -56,20 +56,3 @@ public class AuthActivity extends AppCompatActivity {
         return theme;
     }
 }
-
-/*
-sp = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
-        int temp = sp.getInt("theme",0);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putInt("theme",curTheme);
-        editor.commit();
-    }
-
-    @Override
-    public Resources.Theme getTheme() {
-        Resources.Theme theme = super.getTheme();
-        sp = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
-        theme.applyStyle(sp.getInt("theme",0), true);
-        return theme;
-    }
- */

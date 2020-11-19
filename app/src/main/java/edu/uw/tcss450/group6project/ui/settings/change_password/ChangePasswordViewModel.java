@@ -21,6 +21,10 @@ import org.json.JSONObject;
 import java.nio.charset.Charset;
 import java.util.Objects;
 
+/** View Model for the change password functionality
+ *
+ * @author Chase Alder
+ */
 public class ChangePasswordViewModel extends AndroidViewModel {
 
     private MutableLiveData<JSONObject> mResponse;
@@ -69,7 +73,7 @@ public class ChangePasswordViewModel extends AndroidViewModel {
         }
     }
 
-    /** Sends a request to the web service to register a user. From Lab 3.
+    /** Sends a request to the web service to change a users password
      *
      * @param email Email from field
      */

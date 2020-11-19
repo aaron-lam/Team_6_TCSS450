@@ -22,6 +22,10 @@ import java.util.Objects;
 
 import edu.uw.tcss450.group6project.io.RequestQueueSingleton;
 
+/** View model for the "forgot password" functionality
+ *
+ * @author Chase Alder
+ */
 public class ForgotPasswordViewModel extends AndroidViewModel {
 
     private MutableLiveData<JSONObject> mResponse;
@@ -38,14 +42,18 @@ public class ForgotPasswordViewModel extends AndroidViewModel {
 
     /** Adds an observer to execute when a message is received from the web service. From Lab 3.
      *
-     * @param owner
-     * @param observer
+     * @param owner the current lifecycle owner
+     * @param observer a response observer
      */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {
         mResponse.observe(owner, observer);
     }
 
+    /** Sends the forgot password request to the web service.
+     *
+     * @param email the email of the account they want to reset
+     */
     public void connectForgotPassword(final String email) {
 
         // NOT SURE IF THIS IS THE RIGHT WAY TO DO THIS
