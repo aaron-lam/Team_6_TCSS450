@@ -34,8 +34,8 @@
         android:label="@string/all_chat"
         tools:layout="@layout/fragment_chat">
         <argument
-            android:name="chat"
-            app:argType="edu.uw.tcss450.group6project.ui.chat.Chat" />
+            android:name="ChatRoomID"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/navigation_weather"

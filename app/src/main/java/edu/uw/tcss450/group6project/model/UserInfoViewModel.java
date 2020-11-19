@@ -4,12 +4,22 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-
+/**
+ * View Model to keep track of information about the current user using the app.
+ * @author Anthony Nguyen
+ */
 public class UserInfoViewModel extends ViewModel {
 
+    /** The email of the current user. */
     private final String mEmail;
+    /** The JWT auth for the current user. */
     private final String mJwt;
 
+    /**
+     * Private constructor for the factory method.
+     * @param email email of the user
+     * @param jwt jwt of the user
+     */
     private UserInfoViewModel(final String email,  final String jwt) {
         mEmail = email;
         mJwt = jwt;

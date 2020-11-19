@@ -29,7 +29,11 @@ public class WeatherFragment extends Fragment {
     private int mIcon;
     private double mTemperature;
 
-
+    /**
+     * Constructor for weather fragment.
+     * @param icon icon for the current weather conditions.
+     * @param temp temperature for the current weather.
+     */
     public WeatherFragment(int icon, double temp) {
         mIcon = icon;
         mTemperature = temp;

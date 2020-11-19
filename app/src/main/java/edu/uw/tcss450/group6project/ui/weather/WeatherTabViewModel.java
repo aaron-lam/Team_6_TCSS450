@@ -28,14 +28,18 @@ import java.util.function.IntFunction;
 import edu.uw.tcss450.group6project.R;
 
 /**
- * View Model class for persistent Weather Data
+ * View Model class to store data about weather.
+ * @author Anthony
  */
 public class WeatherTabViewModel extends AndroidViewModel {
 
     /** List of weather data retrieved from server */
     private MutableLiveData<List<WeatherData>> mWeatherDataList;
 
-
+    /**
+     * Constructor for the view model.
+     * @param application application using the view model.
+     */
     public WeatherTabViewModel(@NonNull Application application) {
         super(application);
         mWeatherDataList = new MutableLiveData<>();
