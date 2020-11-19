@@ -17,7 +17,7 @@ public class ChatGenerator {
     /**
      * An array of chats to be generated for testing purposes.
      */
-    private static final Chat[] CHATS;
+    private static final ChatRoom[] CHATS;
 
     /**
      * The number of chats to generate.
@@ -25,11 +25,7 @@ public class ChatGenerator {
     public static final int COUNT = 20;
 
     static {
-        ChatMessage msg = new ChatMessage
-                .Builder("cfb3@uw.edu", "Jim",
-                "This is a fake chat for the purposes of testing.\n Hi, how are you? \n This is some more text to make sure you don't see it",
-                new Date())
-                .build();
+
 
         List<String> users = new ArrayList<>();
         List<ChatMessage> msgList = new ArrayList<>();
@@ -40,12 +36,16 @@ public class ChatGenerator {
         users.add("Tito");
 
         for(int i = 0; i < COUNT; i++) {
+            ChatMessage msg = new ChatMessage
+                    .Builder(i, "cfb3@uw.edu",
+                    "This is a fake chat for the purposes of testing.\n Hi, how are you? \n This is some more text to make sure you don't see it")
+                    .build();
             msgList.add(msg);
         }
 
-        CHATS = new Chat[COUNT];
+        CHATS = new ChatRoom[COUNT];
         for (int i = 0; i < CHATS.length; i++) {
-            CHATS[i] = new Chat(users, msgList);
+            CHATS[i] = new ChatRoom(users, msgList);
         }
     }
 
@@ -54,7 +54,7 @@ public class ChatGenerator {
      *
      * @return the list of Chats
      */
-    public static List<Chat> getChatList() {
+    public static List<ChatRoom> getChatList() {
         return Arrays.asList(CHATS);
     }
 
@@ -63,7 +63,7 @@ public class ChatGenerator {
      *
      * @return the array of Chats
      */
-    public static Chat[] getCHATS() {
+    public static ChatRoom[] getCHATS() {
         return Arrays.copyOf(CHATS, CHATS.length);
     }
 

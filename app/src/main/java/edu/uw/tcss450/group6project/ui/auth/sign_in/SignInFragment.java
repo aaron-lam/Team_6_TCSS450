@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -18,6 +19,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
+import edu.uw.tcss450.group6project.model.PushyTokenViewModel;
+import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.auth.EmailVerificationDialog;
 import edu.uw.tcss450.group6project.ui.auth.forgot_password.ForgotPasswordDialog;
 import edu.uw.tcss450.group6project.utils.Validator;
@@ -29,7 +32,12 @@ import edu.uw.tcss450.group6project.utils.Validator;
 public class SignInFragment extends Fragment {
 
     private FragmentSignInBinding mBinding;
+
+
     private SignInViewModel mSignInModel;
+    private PushyTokenViewModel mPushyTokenViewModel;
+    private UserInfoViewModel mUserViewModel;
+
     boolean mFirstCall; // This tells the class whether the "Sign In" button has been clicked yet.
 
     private String m_Text = "";
@@ -40,6 +48,8 @@ public class SignInFragment extends Fragment {
         mFirstCall = true;
         mSignInModel = new ViewModelProvider(getActivity())
                 .get(SignInViewModel.class);
+        mPushyTokenViewModel = new ViewModelProvider(getActivity())
+                .get(PushyTokenViewModel.class);
     }
 
     @Override
@@ -75,6 +85,12 @@ public class SignInFragment extends Fragment {
                     this::observeResponse);
             mFirstCall = false;
         }
+
+        mPushyTokenViewModel.addTokenObserver(getViewLifecycleOwner(), token ->
+                mBinding.buttonSignInSubmit.setEnabled(!token.isEmpty()));
+        mPushyTokenViewModel.addResponseObserver(
+                getViewLifecycleOwner(),
+                this::observePushyPutResponse);
     }
 
     /** This is a method used for testing. It skips directly to the home page without needing to sign in.
@@ -138,6 +154,12 @@ public class SignInFragment extends Fragment {
                             mBinding.fieldSignInEmail.getText().toString(),
                             response.getString("token")
                     );
+                    mUserViewModel = new ViewModelProvider(getActivity(),
+                            new UserInfoViewModel.UserInfoViewModelFactory(
+                                    mBinding.fieldSignInEmail.getText().toString(),
+                                    response.getString("token")
+                            )).get(UserInfoViewModel.class);
+                    sendPushyToken();
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
                 }
@@ -146,4 +168,33 @@ public class SignInFragment extends Fragment {
             Log.d("JSON Response", "No Response");
         }
     }
+
+    /**
+     * Helper to abstract the request to send the pushy token to the web service
+     */
+    private void sendPushyToken() {
+        mPushyTokenViewModel.sendTokenToWebservice(mUserViewModel.getJWT());
+    }
+
+    /**
+     * An observer on the HTTP Response from the web server. This observer should be
+     * attached to PushyTokenViewModel.
+     *
+     * @param response the Response from the server
+     */
+    private void observePushyPutResponse(final JSONObject response) {
+        if (response.length() > 0) {
+            if (response.has("code")) {
+                //this error cannot be fixed by the user changing credentials...
+                mBinding.fieldSignInEmail.setError(
+                        "Error Authenticating on Push Token. Please contact support");
+            } else {
+                successfulSignIn(
+                        mBinding.fieldSignInEmail.getText().toString(),
+                        mUserViewModel.getJWT()
+                );
+            }
+        }
+    }
+
 }

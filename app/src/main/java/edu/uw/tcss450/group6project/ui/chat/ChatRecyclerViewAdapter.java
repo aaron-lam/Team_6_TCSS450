@@ -68,7 +68,6 @@ public class ChatRecyclerViewAdapter extends
     public class ChatViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public FragmentChatCardBinding binding;
-        private ChatMessage mMessage;
 
         /**
          * Constructs the Chat view.
@@ -89,13 +88,10 @@ public class ChatRecyclerViewAdapter extends
         void setChat(final ChatMessage msg) {
 
             final Resources res = mView.getContext().getResources();
-            final MaterialCardView card = (MaterialCardView) binding.cardRoot;
+            final MaterialCardView card = binding.cardRoot;
 
             int standard = (int) res.getDimension(R.dimen.chat_margin);
             int extended = (int) res.getDimension(R.dimen.chat_margin_sided);
-
-
-            mMessage = msg;
 
             if(mEmail.equals(msg.getEmail())) {
                 //This message is from the user. Format it as such
@@ -168,8 +164,6 @@ public class ChatRecyclerViewAdapter extends
                                 .build());
                 card.requestLayout();
             }
-
         }
-
     }
 }
