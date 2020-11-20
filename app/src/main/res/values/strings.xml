@@ -62,11 +62,16 @@
     <string name="settings_change_theme_option_two">Blue</string>
     <string name="settings_change_theme_option_three">Green</string>
 
+    <!-- JSON Headers -->
+    <string name="header_jwt_auth">Authorization</string>
+
     <!-- JSON Keys  -->
     <string name="keys_json_data">data</string>
     <string name="keys_json_weather_day">day</string>
     <string name="keys_json_weather_weather">weather</string>
     <string name="keys_json_weather_temp">temp</string>
+    <string name="keys_json_weather_lat">lat</string>
+    <string name="keys_json_weather_long">long</string>
 
     <string name="keys_json_contacts">contacts</string>
     <string name="keys_json_contact_first">firstname</string>
@@ -75,5 +80,8 @@
 
     <!-- URL for webservice -->
     <string name="base_url">https://team6-tcss450-web-service.herokuapp.com/</string>
+    <string name="url_weather_location">https://team6-tcss450-web-service.herokuapp.com/weather/location/</string>
+    <string name="url_chat_chatrooms">https://team6-tcss450-web-service.herokuapp.com/chats/email/</string>
+    <string name="url_chat_messages">https://team6-tcss450-web-service.herokuapp.com/messages/</string>
 
 </resources>

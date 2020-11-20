@@ -52,7 +52,7 @@ public class WeatherTabViewModel extends AndroidViewModel {
      * @param longitude longitude of request
      */
     public void connectLocation(double latitude, double longitude) {
-        String url = "https://team6-tcss450-web-service.herokuapp.com/weather/location";
+        String url = getApplication().getResources().getString(R.string.url_weather_location);
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -62,8 +62,8 @@ public class WeatherTabViewModel extends AndroidViewModel {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("lat", Double.toString(latitude));
-                headers.put("long", Double.toString(longitude));
+                headers.put(getApplication().getResources().getString(R.string.keys_json_weather_lat), Double.toString(latitude));
+                headers.put(getApplication().getResources().getString(R.string.keys_json_weather_long), Double.toString(longitude));
                 return headers;
             }
         };
