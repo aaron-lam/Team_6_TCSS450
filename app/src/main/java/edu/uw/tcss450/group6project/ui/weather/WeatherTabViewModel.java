@@ -98,12 +98,12 @@ public class WeatherTabViewModel extends AndroidViewModel {
         try {
             JSONObject root = result;
 
-            if (root.has(getString.apply(R.string.keys_json_data))) {
+            if (root.has(getString.apply(R.string.keys_json_weather_daily))) {
                 JSONArray data = root.getJSONArray(
-                        getString.apply(R.string.keys_json_data));
+                        getString.apply(R.string.keys_json_weather_daily));
                 for(int i = 0; i < data.length(); i++) {
                     JSONObject jsonBlog = data.getJSONObject(i);
-                    WeatherData post = new WeatherData.Builder(
+                    WeatherData dailyWeather = new WeatherData.Builder(
                             jsonBlog.getString(
                                     getString.apply(
                                             R.string.keys_json_weather_day)),
@@ -114,8 +114,8 @@ public class WeatherTabViewModel extends AndroidViewModel {
                                     getString.apply(
                                             R.string.keys_json_weather_temp)))
                             .build();
-                    if (!mWeatherDataList.getValue().contains(post)) {
-                        mWeatherDataList.getValue().add(post);
+                    if (!mWeatherDataList.getValue().contains(dailyWeather)) {
+                        mWeatherDataList.getValue().add(dailyWeather);
                     }
                 }
             } else {
