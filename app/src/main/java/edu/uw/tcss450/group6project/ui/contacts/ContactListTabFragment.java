@@ -25,7 +25,7 @@ import edu.uw.tcss450.group6project.model.UserInfoViewModel;
  * @author Robert M., Aaron L.
  * @version 1.0
  */
-public class ContactListFragment extends Fragment {
+public class ContactListTabFragment extends Fragment {
 
     private ContactViewModel mModel;
     /** Model to store info about the user. */

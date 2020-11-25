@@ -21,9 +21,9 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_contacts"
-        android:name="edu.uw.tcss450.group6project.ui.contacts.ContactListFragment"
+        android:name="edu.uw.tcss450.group6project.ui.contacts.ContactsFragment"
         android:label="@string/nav_contacts_title"
-        tools:layout="@layout/fragment_contact_list" >
+        tools:layout="@layout/fragment_contacts" >
         <action
             android:id="@+id/action_navigation_contacts_to_chatFragment"
             app:destination="@id/chatFragment" />

@@ -89,10 +89,10 @@ public class WeatherTabFragment extends Fragment {
             weatherTemp[i] = data.getTemp();
         }
 
-        ViewPager2 viewPager = view.findViewById(R.id.view_pager);
+        ViewPager2 viewPager = view.findViewById(R.id.weather_view_pager);
         viewPager.setAdapter(new WeatherPagerAdapter(this, weatherTabIcons, weatherTemp));
 
-        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        TabLayout tabLayout = view.findViewById(R.id.weather_tab_layout);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             tab.setText(weatherTabText[position]);
