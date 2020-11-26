@@ -13,10 +13,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.IntFunction;
 
 import androidx.annotation.NonNull;
@@ -34,11 +36,14 @@ import edu.uw.tcss450.group6project.R;
 public class ContactListTabViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Contact>> mContactList;
+    private MutableLiveData<JSONObject> mResponse;
 
     public ContactListTabViewModel(@NonNull Application application) {
         super(application);
         mContactList = new MutableLiveData<>();
         mContactList.setValue(new ArrayList<>());
+        mResponse = new MutableLiveData<>();
+        mResponse.setValue(new JSONObject());
     }
 
     /**
@@ -51,11 +56,16 @@ public class ContactListTabViewModel extends AndroidViewModel {
         mContactList.observe(owner, observer);
     }
 
+    public void addDeleteResponseObserver(@NonNull LifecycleOwner owner,
+                                          @NonNull Observer<? super JSONObject> observer) {
+        mResponse.observe(owner, observer);
+    }
+
     /**
      * Handles errors when making requests to the server.
      * @param error the error message
      */
-    private void handleError(final VolleyError error) {
+    private void handleGetError(final VolleyError error) {
         //you should add much better error handling in a production release. //i.e. YOUR PROJECT
         mContactList.setValue(new ArrayList<>());
     }
@@ -112,7 +122,7 @@ public class ContactListTabViewModel extends AndroidViewModel {
                 url,
                 null, //no body for this get request
                 this::handleGetResult,
-                this::handleError) {
+                this::handleGetError) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -133,5 +143,60 @@ public class ContactListTabViewModel extends AndroidViewModel {
                         getApplicationContext()).
 
                 add(request);
+    }
+
+
+    public void connectDelete(String jwt, String userId) {
+        String url = "https://team6-tcss450-web-service.herokuapp.com/contacts/" + userId;
+        Request request = new JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                null, //no body for this get request
+                mResponse::setValue,
+                this::handleDeleteError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        request.setRetryPolicy(new
+
+                DefaultRetryPolicy( 10_000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)); //Instantiate the RequestQueue and add the request to the queue
+        Volley.newRequestQueue(
+
+                getApplication().
+
+                        getApplicationContext()).
+
+                add(request);
+    }
+
+    private void handleDeleteError(final VolleyError error) {
+        if (Objects.isNull(error.networkResponse)) {
+            try {
+                mResponse.setValue(new JSONObject("{" +
+                        "error:\"" + error.getMessage() +
+                        "\"}"));
+            } catch (JSONException e) {
+                Log.e("JSON PARSE", "JSON Parse Error in handleError");
+            }
+        }
+        else {
+            String data = new String(error.networkResponse.data, Charset.defaultCharset())
+                    .replace('\"', '\'');
+            try {
+                JSONObject response = new JSONObject();
+                response.put("code", error.networkResponse.statusCode);
+                response.put("data", new JSONObject(data));
+                mResponse.setValue(response);
+            } catch (JSONException e) {
+                Log.e("JSON PARSE", "JSON Parse Error in handleError");
+            }
+        }
     }
 }

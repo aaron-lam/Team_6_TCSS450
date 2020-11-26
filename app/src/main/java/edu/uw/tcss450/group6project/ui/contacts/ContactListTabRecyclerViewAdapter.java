@@ -7,12 +7,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentContactCardBinding;
+import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 
 /**
  * A RecyclerViewAdapter to create scrolling list view of contacts.
@@ -33,20 +36,25 @@ public class ContactListTabRecyclerViewAdapter extends
      */
     private Context mContext;
 
+    private FragmentActivity mActivity;
+
+    private UserInfoViewModel mUserInfoViewModel;
+
     /**
      * Constructs the RecyclerView.
      *
      * @param contacts a list of contacts
      */
-    public ContactListTabRecyclerViewAdapter(List<Contact> contacts) {
+    public ContactListTabRecyclerViewAdapter(List<Contact> contacts, FragmentActivity activity, UserInfoViewModel userInfoViewModel) {
         this.mContacts = contacts;
+        this.mActivity = activity;
     }
 
     @NonNull
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        return new ContactViewHolder(LayoutInflater.from(parent.getContext())
+        return new ContactViewHolder(LayoutInflater.from(mContext)
                 .inflate(R.layout.fragment_contact_card, parent, false));
     }
 
@@ -83,6 +91,8 @@ public class ContactListTabRecyclerViewAdapter extends
          */
         private Contact mContact;
 
+        private ContactListTabViewModel mContactListTabViewModel;
+
         /**
          * Constructs the contact view.
          *
@@ -91,6 +101,12 @@ public class ContactListTabRecyclerViewAdapter extends
         public ContactViewHolder(View view) {
             super(view);
             mView = view;
+
+            // Get the UserInfoViewModel and ContactListTabViewModel (used for contact deletion)
+            ViewModelProvider provider = new ViewModelProvider(mActivity);
+            mContactListTabViewModel = provider.get(ContactListTabViewModel.class);
+            mUserInfoViewModel = provider.get(UserInfoViewModel.class);
+
             binding = FragmentContactCardBinding.bind(view);
             binding.buttonDeleteContact.setOnClickListener(this::handleDelete);
             binding.buttonOpenChat.setOnClickListener(this::createChat);
@@ -102,8 +118,9 @@ public class ContactListTabRecyclerViewAdapter extends
          * @param button the delete button
          */
         private void handleDelete(final View button) {
-//            mContacts.remove(mContacts.indexOf(mContact));
-            Toast.makeText(mContext, R.string.all_incomplete, Toast.LENGTH_SHORT).show();
+            mContactListTabViewModel.connectDelete(mUserInfoViewModel.getJWT(),mContact.getUserId());
+            mActivity.finish();
+            mActivity.startActivity(mActivity.getIntent());
         }
 
         /**
