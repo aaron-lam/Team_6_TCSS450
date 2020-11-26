@@ -50,8 +50,7 @@ public class ContactListTabFragment extends Fragment {
         FragmentContactListBinding binding = FragmentContactListBinding.bind(requireView());
         mModel.addContactListObserver(getViewLifecycleOwner(), contactList -> {
             if (!contactList.isEmpty()) {
-                List<String> firstNameList = getFirstName(contactList);
-                binding.listRoot.setAdapter(new ContactListTabRecyclerViewAdapter(firstNameList));
+                binding.listRoot.setAdapter(new ContactListTabRecyclerViewAdapter(contactList));
             }
         });
     }

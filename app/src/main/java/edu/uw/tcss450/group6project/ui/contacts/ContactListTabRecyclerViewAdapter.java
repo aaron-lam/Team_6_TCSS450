@@ -26,7 +26,7 @@ public class ContactListTabRecyclerViewAdapter extends
     /**
      * The list of contacts.
      */
-    private final List<String> mContacts;
+    private final List<Contact> mContacts;
 
     /**
      * The fragment's context.
@@ -36,10 +36,10 @@ public class ContactListTabRecyclerViewAdapter extends
     /**
      * Constructs the RecyclerView.
      *
-     * @param items a list of contacts
+     * @param contacts a list of contacts
      */
-    public ContactListTabRecyclerViewAdapter(List<String> items) {
-        this.mContacts = items;
+    public ContactListTabRecyclerViewAdapter(List<Contact> contacts) {
+        this.mContacts = contacts;
     }
 
     @NonNull
@@ -81,7 +81,7 @@ public class ContactListTabRecyclerViewAdapter extends
         /**
          * The contact.
          */
-        private String mContact;
+        private Contact mContact;
 
         /**
          * Constructs the contact view.
@@ -124,9 +124,9 @@ public class ContactListTabRecyclerViewAdapter extends
          *
          * @param contact the contact being set
          */
-        void setContact(final String contact) {
+        void setContact(final Contact contact) {
             mContact = contact;
-            binding.textContactName.setText(contact);
+            binding.textContactName.setText(contact.getFirstName());
         }
 
     }
