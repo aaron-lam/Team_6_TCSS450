@@ -7,15 +7,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentContactCardBinding;
-import edu.uw.tcss450.group6project.ui.chat.ChatRoom;
 
 /**
  * A RecyclerViewAdapter to create scrolling list view of contacts.
@@ -23,8 +20,8 @@ import edu.uw.tcss450.group6project.ui.chat.ChatRoom;
  * @author Robert M
  * @version 3 November 2020
  */
-public class ContactRecyclerViewAdapter extends
-        RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder> {
+public class ContactListTabRecyclerViewAdapter extends
+        RecyclerView.Adapter<ContactListTabRecyclerViewAdapter.ContactViewHolder> {
 
     /**
      * The list of contacts.
@@ -41,7 +38,7 @@ public class ContactRecyclerViewAdapter extends
      *
      * @param items a list of contacts
      */
-    public ContactRecyclerViewAdapter(List<String> items) {
+    public ContactListTabRecyclerViewAdapter(List<String> items) {
         this.mContacts = items;
     }
 

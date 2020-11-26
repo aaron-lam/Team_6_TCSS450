@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +26,14 @@ import edu.uw.tcss450.group6project.model.UserInfoViewModel;
  */
 public class ContactListTabFragment extends Fragment {
 
-    private ContactViewModel mModel;
+    private ContactListTabViewModel mModel;
     /** Model to store info about the user. */
     private UserInfoViewModel mUserModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mModel = new ViewModelProvider(requireActivity()).get(ContactViewModel.class);
+        mModel = new ViewModelProvider(requireActivity()).get(ContactListTabViewModel.class);
         ViewModelProvider provider = new ViewModelProvider(getActivity());
         mUserModel = provider.get(UserInfoViewModel.class);
         mModel.connectGet(mUserModel.getJWT());
@@ -52,7 +51,7 @@ public class ContactListTabFragment extends Fragment {
         mModel.addContactListObserver(getViewLifecycleOwner(), contactList -> {
             if (!contactList.isEmpty()) {
                 List<String> firstNameList = getFirstName(contactList);
-                binding.listRoot.setAdapter(new ContactRecyclerViewAdapter(firstNameList));
+                binding.listRoot.setAdapter(new ContactListTabRecyclerViewAdapter(firstNameList));
             }
         });
     }

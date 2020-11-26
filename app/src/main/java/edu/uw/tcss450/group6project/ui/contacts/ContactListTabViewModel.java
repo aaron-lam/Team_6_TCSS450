@@ -13,12 +13,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.IntFunction;
 
 import androidx.annotation.NonNull;
@@ -33,11 +31,11 @@ import edu.uw.tcss450.group6project.R;
  * @author Aaron L
  * @version 18 November 2020
  */
-public class ContactViewModel extends AndroidViewModel {
+public class ContactListTabViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Contact>> mContactList;
 
-    public ContactViewModel(@NonNull Application application) {
+    public ContactListTabViewModel(@NonNull Application application) {
         super(application);
         mContactList = new MutableLiveData<>();
         mContactList.setValue(new ArrayList<>());
@@ -67,7 +65,7 @@ public class ContactViewModel extends AndroidViewModel {
      * and stores the data in the view model.
      * @param result JSON retrieved from server containing contact data
      */
-    private void handleResult(final JSONObject result) {
+    private void handleGetResult(final JSONObject result) {
         IntFunction<String> getString =
                 getApplication().getResources()::getString;
         List<Contact> contacts = new ArrayList<>();
@@ -86,7 +84,10 @@ public class ContactViewModel extends AndroidViewModel {
                                             R.string.keys_json_contact_last)),
                             jsonContact.getString(
                                     getString.apply(
-                                            R.string.keys_json_contact_username)))
+                                            R.string.keys_json_contact_username)),
+                            jsonContact.getString(
+                                    getString.apply(
+                                            R.string.keys_json_contact_userId)))
                             .build();
                     contacts.add(contact);
                 }
@@ -110,7 +111,7 @@ public class ContactViewModel extends AndroidViewModel {
                 Request.Method.GET,
                 url,
                 null, //no body for this get request
-                this::handleResult,
+                this::handleGetResult,
                 this::handleError) {
             @Override
             public Map<String, String> getHeaders() {

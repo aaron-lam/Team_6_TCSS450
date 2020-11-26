@@ -84,7 +84,7 @@ public class ChatListRecyclerViewAdapter extends
         /**
          * Sets each card view for a chat in the recycler view.
          *
-         * @param chat the chat to setup
+         * @param chat the chatroom to setup
          */
         void setChat(final ChatRoom chat) {
             mChat = chat;
