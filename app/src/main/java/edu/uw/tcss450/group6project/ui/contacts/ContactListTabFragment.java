@@ -33,8 +33,8 @@ public class ContactListTabFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mModel = new ViewModelProvider(requireActivity()).get(ContactListTabViewModel.class);
         ViewModelProvider provider = new ViewModelProvider(getActivity());
+        mModel = provider.get(ContactListTabViewModel.class);
         mUserModel = provider.get(UserInfoViewModel.class);
         mModel.connectGet(mUserModel.getJWT());
     }
@@ -50,21 +50,8 @@ public class ContactListTabFragment extends Fragment {
         FragmentContactListBinding binding = FragmentContactListBinding.bind(requireView());
         mModel.addContactListObserver(getViewLifecycleOwner(), contactList -> {
             if (!contactList.isEmpty()) {
-                binding.listRoot.setAdapter(new ContactListTabRecyclerViewAdapter(contactList,getActivity(),mUserModel));
+                binding.listRoot.setAdapter(new ContactListTabRecyclerViewAdapter(contactList,this,mUserModel));
             }
         });
-    }
-
-    /**
-     * Extract a list of first names from contact list.
-     * @param contactList contact list
-     * @return List of first names
-     */
-    private List<String> getFirstName(List<Contact> contactList) {
-        List<String> firstNameList = new ArrayList<>();
-        for (Contact contact : contactList) {
-            firstNameList.add(contact.getFirstName());
-        }
-        return firstNameList;
     }
 }

@@ -1,6 +1,7 @@
 package edu.uw.tcss450.group6project.ui.contacts;
 
 import android.app.Application;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -22,11 +23,15 @@ import java.util.Objects;
 import java.util.function.IntFunction;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import edu.uw.tcss450.group6project.R;
+import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 
 /**
  * View Model class for persistent contact data.
@@ -137,12 +142,9 @@ public class ContactListTabViewModel extends AndroidViewModel {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)); //Instantiate the RequestQueue and add the request to the queue
         Volley.newRequestQueue(
-
                 getApplication().
-
                         getApplicationContext()).
-
-                add(request);
+                            add(request);
     }
 
 
@@ -163,17 +165,28 @@ public class ContactListTabViewModel extends AndroidViewModel {
             }
         };
         request.setRetryPolicy(new
-
                 DefaultRetryPolicy( 10_000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)); //Instantiate the RequestQueue and add the request to the queue
         Volley.newRequestQueue(
-
                 getApplication().
-
                         getApplicationContext()).
+                            add(request);
 
-                add(request);
+        // Get the current list of contacts
+        List<Contact> tempList = mContactList.getValue();
+
+        // Get the reference of the contact that you're removing
+        Contact tempContact = null;
+        for (Contact c : tempList) {
+            if (c.getUserId() == userId) {
+                tempContact = c;
+            }
+        }
+
+        // Remove the contact and update the list
+        tempList.remove(tempContact);
+        mContactList.setValue(tempList);
     }
 
     private void handleDeleteError(final VolleyError error) {

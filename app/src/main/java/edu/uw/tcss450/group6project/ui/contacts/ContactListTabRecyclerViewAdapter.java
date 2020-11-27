@@ -1,13 +1,17 @@
 package edu.uw.tcss450.group6project.ui.contacts;
 
 import android.content.Context;
+import android.os.Build;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +19,7 @@ import java.util.List;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentContactCardBinding;
+import edu.uw.tcss450.group6project.databinding.FragmentContactListBinding;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 
 /**
@@ -31,13 +36,7 @@ public class ContactListTabRecyclerViewAdapter extends
      */
     private final List<Contact> mContacts;
 
-    /**
-     * The fragment's context.
-     */
-    private Context mContext;
-
-    private FragmentActivity mActivity;
-
+    private Fragment mFragment;
     private UserInfoViewModel mUserInfoViewModel;
 
     /**
@@ -45,16 +44,15 @@ public class ContactListTabRecyclerViewAdapter extends
      *
      * @param contacts a list of contacts
      */
-    public ContactListTabRecyclerViewAdapter(List<Contact> contacts, FragmentActivity activity, UserInfoViewModel userInfoViewModel) {
+    public ContactListTabRecyclerViewAdapter(List<Contact> contacts, Fragment fragment, UserInfoViewModel userInfoViewModel) {
         this.mContacts = contacts;
-        this.mActivity = activity;
+        this.mFragment = fragment;
     }
 
     @NonNull
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
-        return new ContactViewHolder(LayoutInflater.from(mContext)
+        return new ContactViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_contact_card, parent, false));
     }
 
@@ -103,7 +101,7 @@ public class ContactListTabRecyclerViewAdapter extends
             mView = view;
 
             // Get the UserInfoViewModel and ContactListTabViewModel (used for contact deletion)
-            ViewModelProvider provider = new ViewModelProvider(mActivity);
+            ViewModelProvider provider = new ViewModelProvider(mFragment.getActivity());
             mContactListTabViewModel = provider.get(ContactListTabViewModel.class);
             mUserInfoViewModel = provider.get(UserInfoViewModel.class);
 
@@ -119,8 +117,6 @@ public class ContactListTabRecyclerViewAdapter extends
          */
         private void handleDelete(final View button) {
             mContactListTabViewModel.connectDelete(mUserInfoViewModel.getJWT(),mContact.getUserId());
-            mActivity.finish();
-            mActivity.startActivity(mActivity.getIntent());
         }
 
         /**
@@ -145,7 +141,5 @@ public class ContactListTabRecyclerViewAdapter extends
             mContact = contact;
             binding.textContactName.setText(contact.getFirstName());
         }
-
     }
-
 }
