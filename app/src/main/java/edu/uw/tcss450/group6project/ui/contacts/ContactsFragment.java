@@ -16,7 +16,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import edu.uw.tcss450.group6project.R;
-import edu.uw.tcss450.group6project.ui.auth.sign_in.SignInFragment;
+import edu.uw.tcss450.group6project.ui.contacts.list.ContactListTabFragment;
+import edu.uw.tcss450.group6project.ui.contacts.requests.ContactRequestTabFragment;
 
 /** The main page of contacts, which contains the other tabs
  *
@@ -60,7 +61,7 @@ public class ContactsFragment extends Fragment {
             } else if (position == 1) {
                 return new ContactListTabFragment();
             } else {
-                return new ContactListTabFragment();
+                return new ContactRequestTabFragment();
             }
         }
 

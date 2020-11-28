@@ -2,7 +2,7 @@
 <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list_root"
+    android:id="@+id/contacts_list_root"
     android:name="edu.uw.tcss450.group6project.ui.contacts.ContactFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,5 +10,5 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     android:orientation="vertical"
-    tools:context="edu.uw.tcss450.group6project.ui.contacts.ContactListTabFragment"
-    tools:listitem="@layout/fragment_contact_card"/>
+    tools:context="edu.uw.tcss450.group6project.ui.contacts.list.ContactListTabFragment"
+    tools:listitem="@layout/fragment_contact_list_card"/>

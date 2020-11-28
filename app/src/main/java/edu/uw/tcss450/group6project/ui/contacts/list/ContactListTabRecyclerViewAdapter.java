@@ -1,26 +1,20 @@
-package edu.uw.tcss450.group6project.ui.contacts;
+package edu.uw.tcss450.group6project.ui.contacts.list;
 
-import android.content.Context;
-import android.os.Build;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import edu.uw.tcss450.group6project.R;
-import edu.uw.tcss450.group6project.databinding.FragmentContactCardBinding;
-import edu.uw.tcss450.group6project.databinding.FragmentContactListBinding;
+import edu.uw.tcss450.group6project.databinding.FragmentContactListCardBinding;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
+import edu.uw.tcss450.group6project.ui.contacts.Contact;
 
 /**
  * A RecyclerViewAdapter to create scrolling list view of contacts.
@@ -53,7 +47,7 @@ public class ContactListTabRecyclerViewAdapter extends
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ContactViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_contact_card, parent, false));
+                .inflate(R.layout.fragment_contact_list_card, parent, false));
     }
 
     @Override
@@ -82,7 +76,7 @@ public class ContactListTabRecyclerViewAdapter extends
         /**
          * The binding for the contact list card.
          */
-        public FragmentContactCardBinding binding;
+        public FragmentContactListCardBinding binding;
 
         /**
          * The contact.
@@ -105,7 +99,7 @@ public class ContactListTabRecyclerViewAdapter extends
             mContactListTabViewModel = provider.get(ContactListTabViewModel.class);
             mUserInfoViewModel = provider.get(UserInfoViewModel.class);
 
-            binding = FragmentContactCardBinding.bind(view);
+            binding = FragmentContactListCardBinding.bind(view);
             binding.buttonDeleteContact.setOnClickListener(this::handleDelete);
             binding.buttonOpenChat.setOnClickListener(this::createChat);
         }
@@ -139,7 +133,7 @@ public class ContactListTabRecyclerViewAdapter extends
          */
         void setContact(final Contact contact) {
             mContact = contact;
-            binding.textContactName.setText(contact.getFirstName());
+            binding.textContactListName.setText(contact.getFirstName());
         }
     }
 }

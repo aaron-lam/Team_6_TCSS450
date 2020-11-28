@@ -63,7 +63,6 @@ public class ChatFragment extends Fragment {
 
         FragmentChatBinding binding = FragmentChatBinding.bind(view);
 
-
         //Send the chat messages to the recycler view
         final RecyclerView rv = binding.listRoot;
         rv.setAdapter(new ChatRecyclerViewAdapter(mChatRoomViewModel.getMessageListByChatId(mChatRoomID),

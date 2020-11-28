@@ -1,4 +1,4 @@
-package edu.uw.tcss450.group6project.ui.contacts;
+package edu.uw.tcss450.group6project.ui.contacts.list;
 
 import android.app.Application;
 import android.os.Bundle;
@@ -32,6 +32,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
+import edu.uw.tcss450.group6project.ui.contacts.Contact;
 
 /**
  * View Model class for persistent contact data.

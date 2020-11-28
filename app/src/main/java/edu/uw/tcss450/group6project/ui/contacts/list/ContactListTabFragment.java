@@ -1,4 +1,4 @@
-package edu.uw.tcss450.group6project.ui.contacts;
+package edu.uw.tcss450.group6project.ui.contacts.list;
 
 import android.os.Bundle;
 
@@ -11,11 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.uw.tcss450.group6project.R;
-import edu.uw.tcss450.group6project.databinding.FragmentContactListBinding;
+import edu.uw.tcss450.group6project.databinding.FragmentContactListTabBinding;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 
 /**
@@ -47,10 +44,10 @@ public class ContactListTabFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FragmentContactListBinding binding = FragmentContactListBinding.bind(requireView());
+        FragmentContactListTabBinding binding = FragmentContactListTabBinding.bind(requireView());
         mModel.addContactListObserver(getViewLifecycleOwner(), contactList -> {
             if (!contactList.isEmpty()) {
-                binding.listRoot.setAdapter(new ContactListTabRecyclerViewAdapter(contactList,this,mUserModel));
+                binding.contactsListRoot.setAdapter(new ContactListTabRecyclerViewAdapter(contactList,this,mUserModel));
             }
         });
     }
