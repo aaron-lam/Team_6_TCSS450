@@ -28,15 +28,19 @@ public class WeatherFragment extends Fragment {
 
     private int mIcon;
     private double mTemperature;
+    private int mHumidity;
+    private double mWindSpeed;
 
     /**
      * Constructor for weather fragment.
      * @param icon icon for the current weather conditions.
      * @param temp temperature for the current weather.
      */
-    public WeatherFragment(int icon, double temp) {
+    public WeatherFragment(int icon, WeatherData data) {
         mIcon = icon;
-        mTemperature = temp;
+        mTemperature = data.getTemp();
+        mHumidity = data.getHumidity();
+        mWindSpeed = data.getWindSpeed();
     }
 
     @Override
@@ -51,6 +55,9 @@ public class WeatherFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         FragmentWeatherBinding binding = FragmentWeatherBinding.bind(getView());
         binding.weatherCurrentWeather.setImageResource(mIcon);
-        binding.textWeatherDisplay.setText("Tacoma, WA: " + mTemperature + "°F");
+        binding.textLocation.setText("Tacoma, WA");
+        binding.textTemperature.setText("Temperature: " + mTemperature + "°F");
+        binding.textHumidity.setText("Humidity: " + mHumidity + "%");
+        binding.textWindspeed.setText("Wind Speed: " + mWindSpeed + "mph");
     }
 }

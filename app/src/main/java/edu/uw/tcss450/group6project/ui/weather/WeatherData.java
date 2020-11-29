@@ -14,6 +14,11 @@ public class WeatherData implements Serializable {
     private final String mWeather;
     /** The temperature of the day. */
     private final double mTemp;
+    /** The humidity of the day. */
+    private final int mHumidity;
+    /** The wind speed of the day. */
+    private final double mWindSpeed;
+
 
     /**
      * Helper class for building Weather Data
@@ -22,6 +27,8 @@ public class WeatherData implements Serializable {
         private final String mDay;
         private final String mWeather;
         private final double mTemp;
+        private final int mHumidity;
+        private final double mWindSpeed;
 
         /**
          * Constructs a new Builder
@@ -29,10 +36,12 @@ public class WeatherData implements Serializable {
          * @param weather weather condition for the day
          * @param temp temperature for the day
          */
-        public Builder(String day, String weather, double temp) {
+        public Builder(String day, String weather, double temp, int humidity, double windspeed) {
             mDay = day;
             mWeather = weather;
             mTemp = temp;
+            mHumidity = humidity;
+            mWindSpeed = windspeed;
         }
 
         public WeatherData build() {
@@ -48,6 +57,8 @@ public class WeatherData implements Serializable {
         this.mDay = builder.mDay;
         this.mWeather = builder.mWeather;
         this.mTemp = builder.mTemp;
+        this.mHumidity = builder.mHumidity;
+        this.mWindSpeed = builder.mWindSpeed;
     }
 
     /**
@@ -73,4 +84,13 @@ public class WeatherData implements Serializable {
     public double getTemp() {
         return mTemp;
     }
+
+    public int getHumidity() {
+        return mHumidity;
+    }
+
+    public double getWindSpeed() {
+        return mHumidity;
+    }
+
 }

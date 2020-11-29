@@ -86,17 +86,21 @@ public class WeatherTabFragment extends Fragment {
             WeatherData data = weatherDataList.get(i);
             weatherTabText[i] = data.getDay();
             weatherTabIcons[i] = mIconMap.get(data.getWeather());
-            weatherTemp[i] = data.getTemp();
         }
 
         ViewPager2 viewPager = view.findViewById(R.id.view_pager);
-        viewPager.setAdapter(new WeatherPagerAdapter(this, weatherTabIcons, weatherTemp));
+        viewPager.setAdapter(new WeatherPagerAdapter(this, weatherTabIcons, weatherDataList));
 
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            tab.setText(weatherTabText[position]);
-            tab.setIcon(weatherTabIcons[position]);
+            if(position == 0) {
+                tab.setText("24-hour");
+                tab.setIcon(R.drawable.weather_calendar_24dp);
+            } else {
+                tab.setText(weatherTabText[position-1]);
+                tab.setIcon(weatherTabIcons[position-1]);
+            }
         }).attach();
     }
 
@@ -121,29 +125,32 @@ public class WeatherTabFragment extends Fragment {
     class WeatherPagerAdapter extends FragmentStateAdapter {
 
         int[] mIcons;
-        double[] mTemps;
+        List<WeatherData> mWeatherData;
 
         /**
          * Constructor for Weather Adapter.
          * @param fragment fragment to display on. (Weather)
          * @param icons array of icons that represent the weather conditions for the week
-         * @param temps array of temperatures for the week
+         * @param weatherDataList list of temperatures for the week
          */
-        public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, double[] temps) {
+        public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, List<WeatherData> weatherDataList) {
             super(fragment);
             mIcons = icons;
-            mTemps = temps;
+            mWeatherData = weatherDataList;
         }
 
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            return new WeatherFragment(mIcons[position], mTemps[position]);
+            if(position == 0) {
+                return new WeatherForecastFragment();
+            }
+            return new WeatherFragment(mIcons[position-1], mWeatherData.get(position - 1));
         }
 
         @Override
         public int getItemCount() {
-            return 7;
+            return 8;
         }
     }
 }
