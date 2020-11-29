@@ -30,7 +30,7 @@ import edu.uw.tcss450.group6project.io.RequestQueueSingleton;
 /**
  * View Model to store information about the chat rooms the user is in
  * and messages sent by and to the user.
- * @author Charles Bryan, Anthony Nguyen
+ * @author Charles Bryan, Anthony Nguyen, Aaron Lam
  */
 public class ChatRoomViewModel extends AndroidViewModel {
 
@@ -137,6 +137,43 @@ public class ChatRoomViewModel extends AndroidViewModel {
 
     }
 
+    /**
+     * Request to delete a user from a chat room
+     * @param jwt jwt of the user
+     * @param chatId id of the chat room
+     * @param email email of the user
+     */
+    public void deleteChatRoom(final String jwt,
+                               final int chatId,
+                               final String email,
+                               ChatListRecyclerViewAdapter.ChatListViewHolder holder) {
+
+        String url = getApplication().getResources().getString(R.string.base_url)
+                + "chats/" + chatId + "/" + email;
+
+        Request request = new JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                null,
+                response -> handleChatRoomDeleteSuccess(response, chatId, holder),
+                this::handleError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10_000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //Instantiate the RequestQueue and add the request to the queue
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+    }
 
 
     /**
@@ -249,7 +286,6 @@ public class ChatRoomViewModel extends AndroidViewModel {
         if(!response.has("rowCount") || !response.has("rows")) {
             throw new IllegalStateException("Unexpected response in ChatViewModel: " + response);
         }
-
         try {
             int roomCount = response.getInt("rowCount");
             Log.d("Handle Chat Room Success", Integer.toString(roomCount));
@@ -304,6 +340,18 @@ public class ChatRoomViewModel extends AndroidViewModel {
             Log.e("JSON PARSE ERROR", "Found in handleChatMessageSuccess ChatViewModel");
             Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
         }
+    }
+
+    /**
+     * Method to handle a successful delete request of a specific chat room.
+     * @param response Response in JSON format
+     */
+    private void handleChatRoomDeleteSuccess(final JSONObject response, final int chatId, ChatListRecyclerViewAdapter.ChatListViewHolder holder) {
+        if (!response.has("sucess")) {
+            throw new IllegalStateException("Unexpected response in ChatViewModel: " + response);
+        }
+        this.mChatRooms.remove(chatId);
+        holder.deleteChatCallback();
     }
 
     /**

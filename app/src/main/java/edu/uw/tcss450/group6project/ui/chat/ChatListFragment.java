@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -13,9 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentChatListBinding;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
+import edu.uw.tcss450.group6project.ui.chat.create.ChatCreateFormFragment;
 
 /**
  * A fragment to display a list of chats the user is in.
@@ -28,6 +32,8 @@ public class ChatListFragment extends Fragment {
     private ChatRoomViewModel mChatRoomModel;
     /** Model to store info about the user. */
     private UserInfoViewModel mUserModel;
+
+    private RecyclerView rv;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,8 +55,8 @@ public class ChatListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FragmentChatListBinding binding = FragmentChatListBinding.bind(view);
-        final RecyclerView rv = binding.listRoot;
-        rv.setAdapter(new ChatListRecyclerViewAdapter(mChatRoomModel.getChatRooms()));
+        rv = binding.listRoot;
+        rv.setAdapter(new ChatListRecyclerViewAdapter(this.mChatRoomModel, mUserModel.getJWT(), mUserModel.getEmail()));
 
         //if any of the chats receive messages, update the preview
         mChatRoomModel.addRoomObserver(getViewLifecycleOwner(),
@@ -58,5 +64,8 @@ public class ChatListFragment extends Fragment {
                     rv.getAdapter().notifyDataSetChanged();
                     rv.scrollToPosition(rv.getAdapter().getItemCount() - 1);
                 });
+
+        binding.buttonCreateChat.setOnClickListener(view1 ->
+                Navigation.findNavController(view).navigate(ChatListFragmentDirections.actionNavigationChatToChatCreateFormFragment()));
     }
 }

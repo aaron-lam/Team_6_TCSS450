@@ -48,6 +48,7 @@
 
     <!-- Chat List -->
     <string name="chat_goto">Open chat</string>
+    <string name="chat_delete">The chat room is deleted</string>
 
     <!-- Contact List -->
     <string name="contact_delete">Delete</string>
@@ -62,6 +63,12 @@
     <string name="settings_change_theme_option_two">Blue</string>
     <string name="settings_change_theme_option_three">Green</string>
 
+    <!-- Create Chat Room Page -->
+    <string name="create_room_title">Please add your contacts to your new chat room:</string>
+    <string name="create_room_field_room_name">Room Name</string>
+    <string name="error_room_name_empty">Room name cannot be empty.</string>
+    <string name="toast_create_room_success">Chat room is successfully created. It will appear in the list in a few seconds.</string>
+
     <!-- JSON Keys  -->
     <string name="keys_json_data">data</string>
     <string name="keys_json_weather_day">day</string>
@@ -72,8 +79,10 @@
     <string name="keys_json_contact_first">firstname</string>
     <string name="keys_json_contact_last">lastname</string>
     <string name="keys_json_contact_username">username</string>
+    <string name="keys_json_contact_id">memberid</string>
 
     <!-- URL for webservice -->
     <string name="base_url">https://team6-tcss450-web-service.herokuapp.com/</string>
+    <string name="chat_room_btn_create_text">Create Chat Room</string>
 
 </resources>
