@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group6project.ui.weather;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,11 +11,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -21,6 +26,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
@@ -33,6 +39,11 @@ public class WeatherTabFragment extends Fragment {
 
     /** Model for the weather data*/
     private WeatherTabViewModel mModel;
+
+    private SearchView mSearchView;
+
+    private SearchView.OnQueryTextListener mSearchListener;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,11 +75,45 @@ public class WeatherTabFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
         inflater.inflate(R.menu.top_weather_menu, menu);
-        //Add code to search here
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+
+        if (searchItem != null) {
+            mSearchView = (SearchView) searchItem.getActionView();
+        }
+
+        if (mSearchView != null) {
+            mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+
+            mSearchListener = new SearchView.OnQueryTextListener() {
+
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    Log.i("onQueryTextSubmit", query);
+                    boolean validinput = isZipCode(query);
+                    Log.i("Valid input", Boolean.toString(validinput));
+                    //TODO: Add connection to web service
+                    return true;
+                }
+
+                //Unimplemented method that does nothing
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            };
+            mSearchView.setOnQueryTextListener(mSearchListener);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
     }
+
+    private boolean isZipCode(String submitText) {
+        Pattern pattern = Pattern.compile("^[0-9]{5}(?:-[0-9]{4})?$");
+        return pattern.matcher(submitText).matches();
+    }
+
 
     /**
      * Creates the tabs that display weather information.
