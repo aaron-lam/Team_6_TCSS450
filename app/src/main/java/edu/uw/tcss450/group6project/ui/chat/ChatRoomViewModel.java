@@ -109,7 +109,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
      */
     public void loadChatRooms(final String email, final String jwt) {
 
-        String url = "https://team6-tcss450-web-service.herokuapp.com/chats/email/" + email;
+        String url = getApplication().getResources().getString(R.string.url_chat_chatrooms) + email;
 
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -122,7 +122,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 // add headers <key,value>
-                headers.put("Authorization", jwt);
+                headers.put(getApplication().getResources().getString(R.string.header_jwt_auth), jwt);
                 return headers;
             }
         };
@@ -189,8 +189,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
      */
     public void getFirstMessages(final int chatId, final String jwt) {
 
-        String url = getApplication().getResources().getString(R.string.base_url) +
-                "messages/" + chatId;
+        String url = getApplication().getResources().getString(R.string.url_chat_messages) + chatId;
 
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -203,7 +202,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 // add headers <key,value>
-                headers.put("Authorization", jwt);
+                headers.put(getApplication().getResources().getString(R.string.header_jwt_auth), jwt);
                 return headers;
             }
         };
@@ -232,8 +231,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
      * @param jwt the users signed JWT
      */
     public void getNextMessages(final int chatId, final String jwt) {
-        String url = getApplication().getResources().getString(R.string.base_url) +
-                "messages/" +
+        String url = getApplication().getResources().getString(R.string.url_chat_messages) +
                 chatId +
                 "/" +
                 mChatRooms.get(chatId).getMessages().get(0).getMessageID();
@@ -249,7 +247,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 // add headers <key,value>
-                headers.put("Authorization", jwt);
+                headers.put(getApplication().getResources().getString(R.string.header_jwt_auth), jwt);
                 return headers;
             }
         };
