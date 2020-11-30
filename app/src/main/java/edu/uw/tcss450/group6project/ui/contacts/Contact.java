@@ -27,6 +27,11 @@ public class Contact implements Serializable {
     private final String mUserName;
 
     /**
+     * The contact's user member id.
+     */
+    private final String mMemberId;
+
+    /**
      * Helper class for building immutable Contact object.
      *
      * @author Aaron L
@@ -35,6 +40,7 @@ public class Contact implements Serializable {
         private final String mFirstName;
         private final String mLastName;
         private final String mUserName;
+        private final String mMemberId;
 
 
         /**
@@ -44,10 +50,11 @@ public class Contact implements Serializable {
          * @param lastName contact's last name
          * @param userName contact's username
          */
-        public Builder(String firstName, String lastName, String userName) {
+        public Builder(String firstName, String lastName, String userName, String mMemberId) {
             this.mFirstName = firstName;
             this.mLastName = lastName;
             this.mUserName = userName;
+            this.mMemberId = mMemberId;
         }
 
         public Contact build() {
@@ -63,6 +70,7 @@ public class Contact implements Serializable {
         mFirstName = builder.mFirstName;
         mLastName = builder.mLastName;
         mUserName = builder.mUserName;
+        mMemberId = builder.mMemberId;
     }
 
     /**
@@ -89,5 +97,29 @@ public class Contact implements Serializable {
      */
     public String getUserName() {
         return mUserName;
+    }
+
+    /** Getter for user id.
+     *
+     * @return the user id
+     */
+    public String getMemberId() {
+        return mMemberId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Contact contact = (Contact) o;
+        return Objects.equals(mFirstName, contact.mFirstName) &&
+                Objects.equals(mLastName, contact.mLastName) &&
+                Objects.equals(mUserName, contact.mUserName) &&
+                Objects.equals(mMemberId, contact.mMemberId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mFirstName, mLastName, mUserName, mMemberId);
     }
 }
