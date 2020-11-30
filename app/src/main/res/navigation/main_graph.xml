@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
+    android:label="@string/all_create_chat_room"
     app:startDestination="@id/navigation_home">
 
     <fragment
@@ -14,7 +15,7 @@
         android:id="@+id/navigation_chat"
         android:name="edu.uw.tcss450.group6project.ui.chat.ChatListFragment"
         android:label="@string/all_chat"
-        tools:layout="@layout/fragment_chat_list" >
+        tools:layout="@layout/fragment_chat_list">
         <action
             android:id="@+id/action_navigation_chat_to_chatFragment"
             app:destination="@id/chatFragment" />
@@ -26,7 +27,7 @@
         android:id="@+id/navigation_contacts"
         android:name="edu.uw.tcss450.group6project.ui.contacts.ContactListFragment"
         android:label="@string/nav_contacts_title"
-        tools:layout="@layout/fragment_contact_list" >
+        tools:layout="@layout/fragment_contact_list">
         <action
             android:id="@+id/action_navigation_contacts_to_chatFragment"
             app:destination="@id/chatFragment" />
@@ -53,5 +54,5 @@
     <fragment
         android:id="@+id/chatCreateFormFragment"
         android:name="edu.uw.tcss450.group6project.ui.chat.create.ChatCreateFormFragment"
-        android:label="ChatCreateFormFragment" />
+        android:label="@string/all_create_chat_room" />
 </navigation>

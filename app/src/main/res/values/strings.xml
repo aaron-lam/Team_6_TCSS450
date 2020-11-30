@@ -7,6 +7,7 @@
     <string name="all_register">Register</string>
     <string name="all_signIn">Sign In</string>
     <string name="all_chat">Chat</string>
+    <string name="all_create_chat_room">Create Chat Room</string>
     <string name="all_incomplete">That function is not yet implemented.</string>
     <string name="all_empty_field_error">Cannot be empty</string>
     <string name="all_email_invalid_error">Must be a valid email</string>
@@ -67,7 +68,7 @@
     <string name="create_room_title">Please add your contacts to your new chat room:</string>
     <string name="create_room_field_room_name">Room Name</string>
     <string name="error_room_name_empty">Room name cannot be empty.</string>
-    <string name="toast_create_room_success">Chat room is successfully created. It will appear in the list in a few seconds.</string>
+    <string name="toast_create_room_success">Chat room is successfully created.</string>
     <string name="chat_room_btn_create_text">Create Chat Room</string>
   
     <!-- JSON Headers -->
