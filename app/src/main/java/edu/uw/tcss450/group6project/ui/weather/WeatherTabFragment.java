@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,7 +39,7 @@ import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
 public class WeatherTabFragment extends Fragment {
 
     /** Model for the weather data*/
-    private WeatherTabViewModel mModel;
+    private WeatherTabViewModel mWeatherModel;
 
     private SearchView mSearchView;
 
@@ -48,9 +49,9 @@ public class WeatherTabFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mModel = new ViewModelProvider(getActivity()).get(WeatherTabViewModel.class);
+        mWeatherModel = new ViewModelProvider(getActivity()).get(WeatherTabViewModel.class);
         //Hard coded values for sprint 2 testing purposes
-        mModel.connectLocation(47.25, -122.46);
+        mWeatherModel.connectLocation(47.25, -122.46);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class WeatherTabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FragmentWeatherTabBinding binding = FragmentWeatherTabBinding.bind(getView());
-        mModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherDataList -> {
+        mWeatherModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherDataList -> {
             if(!weatherDataList.isEmpty()) {
                 createWeatherTab(view, weatherDataList);
                 binding.layoutWait.setVisibility(View.GONE);
@@ -85,16 +86,22 @@ public class WeatherTabFragment extends Fragment {
         }
 
         if (mSearchView != null) {
+            mSearchView.setInputType(InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
             mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-
             mSearchListener = new SearchView.OnQueryTextListener() {
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
                     boolean validinput = isZipCode(query);
-                    Log.i("Valid input", Boolean.toString(validinput));
-                    //TODO: Add connection to web service
+                    if(validinput) {
+                        Log.i("Zip Code Query", "Valid");
+                        mWeatherModel.connectZipCode(query);
+                    } else {
+                        //Create an error
+                        Log.i("Zip Code Query", "Inavlid");
+                    }
+
                     return true;
                 }
 

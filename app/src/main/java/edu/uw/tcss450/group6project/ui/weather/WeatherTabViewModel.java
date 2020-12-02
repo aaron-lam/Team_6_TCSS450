@@ -48,6 +48,33 @@ public class WeatherTabViewModel extends AndroidViewModel {
         mWeatherDataList.setValue(new ArrayList<>());
     }
 
+    public void connectZipCode(String zipcode) {
+        String url = getApplication().getResources().getString(R.string.url_weather_location);
+        Request request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                this::handleResult,
+                this::handleError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put(getApplication().getResources().getString(R.string.keys_json_weather_zip), zipcode);
+                return headers;
+            }
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10_000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //Instantiate the RequestQueue and add the request to the queue
+        Volley.newRequestQueue(getApplication().getApplicationContext())
+                .add(request);
+    }
+
+
+
     /**
      * Requests weather data based on a location.
      * @param latitude latitude of request
@@ -95,6 +122,7 @@ public class WeatherTabViewModel extends AndroidViewModel {
      * @param result JSON retrieved from server containing weather data
      */
     private void handleResult(final JSONObject result) {
+        mWeatherDataList.getValue().clear();
         IntFunction<String> getString =
                 getApplication().getResources()::getString;
         try {
@@ -122,9 +150,7 @@ public class WeatherTabViewModel extends AndroidViewModel {
                                     getString.apply(
                                             R.string.keys_json_weather_wind)))
                             .build();
-                    if (!mWeatherDataList.getValue().contains(dailyWeather)) {
-                        mWeatherDataList.getValue().add(dailyWeather);
-                    }
+                    mWeatherDataList.getValue().add(dailyWeather);
                 }
             } else {
                 Log.e("ERROR!", "No data array");

@@ -86,6 +86,7 @@
     <string name="keys_json_weather_wind">wind_speed</string>
     <string name="keys_json_weather_lat">lat</string>
     <string name="keys_json_weather_long">long</string>
+    <string name="keys_json_weather_zip">zipcode</string>
 
     <string name="keys_json_contacts">contacts</string>
     <string name="keys_json_contact_first">firstname</string>
