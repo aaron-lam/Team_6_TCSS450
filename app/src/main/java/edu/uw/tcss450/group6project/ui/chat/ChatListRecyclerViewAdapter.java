@@ -1,8 +1,10 @@
 package edu.uw.tcss450.group6project.ui.chat;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
@@ -16,11 +18,13 @@ import edu.uw.tcss450.group6project.databinding.FragmentChatlistCardBinding;
 /**
  * A RecyclerViewAdapter to create scrolling list view of chats.
  *
- * @author Robert M
+ * @author Robert M, Aaron L
  * @version 2 November 2020
  */
 public class ChatListRecyclerViewAdapter extends
         RecyclerView.Adapter<ChatListRecyclerViewAdapter.ChatListViewHolder> {
+
+    private ChatRoomViewModel chatRoomViewModel;
 
     /**
      * A list of chats.
@@ -28,17 +32,38 @@ public class ChatListRecyclerViewAdapter extends
     private final List<ChatRoom> mChats;
 
     /**
+     * User jwt token.
+     */
+    private final String jwt;
+
+    /**
+     * User email.
+     */
+    private final String email;
+
+    /**
+     * The fragment's context.
+     */
+    private Context mContext;
+
+    /**
      * Parameterized constructor method taking a list of chats.
      *
-     * @param items the list of chats
+     * @param chatRoomViewModel chat room view model
+     * @param jwt user jwt
+     * @param email user email
      */
-    public ChatListRecyclerViewAdapter(List<ChatRoom> items) {
-        this.mChats = items;
+    public ChatListRecyclerViewAdapter(ChatRoomViewModel chatRoomViewModel, final String jwt, final String email) {
+        this.chatRoomViewModel = chatRoomViewModel;
+        this.mChats = chatRoomViewModel.getChatRooms();
+        this.jwt = jwt;
+        this.email = email;
     }
 
     @NonNull
     @Override
     public ChatListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
         return new ChatListViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_chatlist_card, parent, false));
     }
@@ -51,6 +76,12 @@ public class ChatListRecyclerViewAdapter extends
     @Override
     public int getItemCount() {
         return mChats.size();
+    }
+
+    public void removeItem(int position) {
+        this.mChats.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mChats.size());
     }
 
     /**
@@ -87,13 +118,21 @@ public class ChatListRecyclerViewAdapter extends
          * @param chat the chatroom to setup
          */
         void setChat(final ChatRoom chat) {
+            int chatRoomId = chat.getChatRoomID();
             mChat = chat;
             binding.buttonFullChat.setOnClickListener(view ->
                     Navigation.findNavController(mView).navigate
-                            (ChatListFragmentDirections.actionNavigationChatToChatFragment(chat.getChatRoomID())));
-
+                            (ChatListFragmentDirections.actionNavigationChatToChatFragment(chatRoomId)));
+            binding.buttonDeleteChat.setOnClickListener(view -> {
+                chatRoomViewModel.deleteChatRoom(jwt, chat.getChatRoomID(), email, this);
+            });
             binding.textParticipants.setText(chat.participantsAsString());
             binding.textPreview.setText(chat.getLastMessage());
+        }
+
+        public void deleteChatCallback() {
+            removeItem(this.getAdapterPosition());
+            Toast.makeText(mContext, R.string.chat_delete, Toast.LENGTH_SHORT).show();
         }
     }
 }

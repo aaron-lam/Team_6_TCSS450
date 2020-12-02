@@ -36,6 +36,8 @@ public class WeatherTabViewModel extends AndroidViewModel {
     /** List of weather data retrieved from server */
     private MutableLiveData<List<WeatherData>> mWeatherDataList;
 
+    private MutableLiveData<List<WeatherData>> mForecastList;
+
     /**
      * Constructor for the view model.
      * @param application application using the view model.
@@ -112,7 +114,13 @@ public class WeatherTabViewModel extends AndroidViewModel {
                                             R.string.keys_json_weather_weather)),
                             jsonBlog.getDouble(
                                     getString.apply(
-                                            R.string.keys_json_weather_temp)))
+                                            R.string.keys_json_weather_temp)),
+                            jsonBlog.getInt(
+                                    getString.apply(
+                                            R.string.keys_json_weather_humidity)),
+                            jsonBlog.getDouble(
+                                    getString.apply(
+                                            R.string.keys_json_weather_wind)))
                             .build();
                     if (!mWeatherDataList.getValue().contains(dailyWeather)) {
                         mWeatherDataList.getValue().add(dailyWeather);
