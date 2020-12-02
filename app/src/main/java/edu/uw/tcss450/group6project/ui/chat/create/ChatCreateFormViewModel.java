@@ -110,7 +110,7 @@ public class ChatCreateFormViewModel extends AndroidViewModel {
                                             R.string.keys_json_contact_username)),
                             jsonContact.getString(
                                     getString.apply(
-                                            R.string.keys_json_contact_id)))
+                                            R.string.keys_json_contact_userId)))
                             .build();
                     contacts.add(contact);
                 }

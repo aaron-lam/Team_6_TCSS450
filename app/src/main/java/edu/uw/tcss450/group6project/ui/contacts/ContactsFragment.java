@@ -47,7 +47,6 @@ public class ContactsFragment extends Fragment {
 
     private class ContactsAdapter extends FragmentStateAdapter {
 
-
         public ContactsAdapter(@NonNull Fragment fragment) {
             super(fragment);
         }

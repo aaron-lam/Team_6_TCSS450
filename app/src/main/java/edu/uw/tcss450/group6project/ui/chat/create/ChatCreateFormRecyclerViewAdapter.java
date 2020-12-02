@@ -95,7 +95,7 @@ public class ChatCreateFormRecyclerViewAdapter extends
          * @param button the create chat button
          */
         private void addContactToNewRoom(final View button) {
-            chatCreateFormViewModel.updateContact(this.mContact.getMemberId());
+            chatCreateFormViewModel.updateContact(this.mContact.getUserId());
         }
 
         /**

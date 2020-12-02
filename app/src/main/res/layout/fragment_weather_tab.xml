@@ -12,10 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:background="@color/design_default_color_secondary"
-        app:layout_constraintBottom_toBottomOf="@id/weather_tab_layout" />
+        app:layout_constraintBottom_toBottomOf="@id/tab_layout" />
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/weather_tab_layout"
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
@@ -26,11 +26,11 @@
         app:tabPaddingTop="15dp" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/weather_view_pager"
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/weather_tab_layout" />
+        app:layout_constraintTop_toBottomOf="@id/tab_layout" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_wait"
