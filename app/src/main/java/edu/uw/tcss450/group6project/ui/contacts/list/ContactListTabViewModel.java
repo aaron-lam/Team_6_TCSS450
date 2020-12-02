@@ -177,16 +177,14 @@ public class ContactListTabViewModel extends AndroidViewModel {
         // Get the current list of contacts
         List<Contact> tempList = mContactList.getValue();
 
-        // Get the reference of the contact that you're removing
-        Contact tempContact = null;
+        // Remove the contact
         for (Contact c : tempList) {
             if (c.getUserId() == userId) {
-                tempContact = c;
+                tempList.remove(c);
             }
         }
 
         // Remove the contact and update the list
-        tempList.remove(tempContact);
         mContactList.setValue(tempList);
     }
 
