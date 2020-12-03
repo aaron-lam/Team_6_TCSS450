@@ -29,6 +29,7 @@ import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.services.PushReceiver;
 import edu.uw.tcss450.group6project.ui.chat.ChatMessage;
 import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
+import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabViewModel;
 
 /**
  * An activity for all functions after authentication.
@@ -157,8 +158,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+                // TODO: Make sure this works properly
             case R.id.button_top_options_menu_logout:
-                this.finish(); // not sure if this is enough
+
+                // Reset theme
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putInt("theme",R.style.ThemeOne);
+                editor.commit();
+
+                // Exit back to home page
+                this.finish();
         }
 
         return super.onOptionsItemSelected(item);
