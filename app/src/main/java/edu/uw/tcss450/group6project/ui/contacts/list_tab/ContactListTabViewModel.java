@@ -175,7 +175,7 @@ public class ContactListTabViewModel extends AndroidViewModel {
 
         // Remove the contact
         for (Contact c : tempList) {
-            if (c.getUserId() == userId) {
+            if (c.getMemberId() == userId) {
                 tempList.remove(c);
             }
         }

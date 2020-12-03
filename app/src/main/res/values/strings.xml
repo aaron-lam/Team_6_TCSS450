@@ -93,6 +93,8 @@
     <string name="keys_json_contact_username">username</string>
     <string name="keys_json_contact_userId">memberid</string>
 
+    <string name="keys_json_contact_requests">contactRequests</string>
+
     <!-- URL for webservice -->
     <string name="base_url">https://team6-tcss450-web-service.herokuapp.com/</string>
 

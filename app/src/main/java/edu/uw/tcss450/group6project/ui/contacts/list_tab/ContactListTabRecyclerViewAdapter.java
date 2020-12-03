@@ -29,7 +29,6 @@ public class ContactListTabRecyclerViewAdapter extends
      * The list of contacts.
      */
     private final List<Contact> mContacts;
-
     private Fragment mFragment;
     private UserInfoViewModel mUserInfoViewModel;
 
@@ -110,7 +109,7 @@ public class ContactListTabRecyclerViewAdapter extends
          * @param button the delete button
          */
         private void handleDelete(final View button) {
-            mContactListTabViewModel.connectDelete(mUserInfoViewModel.getJWT(),mContact.getUserId());
+            mContactListTabViewModel.connectDelete(mUserInfoViewModel.getJWT(),mContact.getMemberId());
         }
 
         /**

@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="@+id/text_title">
 
         <TextView
-            android:id="@+id/text_contact_list_name"
+            android:id="@+id/text_contact_request_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?attr/contact_card_background_color"

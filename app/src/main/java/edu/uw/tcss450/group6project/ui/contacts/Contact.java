@@ -25,7 +25,7 @@ public class Contact implements Serializable {
      */
     private final String mUserName;
 
-    private final String mUserId;
+    private final String mMemberId;
 
     /**
      * Helper class for building immutable Contact object.
@@ -36,7 +36,7 @@ public class Contact implements Serializable {
         private final String mFirstName;
         private final String mLastName;
         private final String mUserName;
-        private final String mUserId;
+        private final String mMemberId;
 
 
         /**
@@ -46,11 +46,11 @@ public class Contact implements Serializable {
          * @param lastName contact's last name
          * @param userName contact's username
          */
-        public Builder(String firstName, String lastName, String userName, String userId) {
+        public Builder(String firstName, String lastName, String userName, String memberId) {
             this.mFirstName = firstName;
             this.mLastName = lastName;
             this.mUserName = userName;
-            this.mUserId = userId;
+            this.mMemberId = memberId;
         }
 
         public Contact build() {
@@ -66,7 +66,7 @@ public class Contact implements Serializable {
         mFirstName = builder.mFirstName;
         mLastName = builder.mLastName;
         mUserName = builder.mUserName;
-        mUserId = builder.mUserId;
+        mMemberId = builder.mMemberId;
     }
 
     /**
@@ -95,7 +95,7 @@ public class Contact implements Serializable {
         return mUserName;
     }
 
-    public String getUserId() {
-        return mUserId;
+    public String getMemberId() {
+        return mMemberId;
     }
 }

@@ -5,8 +5,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.Observer;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -30,14 +31,24 @@ import edu.uw.tcss450.group6project.ui.contacts.Contact;
 public class ContactRequestTabViewModel extends AndroidViewModel {
 
     private MutableLiveData<JSONObject> mResponse;
-    private MutableLiveData<List<Contact>> mContactRequestList;
+    private MutableLiveData<List<ContactRequest>> mContactRequestList;
 
     public ContactRequestTabViewModel(@NonNull Application application) {
         super(application);
-        mContactRequestList = new MutableLiveData<>();
-        mContactRequestList.setValue(new ArrayList<>());
+        mContactRequestList = new MutableLiveData<List<ContactRequest>>();
+        mContactRequestList.setValue(new ArrayList<ContactRequest>());
         mResponse = new MutableLiveData<>();
         mResponse.setValue(new JSONObject());
+    }
+
+    /**
+     * Register as an observer to listen to retrieval of contact request data.
+     * @param owner the fragments lifecycle owner
+     * @param observer the observer
+     */
+    public void addContactListObserver(@NonNull LifecycleOwner owner,
+                                       @NonNull Observer<? super List<ContactRequest>> observer) {
+        mContactRequestList.observe(owner, observer);
     }
 
     /**
@@ -46,31 +57,25 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
      */
     private void handleGetError(final VolleyError error) {
         //you should add much better error handling in a production release. //i.e. YOUR PROJECT
-        mContactRequestList.setValue(new ArrayList<>());
+        mContactRequestList.setValue(new ArrayList<ContactRequest>());
     }
 
     /**
      * When a successful call is made to the server. Parses the retrieved JSON
      * and stores the data in the view model.
-     * @param result JSON retrieved from server containing contact data
+     * @param result JSON retrieved from server containing contact request data
      */
     private void handleGetResult(final JSONObject result) {
         IntFunction<String> getString =
                 getApplication().getResources()::getString;
-        List<Contact> contacts = new ArrayList<>();
+        List<ContactRequest> contactRequests = new ArrayList<>();
         try {
             JSONObject root = result;
-            if (root.has(getString.apply(R.string.keys_json_contacts))) {
-                JSONArray data = root.getJSONArray(getString.apply(R.string.keys_json_contacts));
+            if (root.has(getString.apply(R.string.keys_json_contact_requests))) {
+                JSONArray data = root.getJSONArray(getString.apply(R.string.keys_json_contact_requests));
                 for(int i = 0; i < data.length(); i++) {
                     JSONObject jsonContact = data.getJSONObject(i);
-                    Contact contact = new Contact.Builder(
-                            jsonContact.getString(
-                                    getString.apply(
-                                            R.string.keys_json_contact_first)),
-                            jsonContact.getString(
-                                    getString.apply(
-                                            R.string.keys_json_contact_last)),
+                    ContactRequest contactRequest = new ContactRequest.Builder(
                             jsonContact.getString(
                                     getString.apply(
                                             R.string.keys_json_contact_username)),
@@ -78,7 +83,7 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
                                     getString.apply(
                                             R.string.keys_json_contact_userId)))
                             .build();
-                    contacts.add(contact);
+                    contactRequests.add(contactRequest);
                 }
             } else {
                 Log.e("ERROR!", "No data array");
@@ -87,7 +92,7 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
             e.printStackTrace();
             Log.e("ERROR!", e.getMessage());
         }
-        mContactRequestList.setValue(contacts);
+        mContactRequestList.setValue(contactRequests);
     }
 
     /**
@@ -95,7 +100,7 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
      * @param jwt user JWT token
      */
     public void connectGet(String jwt) {
-        String url = "https://team6-tcss450-web-service.herokuapp.com/contacts";
+        String url = "https://team6-tcss450-web-service.herokuapp.com/contacts/requests";
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
