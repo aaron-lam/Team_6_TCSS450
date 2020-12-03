@@ -39,7 +39,7 @@ import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
 public class WeatherTabFragment extends Fragment {
 
     /** Model for the weather data*/
-    private WeatherTabViewModel mWeatherModel;
+    private WeatherViewModel mWeatherModel;
 
     private SearchView mSearchView;
 
@@ -49,7 +49,7 @@ public class WeatherTabFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mWeatherModel = new ViewModelProvider(getActivity()).get(WeatherTabViewModel.class);
+        mWeatherModel = new ViewModelProvider(getActivity()).get(WeatherViewModel.class);
         //Hard coded values for sprint 2 testing purposes
         mWeatherModel.connectLocation(47.25, -122.46);
     }
@@ -66,9 +66,9 @@ public class WeatherTabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FragmentWeatherTabBinding binding = FragmentWeatherTabBinding.bind(getView());
-        mWeatherModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherDataList -> {
-            if(!weatherDataList.isEmpty()) {
-                createWeatherTab(view, weatherDataList);
+        mWeatherModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherData -> {
+            if(!weatherData.isEmpty()) {
+                createWeatherTab(view, weatherData.getDailyData());
                 binding.layoutWait.setVisibility(View.GONE);
             }
         });
@@ -127,7 +127,7 @@ public class WeatherTabFragment extends Fragment {
      * @param view View to build the tabs on
      * @param weatherDataList Data to display on the tabs
      */
-    private void createWeatherTab(View view, List<WeatherData> weatherDataList) {
+    private void createWeatherTab(View view, List<WeatherDailyData> weatherDataList) {
 
         Map<String, Integer> mIconMap = createIconMap();
         String[] weatherTabText = new String[7];
@@ -135,7 +135,7 @@ public class WeatherTabFragment extends Fragment {
         double[] weatherTemp = new double[7];
 
         for(int i = 0; i < 7; i++) {
-            WeatherData data = weatherDataList.get(i);
+            WeatherDailyData data = weatherDataList.get(i);
             weatherTabText[i] = data.getDay();
             weatherTabIcons[i] = mIconMap.get(data.getWeather());
         }
@@ -177,7 +177,7 @@ public class WeatherTabFragment extends Fragment {
     class WeatherPagerAdapter extends FragmentStateAdapter {
 
         int[] mIcons;
-        List<WeatherData> mWeatherData;
+        List<WeatherDailyData> mWeatherData;
 
         /**
          * Constructor for Weather Adapter.
@@ -185,7 +185,7 @@ public class WeatherTabFragment extends Fragment {
          * @param icons array of icons that represent the weather conditions for the week
          * @param weatherDataList list of temperatures for the week
          */
-        public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, List<WeatherData> weatherDataList) {
+        public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, List<WeatherDailyData> weatherDataList) {
             super(fragment);
             mIcons = icons;
             mWeatherData = weatherDataList;

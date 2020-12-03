@@ -79,6 +79,7 @@
 
 
     <string name="keys_json_weather_daily">daily</string>
+    <string name="keys_json_weather_forecast">forecast</string>
     <string name="keys_json_weather_day">day</string>
     <string name="keys_json_weather_weather">weather</string>
     <string name="keys_json_weather_temp">temp</string>
