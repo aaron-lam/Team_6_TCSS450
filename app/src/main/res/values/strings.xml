@@ -70,7 +70,7 @@
     <string name="error_room_name_empty">Room name cannot be empty.</string>
     <string name="toast_create_room_success">Chat room is successfully created.</string>
     <string name="chat_room_btn_create_text">Create Chat Room</string>
-  
+
     <!-- JSON Headers -->
     <string name="header_jwt_auth">Authorization</string>
 

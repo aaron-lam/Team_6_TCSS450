@@ -68,7 +68,7 @@ public class WeatherTabFragment extends Fragment {
         FragmentWeatherTabBinding binding = FragmentWeatherTabBinding.bind(getView());
         mWeatherModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherData -> {
             if(!weatherData.isEmpty()) {
-                createWeatherTab(view, weatherData.getDailyData());
+                createWeatherTab(view, weatherData.getForecastData(), weatherData.getDailyData());
                 binding.layoutWait.setVisibility(View.GONE);
             }
         });
@@ -125,9 +125,9 @@ public class WeatherTabFragment extends Fragment {
     /**
      * Creates the tabs that display weather information.
      * @param view View to build the tabs on
-     * @param weatherDataList Data to display on the tabs
+     * @param dailyData Data to display on the tabs
      */
-    private void createWeatherTab(View view, List<WeatherDailyData> weatherDataList) {
+    private void createWeatherTab(View view, List<WeatherDailyData> forecastData, List<WeatherDailyData> dailyData) {
 
         Map<String, Integer> mIconMap = createIconMap();
         String[] weatherTabText = new String[7];
@@ -135,13 +135,13 @@ public class WeatherTabFragment extends Fragment {
         double[] weatherTemp = new double[7];
 
         for(int i = 0; i < 7; i++) {
-            WeatherDailyData data = weatherDataList.get(i);
+            WeatherDailyData data = dailyData.get(i);
             weatherTabText[i] = data.getDay();
             weatherTabIcons[i] = mIconMap.get(data.getWeather());
         }
 
         ViewPager2 viewPager = view.findViewById(R.id.view_pager);
-        viewPager.setAdapter(new WeatherPagerAdapter(this, weatherTabIcons, weatherDataList));
+        viewPager.setAdapter(new WeatherPagerAdapter(this, weatherTabIcons, forecastData, dailyData));
 
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -177,27 +177,30 @@ public class WeatherTabFragment extends Fragment {
     class WeatherPagerAdapter extends FragmentStateAdapter {
 
         int[] mIcons;
-        List<WeatherDailyData> mWeatherData;
+        List<WeatherDailyData> mForecastData;
+        List<WeatherDailyData> mDailyData;
 
         /**
          * Constructor for Weather Adapter.
          * @param fragment fragment to display on. (Weather)
          * @param icons array of icons that represent the weather conditions for the week
-         * @param weatherDataList list of temperatures for the week
+         * @param dailyData list of temperatures for the week
          */
-        public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, List<WeatherDailyData> weatherDataList) {
+        public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, List<WeatherDailyData> forecastData,
+                                   List<WeatherDailyData> dailyData) {
             super(fragment);
             mIcons = icons;
-            mWeatherData = weatherDataList;
+            mForecastData = forecastData;
+            mDailyData = dailyData;
         }
 
         @NonNull
         @Override
         public Fragment createFragment(int position) {
             if(position == 0) {
-                return new WeatherForecastFragment();
+                return new WeatherForecastFragment(mForecastData);
             }
-            return new WeatherFragment(mIcons[position-1], mWeatherData.get(position - 1));
+            return new WeatherFragment(mIcons[position-1], mDailyData.get(position - 1));
         }
 
         @Override

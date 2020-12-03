@@ -65,7 +65,7 @@ public class WeatherDailyData implements Serializable {
     }
 
     public double getWindSpeed() {
-        return mHumidity;
+        return mWindSpeed;
     }
 
 }
