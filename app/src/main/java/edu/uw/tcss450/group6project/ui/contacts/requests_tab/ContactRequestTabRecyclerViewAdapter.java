@@ -1,4 +1,4 @@
-package edu.uw.tcss450.group6project.ui.contacts.requests;
+package edu.uw.tcss450.group6project.ui.contacts.requests_tab;
 
 public class ContactRequestTabRecyclerViewAdapter {
 

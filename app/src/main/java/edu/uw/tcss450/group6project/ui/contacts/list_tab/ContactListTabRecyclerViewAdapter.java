@@ -1,4 +1,4 @@
-package edu.uw.tcss450.group6project.ui.contacts.list;
+package edu.uw.tcss450.group6project.ui.contacts.list_tab;
 
 import android.view.LayoutInflater;
 import android.view.View;

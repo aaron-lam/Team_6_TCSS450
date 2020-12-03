@@ -10,5 +10,5 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     android:orientation="vertical"
-    tools:context="edu.uw.tcss450.group6project.ui.contacts.list.ContactListTabFragment"
+    tools:context="edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabFragment"
     tools:listitem="@layout/fragment_contact_list_card"/>

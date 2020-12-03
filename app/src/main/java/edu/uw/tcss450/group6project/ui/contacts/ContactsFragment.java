@@ -16,8 +16,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import edu.uw.tcss450.group6project.R;
-import edu.uw.tcss450.group6project.ui.contacts.list.ContactListTabFragment;
-import edu.uw.tcss450.group6project.ui.contacts.requests.ContactRequestTabFragment;
+import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabFragment;
+import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabFragment;
 
 /** The main page of contacts, which contains the other tabs
  *

@@ -9,5 +9,5 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     android:orientation="vertical"
-    tools:context=".ui.contacts.requests.ContactRequestTabFragment"
+    tools:context=".ui.contacts.requests_tab.ContactRequestTabFragment"
     tools:listitem="@layout/fragment_contact_request_card"/>

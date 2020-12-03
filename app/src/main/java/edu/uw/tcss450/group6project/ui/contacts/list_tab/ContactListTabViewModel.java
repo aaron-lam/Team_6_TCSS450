@@ -1,7 +1,6 @@
-package edu.uw.tcss450.group6project.ui.contacts.list;
+package edu.uw.tcss450.group6project.ui.contacts.list_tab;
 
 import android.app.Application;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -23,15 +22,12 @@ import java.util.Objects;
 import java.util.function.IntFunction;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import edu.uw.tcss450.group6project.R;
-import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.contacts.Contact;
 
 /**
