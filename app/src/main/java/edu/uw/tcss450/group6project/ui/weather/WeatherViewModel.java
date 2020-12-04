@@ -119,6 +119,7 @@ public class WeatherViewModel extends AndroidViewModel {
      */
     private void handleResult(final JSONObject result) {
         mWeatherData.getValue().getDailyData().clear();
+        mWeatherData.getValue().getForecastData().clear();
         IntFunction<String> getString =
                 getApplication().getResources()::getString;
         try {

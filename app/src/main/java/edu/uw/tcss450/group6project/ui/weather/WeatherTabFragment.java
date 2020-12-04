@@ -86,22 +86,24 @@ public class WeatherTabFragment extends Fragment {
         }
 
         if (mSearchView != null) {
-            mSearchView.setInputType(InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
+            mSearchView.setInputType(InputType.TYPE_CLASS_NUMBER);
             mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
             mSearchListener = new SearchView.OnQueryTextListener() {
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
+
                     Log.i("onQueryTextSubmit", query);
                     boolean validinput = isZipCode(query);
                     if(validinput) {
                         Log.i("Zip Code Query", "Valid");
                         mWeatherModel.connectZipCode(query);
+
                     } else {
                         //Create an error
                         Log.i("Zip Code Query", "Inavlid");
                     }
-
+                    mSearchView.clearFocus();
                     return true;
                 }
 
