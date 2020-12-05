@@ -79,6 +79,7 @@
 
 
     <string name="keys_json_weather_daily">daily</string>
+    <string name="keys_json_weather_forecast">forecast</string>
     <string name="keys_json_weather_day">day</string>
     <string name="keys_json_weather_weather">weather</string>
     <string name="keys_json_weather_temp">temp</string>
@@ -86,6 +87,7 @@
     <string name="keys_json_weather_wind">wind_speed</string>
     <string name="keys_json_weather_lat">lat</string>
     <string name="keys_json_weather_long">long</string>
+    <string name="keys_json_weather_zip">zipcode</string>
 
     <string name="keys_json_contacts">contacts</string>
     <string name="keys_json_contact_first">firstname</string>

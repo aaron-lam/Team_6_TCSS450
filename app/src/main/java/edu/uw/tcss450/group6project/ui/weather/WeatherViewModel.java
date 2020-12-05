@@ -31,21 +31,44 @@ import edu.uw.tcss450.group6project.R;
  * View Model class to store data about weather.
  * @author Anthony
  */
-public class WeatherTabViewModel extends AndroidViewModel {
+public class WeatherViewModel extends AndroidViewModel {
 
     /** List of weather data retrieved from server */
-    private MutableLiveData<List<WeatherData>> mWeatherDataList;
-
-    private MutableLiveData<List<WeatherData>> mForecastList;
+    private MutableLiveData<WeatherData> mWeatherData;
 
     /**
      * Constructor for the view model.
      * @param application application using the view model.
      */
-    public WeatherTabViewModel(@NonNull Application application) {
+    public WeatherViewModel(@NonNull Application application) {
         super(application);
-        mWeatherDataList = new MutableLiveData<>();
-        mWeatherDataList.setValue(new ArrayList<>());
+        mWeatherData = new MutableLiveData<>();
+        mWeatherData.setValue(new WeatherData());
+    }
+
+    public void connectZipCode(String zipcode) {
+        String url = getApplication().getResources().getString(R.string.url_weather_location);
+        Request request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                this::handleResult,
+                this::handleError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put(getApplication().getResources().getString(R.string.keys_json_weather_zip), zipcode);
+                return headers;
+            }
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10_000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //Instantiate the RequestQueue and add the request to the queue
+        Volley.newRequestQueue(getApplication().getApplicationContext())
+                .add(request);
     }
 
     /**
@@ -85,8 +108,8 @@ public class WeatherTabViewModel extends AndroidViewModel {
      * @param observer the observer
      */
     public void addWeatherDataListObserver(@NonNull LifecycleOwner owner,
-                                    @NonNull Observer<? super List<WeatherData>> observer) {
-        mWeatherDataList.observe(owner, observer);
+                                    @NonNull Observer<? super WeatherData> observer) {
+        mWeatherData.observe(owner, observer);
     }
 
     /**
@@ -95,6 +118,8 @@ public class WeatherTabViewModel extends AndroidViewModel {
      * @param result JSON retrieved from server containing weather data
      */
     private void handleResult(final JSONObject result) {
+        mWeatherData.getValue().getDailyData().clear();
+        mWeatherData.getValue().getForecastData().clear();
         IntFunction<String> getString =
                 getApplication().getResources()::getString;
         try {
@@ -105,7 +130,7 @@ public class WeatherTabViewModel extends AndroidViewModel {
                         getString.apply(R.string.keys_json_weather_daily));
                 for(int i = 0; i < data.length(); i++) {
                     JSONObject jsonBlog = data.getJSONObject(i);
-                    WeatherData dailyWeather = new WeatherData.Builder(
+                    WeatherDailyData dailyWeather = new WeatherDailyData(
                             jsonBlog.getString(
                                     getString.apply(
                                             R.string.keys_json_weather_day)),
@@ -120,21 +145,42 @@ public class WeatherTabViewModel extends AndroidViewModel {
                                             R.string.keys_json_weather_humidity)),
                             jsonBlog.getDouble(
                                     getString.apply(
-                                            R.string.keys_json_weather_wind)))
-                            .build();
-                    if (!mWeatherDataList.getValue().contains(dailyWeather)) {
-                        mWeatherDataList.getValue().add(dailyWeather);
-                    }
+                                            R.string.keys_json_weather_wind)));
+                    mWeatherData.getValue().getDailyData().add(dailyWeather);
                 }
             } else {
-                Log.e("ERROR!", "No data array");
+                Log.e("WEATHER MODEL ERROR!", "No daily data array");
             }
 
+            if (root.has(getString.apply(R.string.keys_json_weather_forecast))) {
+                JSONArray data = root.getJSONArray(
+                        getString.apply(R.string.keys_json_weather_forecast));
+                for(int i = 0; i < data.length(); i++) {
+                    JSONObject jsonBlog = data.getJSONObject(i);
+                    WeatherDailyData dailyWeather = new WeatherDailyData(
+                            jsonBlog.getString(
+                                    getString.apply(
+                                            R.string.keys_json_weather_weather)),
+                            jsonBlog.getDouble(
+                                    getString.apply(
+                                            R.string.keys_json_weather_temp)),
+                            jsonBlog.getInt(
+                                    getString.apply(
+                                            R.string.keys_json_weather_humidity)),
+                            jsonBlog.getDouble(
+                                    getString.apply(
+                                            R.string.keys_json_weather_wind)));
+                    mWeatherData.getValue().getForecastData().add(dailyWeather);
+                }
+            } else {
+                Log.e("WEATHER MODEL ERROR!", "No forecast data array");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("ERROR!", e.getMessage());
         }
-        mWeatherDataList.setValue(mWeatherDataList.getValue());
+        mWeatherData.setValue(mWeatherData.getValue());
+        Log.d("Weather View Model", "Model loaded");
     }
 
     /**
