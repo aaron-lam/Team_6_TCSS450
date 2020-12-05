@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,7 +39,7 @@ import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
 public class WeatherTabFragment extends Fragment {
 
     /** Model for the weather data*/
-    private WeatherTabViewModel mModel;
+    private WeatherViewModel mWeatherModel;
 
     private SearchView mSearchView;
 
@@ -48,9 +49,9 @@ public class WeatherTabFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mModel = new ViewModelProvider(getActivity()).get(WeatherTabViewModel.class);
+        mWeatherModel = new ViewModelProvider(getActivity()).get(WeatherViewModel.class);
         //Hard coded values for sprint 2 testing purposes
-        mModel.connectLocation(47.25, -122.46);
+        mWeatherModel.connectLocation(47.25, -122.46);
     }
 
     @Override
@@ -65,9 +66,9 @@ public class WeatherTabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FragmentWeatherTabBinding binding = FragmentWeatherTabBinding.bind(getView());
-        mModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherDataList -> {
-            if(!weatherDataList.isEmpty()) {
-                createWeatherTab(view, weatherDataList);
+        mWeatherModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherData -> {
+            if(!weatherData.isEmpty()) {
+                createWeatherTab(view, weatherData.getForecastData(), weatherData.getDailyData());
                 binding.layoutWait.setVisibility(View.GONE);
             }
         });
@@ -85,16 +86,24 @@ public class WeatherTabFragment extends Fragment {
         }
 
         if (mSearchView != null) {
+            mSearchView.setInputType(InputType.TYPE_CLASS_NUMBER);
             mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-
             mSearchListener = new SearchView.OnQueryTextListener() {
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
+
                     Log.i("onQueryTextSubmit", query);
                     boolean validinput = isZipCode(query);
-                    Log.i("Valid input", Boolean.toString(validinput));
-                    //TODO: Add connection to web service
+                    if(validinput) {
+                        Log.i("Zip Code Query", "Valid");
+                        mWeatherModel.connectZipCode(query);
+
+                    } else {
+                        //Create an error
+                        Log.i("Zip Code Query", "Inavlid");
+                    }
+                    mSearchView.clearFocus();
                     return true;
                 }
 
@@ -118,9 +127,9 @@ public class WeatherTabFragment extends Fragment {
     /**
      * Creates the tabs that display weather information.
      * @param view View to build the tabs on
-     * @param weatherDataList Data to display on the tabs
+     * @param dailyData Data to display on the tabs
      */
-    private void createWeatherTab(View view, List<WeatherData> weatherDataList) {
+    private void createWeatherTab(View view, List<WeatherDailyData> forecastData, List<WeatherDailyData> dailyData) {
 
         Map<String, Integer> mIconMap = createIconMap();
         String[] weatherTabText = new String[7];
@@ -128,13 +137,13 @@ public class WeatherTabFragment extends Fragment {
         double[] weatherTemp = new double[7];
 
         for(int i = 0; i < 7; i++) {
-            WeatherData data = weatherDataList.get(i);
+            WeatherDailyData data = dailyData.get(i);
             weatherTabText[i] = data.getDay();
             weatherTabIcons[i] = mIconMap.get(data.getWeather());
         }
 
         ViewPager2 viewPager = view.findViewById(R.id.view_pager);
-        viewPager.setAdapter(new WeatherPagerAdapter(this, weatherTabIcons, weatherDataList));
+        viewPager.setAdapter(new WeatherPagerAdapter(this, weatherTabIcons, forecastData, dailyData));
 
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -170,27 +179,30 @@ public class WeatherTabFragment extends Fragment {
     class WeatherPagerAdapter extends FragmentStateAdapter {
 
         int[] mIcons;
-        List<WeatherData> mWeatherData;
+        List<WeatherDailyData> mForecastData;
+        List<WeatherDailyData> mDailyData;
 
         /**
          * Constructor for Weather Adapter.
          * @param fragment fragment to display on. (Weather)
          * @param icons array of icons that represent the weather conditions for the week
-         * @param weatherDataList list of temperatures for the week
+         * @param dailyData list of temperatures for the week
          */
-        public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, List<WeatherData> weatherDataList) {
+        public WeatherPagerAdapter(@NonNull Fragment fragment, int[] icons, List<WeatherDailyData> forecastData,
+                                   List<WeatherDailyData> dailyData) {
             super(fragment);
             mIcons = icons;
-            mWeatherData = weatherDataList;
+            mForecastData = forecastData;
+            mDailyData = dailyData;
         }
 
         @NonNull
         @Override
         public Fragment createFragment(int position) {
             if(position == 0) {
-                return new WeatherForecastFragment();
+                return new WeatherForecastFragment(mForecastData);
             }
-            return new WeatherFragment(mIcons[position-1], mWeatherData.get(position - 1));
+            return new WeatherFragment(mIcons[position-1], mDailyData.get(position - 1));
         }
 
         @Override

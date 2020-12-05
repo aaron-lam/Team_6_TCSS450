@@ -6,11 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.renderscript.ScriptGroup;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -34,9 +30,9 @@ public class WeatherFragment extends Fragment {
     /**
      * Constructor for weather fragment.
      * @param icon icon for the current weather conditions.
-     * @param temp temperature for the current weather.
+     * @param data weather data for the day.
      */
-    public WeatherFragment(int icon, WeatherData data) {
+    public WeatherFragment(int icon, WeatherDailyData data) {
         mIcon = icon;
         mTemperature = data.getTemp();
         mHumidity = data.getHumidity();
@@ -56,8 +52,8 @@ public class WeatherFragment extends Fragment {
         FragmentWeatherBinding binding = FragmentWeatherBinding.bind(getView());
         binding.weatherCurrentWeather.setImageResource(mIcon);
         binding.textLocation.setText("Tacoma, WA");
-        binding.textTemperature.setText("Temperature: " + mTemperature + "°F");
+        binding.textTemperature.setText("Temperature: " + ((int) Math.round(mTemperature)) + "°F");
         binding.textHumidity.setText("Humidity: " + mHumidity + "%");
-        binding.textWindspeed.setText("Wind Speed: " + mWindSpeed + "mph");
+        binding.textWindspeed.setText("Wind Speed: " + ((int) Math.round(mWindSpeed)) + " mph");
     }
 }
