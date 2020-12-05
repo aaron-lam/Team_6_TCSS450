@@ -46,7 +46,7 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
      * @param owner the fragments lifecycle owner
      * @param observer the observer
      */
-    public void addContactListObserver(@NonNull LifecycleOwner owner,
+    public void addContactRequestListObserver(@NonNull LifecycleOwner owner,
                                        @NonNull Observer<? super List<ContactRequest>> observer) {
         mContactRequestList.observe(owner, observer);
     }
@@ -100,7 +100,7 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
      * @param jwt user JWT token
      */
     public void connectGet(String jwt) {
-        String url = "https://team6-tcss450-web-service.herokuapp.com/contacts/requests";
+        String url = "https://team6-tcss450-web-service.herokuapp.com/requests";
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -124,5 +124,87 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
                 getApplication().
                         getApplicationContext()).
                 add(request);
+    }
+
+    public void connectConfirm(String jwt, String memberId) {
+        String url = "https://team6-tcss450-web-service.herokuapp.com/requests/" + memberId;
+        Request request = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                null, //no body for this get request
+                this::handleGetResult,
+                this::handleGetError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        request.setRetryPolicy(new
+                DefaultRetryPolicy( 10_000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)); //Instantiate the RequestQueue and add the request to the queue
+        Volley.newRequestQueue(
+                getApplication().
+                        getApplicationContext()).
+                add(request);
+
+        // Get the current list of contacts
+        List<ContactRequest> tempList = mContactRequestList.getValue();
+        ContactRequest tempContactRequest = null;
+
+        // Find the contact
+        for (ContactRequest cr : tempList) {
+            if (cr.getMemberId() == memberId) {
+                tempContactRequest = cr;
+            }
+        }
+
+        // Remove the contact and update the list
+        tempList.remove(tempContactRequest);
+        mContactRequestList.setValue(tempList);
+    }
+
+    public void connectDeny(String jwt, String memberId) {
+        String url = "https://team6-tcss450-web-service.herokuapp.com/requests/" + memberId;
+        Request request = new JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                null, //no body for this get request
+                this::handleGetResult,
+                this::handleGetError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        request.setRetryPolicy(new
+                DefaultRetryPolicy( 10_000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)); //Instantiate the RequestQueue and add the request to the queue
+        Volley.newRequestQueue(
+                getApplication().
+                        getApplicationContext()).
+                add(request);
+
+        // Get the current list of contacts
+        List<ContactRequest> tempList = mContactRequestList.getValue();
+        ContactRequest tempContactRequest = null;
+
+        // Find the contact
+        for (ContactRequest cr : tempList) {
+            if (cr.getMemberId() == memberId) {
+                tempContactRequest = cr;
+            }
+        }
+
+        // Remove the contact and update the list
+        tempList.remove(tempContactRequest);
+        mContactRequestList.setValue(tempList);
     }
 }

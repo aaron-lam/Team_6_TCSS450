@@ -93,17 +93,17 @@ public class ContactRequestTabRecyclerViewAdapter extends
             mUserInfoViewModel = provider.get(UserInfoViewModel.class);
 
             binding = FragmentContactRequestCardBinding.bind(view);
-            binding.buttonContactRequestConfirm.setOnClickListener(this::handleDeny);
-            binding.buttonContactRequestDeny.setOnClickListener(this::handleConfirm);
+            binding.buttonContactRequestConfirm.setOnClickListener(this::handleConfirm);
+            binding.buttonContactRequestDeny.setOnClickListener(this::handleDeny);
         }
 
 
         private void handleDeny(final View button) {
-            //
+            mContactRequestTabViewModel.connectDeny(mUserInfoViewModel.getJWT(),mContactRequest.getMemberId());
         }
 
         private void handleConfirm(final View button) {
-            //
+            mContactRequestTabViewModel.connectConfirm(mUserInfoViewModel.getJWT(),mContactRequest.getMemberId());
         }
 
         /**

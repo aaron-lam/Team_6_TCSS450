@@ -134,7 +134,6 @@ public class ContactListTabViewModel extends AndroidViewModel {
             }
         };
         request.setRetryPolicy(new
-
                 DefaultRetryPolicy( 10_000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)); //Instantiate the RequestQueue and add the request to the queue
@@ -145,8 +144,8 @@ public class ContactListTabViewModel extends AndroidViewModel {
     }
 
 
-    public void connectDelete(String jwt, String userId) {
-        String url = "https://team6-tcss450-web-service.herokuapp.com/contacts/" + userId;
+    public void connectDelete(String jwt, String memberId) {
+        String url = "https://team6-tcss450-web-service.herokuapp.com/contacts/" + memberId;
         Request request = new JsonObjectRequest(
                 Request.Method.DELETE,
                 url,
@@ -172,15 +171,17 @@ public class ContactListTabViewModel extends AndroidViewModel {
 
         // Get the current list of contacts
         List<Contact> tempList = mContactList.getValue();
+        Contact tempContact = null;
 
-        // Remove the contact
+        // Find the contact
         for (Contact c : tempList) {
-            if (c.getMemberId() == userId) {
-                tempList.remove(c);
+            if (c.getMemberId() == memberId) {
+                tempContact = c;
             }
         }
 
         // Remove the contact and update the list
+        tempList.remove(tempContact);
         mContactList.setValue(tempList);
     }
 

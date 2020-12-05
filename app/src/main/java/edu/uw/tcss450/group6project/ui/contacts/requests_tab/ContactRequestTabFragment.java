@@ -43,7 +43,7 @@ public class ContactRequestTabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         FragmentContactRequestTabBinding binding = FragmentContactRequestTabBinding.bind(requireView());
 
-        mModel.addContactListObserver(getViewLifecycleOwner(), contactRequestList -> {
+        mModel.addContactRequestListObserver(getViewLifecycleOwner(), contactRequestList -> {
             if (!contactRequestList.isEmpty()) {
                 binding.contactRequestsListRoot.setAdapter(new ContactRequestTabRecyclerViewAdapter(contactRequestList,this,mUserModel));
             }
