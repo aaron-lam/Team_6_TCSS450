@@ -62,24 +62,11 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sp;
     int curTheme;
 
-
-    /**
-     * The desired interval for location updates. Inexact. Updates may be more or less frequent.
-     */
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
-    /**
-     * The fastest rate for active location updates. Exact. Updates will never be more frequent
-     * than this value.
-     */
-    public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
-            UPDATE_INTERVAL_IN_MILLISECONDS / 2;
     // A constant int for the permissions request code. Must be a 16 bit number
     private static final int MY_PERMISSIONS_LOCATIONS = 8414;
-    private LocationRequest mLocationRequest;
     //Use a FusedLocationProviderClient to request the location
     private FusedLocationProviderClient mFusedLocationClient;
     // Will use this call back to decide what to do when a location change is detected
-    private LocationCallback mLocationCallback;
     //The ViewModel that will store the current location
     private LocationViewModel mLocationModel;
 
