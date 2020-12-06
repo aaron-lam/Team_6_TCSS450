@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
+import edu.uw.tcss450.group6project.model.LocationViewModel;
 
 /**
  * A fragment to navigate between single day
@@ -41,6 +42,8 @@ public class WeatherTabFragment extends Fragment {
     /** Model for the weather data*/
     private WeatherViewModel mWeatherModel;
 
+    private LocationViewModel mLocationViewModel;
+
     private SearchView mSearchView;
 
     private SearchView.OnQueryTextListener mSearchListener;
@@ -50,8 +53,11 @@ public class WeatherTabFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mWeatherModel = new ViewModelProvider(getActivity()).get(WeatherViewModel.class);
+        mLocationViewModel = new ViewModelProvider(getActivity()).get(LocationViewModel.class);
         //Hard coded values for sprint 2 testing purposes
-        mWeatherModel.connectLocation(47.25, -122.46);
+        Log.d("Weather Tab Lat", Double.toString(mLocationViewModel.getLatitude()));
+        Log.d("Weather Tab Long", Double.toString(mLocationViewModel.getLongitude()));
+        mWeatherModel.connectLocation(mLocationViewModel.getLatitude(), mLocationViewModel.getLongitude());
     }
 
     @Override
