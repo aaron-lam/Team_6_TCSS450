@@ -57,7 +57,6 @@ public class WeatherTabFragment extends Fragment {
         //Hard coded values for sprint 2 testing purposes
         Log.d("Weather Tab Lat", Double.toString(mLocationViewModel.getLatitude()));
         Log.d("Weather Tab Long", Double.toString(mLocationViewModel.getLongitude()));
-        mWeatherModel.connectLocation(mLocationViewModel.getLatitude(), mLocationViewModel.getLongitude());
     }
 
     @Override
@@ -71,11 +70,11 @@ public class WeatherTabFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        createWeatherTab(view, mWeatherModel.getForecastData(), mWeatherModel.getDailyData());
         FragmentWeatherTabBinding binding = FragmentWeatherTabBinding.bind(getView());
         mWeatherModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherData -> {
             if(!weatherData.isEmpty()) {
                 createWeatherTab(view, weatherData.getForecastData(), weatherData.getDailyData());
-                binding.layoutWait.setVisibility(View.GONE);
             }
         });
     }

@@ -40,7 +40,7 @@ import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.services.PushReceiver;
 import edu.uw.tcss450.group6project.ui.chat.ChatMessage;
 import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
-import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabViewModel;
+import edu.uw.tcss450.group6project.ui.weather.WeatherViewModel;
 
 /**
  * An activity for all functions after authentication.
@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
 
     private MainPushMessageReceiver mPushMessageReceiver;
     private NewMessageCountViewModel mNewMessageModel;
+    private WeatherViewModel mWeatherModel;
+
+    private boolean mLoadedWeather;
 
     SharedPreferences sp;
     int curTheme;
@@ -94,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 ).get(UserInfoViewModel.class);
 
         mNewMessageModel = new ViewModelProvider(this).get(NewMessageCountViewModel.class);
+        mWeatherModel = new ViewModelProvider(this).get(WeatherViewModel.class);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
@@ -127,6 +131,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mWeatherModel.addWeatherDataListObserver(this, weatherData -> {
+            if(!weatherData.isEmpty()) {
+                mLoadedWeather = true;
+                checkViewModelsLoaded();
+            }
+        });
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
@@ -139,6 +150,17 @@ public class MainActivity extends AppCompatActivity {
         } else {
             //The user has already allowed the use of Locations. Get the current location.
             requestLocation();
+        }
+    }
+
+    /**
+     * Removes the loading layout if all the view models have been loaded
+     */
+    private void checkViewModelsLoaded() {
+        //TODO Add the other view models here (Chat/Messages)
+        if(mLoadedWeather) {
+            Log.d("Main Activity", "All View Models Loaded");
+            //remove layout wait
         }
     }
 
@@ -188,12 +210,12 @@ public class MainActivity extends AppCompatActivity {
                                             .get(LocationViewModel.class);
                                 }
                                 mLocationModel.setLocation(location);
+                                mWeatherModel.connectLocation(mLocationModel.getLatitude(), mLocationModel.getLongitude());
                             }
                         }
                     });
         }
     }
-
 
     @Override
     public void onResume() {
