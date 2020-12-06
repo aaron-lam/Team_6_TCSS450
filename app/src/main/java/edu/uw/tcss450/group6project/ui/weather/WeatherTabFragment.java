@@ -2,6 +2,8 @@ package edu.uw.tcss450.group6project.ui.weather;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,6 +32,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import edu.uw.tcss450.group6project.R;
+import edu.uw.tcss450.group6project.SettingsActivity;
 import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
 import edu.uw.tcss450.group6project.model.LocationViewModel;
 
@@ -81,6 +84,7 @@ public class WeatherTabFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
         inflater.inflate(R.menu.top_weather_menu, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -89,6 +93,7 @@ public class WeatherTabFragment extends Fragment {
         if (searchItem != null) {
             mSearchView = (SearchView) searchItem.getActionView();
         }
+
 
         if (mSearchView != null) {
             mSearchView.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -105,10 +110,10 @@ public class WeatherTabFragment extends Fragment {
                         mWeatherModel.connectZipCode(query);
 
                     } else {
-                        //Create an error
-                        Log.i("Zip Code Query", "Inavlid");
+                        //TODO set an error message
+                        Log.i("Zip Code Query", "Invalid");
                     }
-                    mSearchView.clearFocus();
+                    mSearchView.clearFocus(); //removes the keyboard
                     return true;
                 }
 
@@ -122,6 +127,17 @@ public class WeatherTabFragment extends Fragment {
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.action_map) {
+            Log.d("Weather Tab", "Pressed Map");
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private boolean isZipCode(String submitText) {
         Pattern pattern = Pattern.compile("^[0-9]{5}(?:-[0-9]{4})?$");
@@ -144,7 +160,8 @@ public class WeatherTabFragment extends Fragment {
         for(int i = 0; i < 7; i++) {
             WeatherDailyData data = dailyData.get(i);
             weatherTabText[i] = data.getDay();
-            weatherTabIcons[i] = mIconMap.get(data.getWeather());
+            //if the icon doesn't exist default to cloud
+            weatherTabIcons[i] = mIconMap.getOrDefault(data.getWeather(), R.drawable.weather_cloud_24dp);
         }
 
         ViewPager2 viewPager = view.findViewById(R.id.view_pager);
