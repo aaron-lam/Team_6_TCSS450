@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_navigation_chat_to_chatCreateFormFragment"
             app:destination="@id/chatCreateFormFragment" />
+        <action
+            android:id="@+id/action_navigation_chat_to_chatContactAddFormFragment"
+            app:destination="@id/chatContactAddFormFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_contacts"
@@ -55,4 +58,12 @@
         android:id="@+id/chatCreateFormFragment"
         android:name="edu.uw.tcss450.group6project.ui.chat.create.ChatCreateFormFragment"
         android:label="@string/all_create_chat_room" />
+    <fragment
+        android:id="@+id/chatContactAddFormFragment"
+        android:name="edu.uw.tcss450.group6project.ui.chat.add_contact.ChatContactAddFormFragment"
+        android:label="Add New Contacts" >
+        <argument
+            android:name="roomId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

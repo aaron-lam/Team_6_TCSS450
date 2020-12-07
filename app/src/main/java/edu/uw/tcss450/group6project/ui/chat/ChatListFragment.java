@@ -14,12 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentChatListBinding;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
-import edu.uw.tcss450.group6project.ui.chat.create.ChatCreateFormFragment;
 
 /**
  * A fragment to display a list of chats the user is in.

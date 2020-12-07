@@ -4,7 +4,9 @@ import android.app.Application;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -14,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,13 +28,13 @@ import java.util.Set;
 import java.util.function.IntFunction;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.io.RequestQueueSingleton;
+import edu.uw.tcss450.group6project.ui.chat.add_contact.ChatContactAddFormFragment;
 import edu.uw.tcss450.group6project.ui.contacts.Contact;
 
 /**
@@ -195,6 +198,54 @@ public class ChatCreateFormViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    public void addNewContactsToRoom(String jwt, int roomName, ChatContactAddFormFragment fragment) {
+        if (Objects.requireNonNull(mSelectedContactsSet.getValue()).isEmpty()) {
+            fragment.handleAddNewContactsToRoomError("Please select at least one contact.", 0);
+            return;
+        }
+        String url = getApplication().getResources().getString(R.string.base_url) + "chats/" + roomName;
+        JSONObject body = new JSONObject();
+        JSONArray memberIds = new JSONArray();
+        for (String id : mSelectedContactsSet.getValue()) {
+            memberIds.put(id);
+        }
+        try {
+            body.put("memberIds", memberIds);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Request request = new JsonObjectRequest(
+                Request.Method.PUT,
+                url,
+                body,
+                response -> handleAddNewContactToRoomSuccess(response, fragment),
+                error -> {
+                    NetworkResponse networkResponse = error.networkResponse;
+                    try {
+                        JSONObject jsonObject = new JSONObject(new String(networkResponse.data, StandardCharsets.UTF_8));
+                        fragment.handleAddNewContactsToRoomError(jsonObject.get("message"), 1);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10_000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //Instantiate the RequestQueue and add the request to the queue
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+    }
+
     public void updateContact(String memberId) {
         Set<String> newSet = mSelectedContactsSet.getValue();
         if (Objects.requireNonNull(mSelectedContactsSet.getValue()).contains(memberId)) {
@@ -215,5 +266,16 @@ public class ChatCreateFormViewModel extends AndroidViewModel {
             throw new IllegalStateException("Unexpected response in ChatViewModel: " + response);
         }
         fragment.createNewChatRoomCallback();
+    }
+
+    /**
+     * Method to handle a successful delete request of a specific chat room.
+     * @param response Response in JSON format
+     */
+    private void handleAddNewContactToRoomSuccess(JSONObject response, ChatContactAddFormFragment fragment) {
+        if (!response.has("sucess")) {
+            throw new IllegalStateException("Unexpected response in ChatViewModel: " + response);
+        }
+        fragment.addNewContactsToRoomCallback();
     }
 }
