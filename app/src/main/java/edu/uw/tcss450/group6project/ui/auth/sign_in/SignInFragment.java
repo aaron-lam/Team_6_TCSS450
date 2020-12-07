@@ -41,6 +41,7 @@ public class SignInFragment extends Fragment {
 
     private String m_Text = "";
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
