@@ -179,12 +179,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestLocation() {
+        Log.d("Main Activity", "Requesting Location");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             Log.d("REQUEST LOCATION", "User did NOT allow permission to request location!");
         } else {
+            Log.d("Main Activity", "User has approved location");
             mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
@@ -198,6 +200,8 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 mLocationModel.setLocation(location);
                                 mWeatherModel.connectLocation(mLocationModel.getLatitude(), mLocationModel.getLongitude());
+                            } else {
+                                Log.e("LOCATION", "NULL");
                             }
                         }
                     });
