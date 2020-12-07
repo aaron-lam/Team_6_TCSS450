@@ -2,6 +2,7 @@ package edu.uw.tcss450.group6project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -9,27 +10,37 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import edu.uw.tcss450.group6project.databinding.ActivityMainBinding;
+import edu.uw.tcss450.group6project.model.LocationViewModel;
 import edu.uw.tcss450.group6project.model.NewMessageCountViewModel;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.services.PushReceiver;
 import edu.uw.tcss450.group6project.ui.chat.ChatMessage;
 import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
-import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabViewModel;
+import edu.uw.tcss450.group6project.ui.weather.WeatherViewModel;
 
 /**
  * An activity for all functions after authentication.
@@ -44,9 +55,20 @@ public class MainActivity extends AppCompatActivity {
 
     private MainPushMessageReceiver mPushMessageReceiver;
     private NewMessageCountViewModel mNewMessageModel;
+    private WeatherViewModel mWeatherModel;
+
+    private boolean mLoadedWeather;
 
     SharedPreferences sp;
     int curTheme;
+
+    // A constant int for the permissions request code. Must be a 16 bit number
+    private static final int MY_PERMISSIONS_LOCATIONS = 8414;
+    //Use a FusedLocationProviderClient to request the location
+    private FusedLocationProviderClient mFusedLocationClient;
+    // Will use this call back to decide what to do when a location change is detected
+    //The ViewModel that will store the current location
+    private LocationViewModel mLocationModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 ).get(UserInfoViewModel.class);
 
         mNewMessageModel = new ViewModelProvider(this).get(NewMessageCountViewModel.class);
+        mWeatherModel = new ViewModelProvider(this).get(WeatherViewModel.class);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
@@ -94,6 +117,91 @@ public class MainActivity extends AppCompatActivity {
                 badge.setVisible(false);
             }
         });
+
+        mWeatherModel.addWeatherDataListObserver(this, weatherData -> {
+            if(!weatherData.isEmpty()) {
+                mLoadedWeather = true;
+                checkViewModelsLoaded();
+            }
+        });
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION
+                            , Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_LOCATIONS);
+        } else {
+            //The user has already allowed the use of Locations. Get the current location.
+            requestLocation();
+        }
+    }
+
+    /**
+     * Removes the loading layout if all the view models have been loaded
+     */
+    private void checkViewModelsLoaded() {
+        //TODO Add the other view models here (Chat/Messages)
+        if(mLoadedWeather) {
+            Log.d("Main Activity", "All View Models Loaded");
+            //remove layout wait
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_LOCATIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // locations-related task you need to do.
+                    requestLocation();
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Log.d("PERMISSION DENIED", "Nothing to see or do here.");
+
+                    //Shut down the app. In production release, you would let the user
+                    //know why the app is shutting down...maybe ask for permission again?
+                    finishAndRemoveTask();
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    private void requestLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            Log.d("REQUEST LOCATION", "User did NOT allow permission to request location!");
+        } else {
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                Log.d("LOCATION", location.toString());
+                                if (mLocationModel == null) {
+                                    mLocationModel = new ViewModelProvider(MainActivity.this)
+                                            .get(LocationViewModel.class);
+                                }
+                                mLocationModel.setLocation(location);
+                                mWeatherModel.connectLocation(mLocationModel.getLatitude(), mLocationModel.getLongitude());
+                            }
+                        }
+                    });
+        }
     }
 
     @Override
@@ -105,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter iFilter = new IntentFilter(PushReceiver.RECEIVED_NEW_MESSAGE);
         registerReceiver(mPushMessageReceiver, iFilter);
     }
+
     @Override
     public void onPause() {
         super.onPause();

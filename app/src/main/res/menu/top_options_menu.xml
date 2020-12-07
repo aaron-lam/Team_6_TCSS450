@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/button_top_options_menu_logout"
-            android:title="Log Out" />
+        android:title="Log Out" />
 
     <item android:id="@+id/button_top_options_menu_settings"
         android:icon="@drawable/toolbar_settings_24dp"
         android:title="Settings"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
+
 </menu>

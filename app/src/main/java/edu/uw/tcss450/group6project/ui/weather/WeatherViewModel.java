@@ -112,6 +112,25 @@ public class WeatherViewModel extends AndroidViewModel {
         mWeatherData.observe(owner, observer);
     }
 
+
+
+
+    /**
+     * Gets the daily data stored within the view model.
+     * @return List containing weather data for the week
+     */
+    public List<WeatherDailyData> getDailyData() {
+        return mWeatherData.getValue().getDailyData();
+    }
+
+    /**
+     * Gets the hourly data for next 48-hours
+     * @return List containing hourly data for 2 days
+     */
+    public List<WeatherDailyData> getForecastData() {
+        return mWeatherData.getValue().getForecastData();
+    }
+
     /**
      * When a successful call is made to the server. Parses the retrieved JSON
      * and stores the data in the view model.

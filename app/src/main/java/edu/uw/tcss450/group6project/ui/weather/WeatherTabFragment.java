@@ -2,10 +2,15 @@ package edu.uw.tcss450.group6project.ui.weather;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -20,7 +25,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -30,7 +38,9 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import edu.uw.tcss450.group6project.R;
+import edu.uw.tcss450.group6project.SettingsActivity;
 import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
+import edu.uw.tcss450.group6project.model.LocationViewModel;
 
 /**
  * A fragment to navigate between single day
@@ -41,6 +51,8 @@ public class WeatherTabFragment extends Fragment {
     /** Model for the weather data*/
     private WeatherViewModel mWeatherModel;
 
+    private LocationViewModel mLocationViewModel;
+
     private SearchView mSearchView;
 
     private SearchView.OnQueryTextListener mSearchListener;
@@ -50,8 +62,10 @@ public class WeatherTabFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mWeatherModel = new ViewModelProvider(getActivity()).get(WeatherViewModel.class);
+        mLocationViewModel = new ViewModelProvider(getActivity()).get(LocationViewModel.class);
         //Hard coded values for sprint 2 testing purposes
-        mWeatherModel.connectLocation(47.25, -122.46);
+        Log.d("Weather Tab Lat", Double.toString(mLocationViewModel.getLatitude()));
+        Log.d("Weather Tab Long", Double.toString(mLocationViewModel.getLongitude()));
     }
 
     @Override
@@ -65,17 +79,18 @@ public class WeatherTabFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        createWeatherTab(view, mWeatherModel.getForecastData(), mWeatherModel.getDailyData());
         FragmentWeatherTabBinding binding = FragmentWeatherTabBinding.bind(getView());
         mWeatherModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherData -> {
             if(!weatherData.isEmpty()) {
                 createWeatherTab(view, weatherData.getForecastData(), weatherData.getDailyData());
-                binding.layoutWait.setVisibility(View.GONE);
             }
         });
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
         inflater.inflate(R.menu.top_weather_menu, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -84,6 +99,7 @@ public class WeatherTabFragment extends Fragment {
         if (searchItem != null) {
             mSearchView = (SearchView) searchItem.getActionView();
         }
+
 
         if (mSearchView != null) {
             mSearchView.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -100,10 +116,11 @@ public class WeatherTabFragment extends Fragment {
                         mWeatherModel.connectZipCode(query);
 
                     } else {
-                        //Create an error
-                        Log.i("Zip Code Query", "Inavlid");
+                        //TODO set an error message
+                        Log.i("Zip Code Query", "Invalid");
+                        displayZipCodeError();
                     }
-                    mSearchView.clearFocus();
+                    mSearchView.clearFocus(); //removes the keyboard
                     return true;
                 }
 
@@ -117,6 +134,33 @@ public class WeatherTabFragment extends Fragment {
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    private void displayZipCodeError() {
+        Snackbar snackbar = Snackbar.make(getView(), R.string.weather_zip_error, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(Color.RED);
+        snackbar.setTextColor(Color.WHITE);
+        //Dismiss the snackbar when it's clicked
+        snackbar.setAction("Dismiss", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call your action method here
+                snackbar.dismiss();
+            }
+        });
+        snackbar.show();
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.action_map) {
+            Log.d("Weather Tab", "Pressed Map");
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private boolean isZipCode(String submitText) {
         Pattern pattern = Pattern.compile("^[0-9]{5}(?:-[0-9]{4})?$");
@@ -139,7 +183,8 @@ public class WeatherTabFragment extends Fragment {
         for(int i = 0; i < 7; i++) {
             WeatherDailyData data = dailyData.get(i);
             weatherTabText[i] = data.getDay();
-            weatherTabIcons[i] = mIconMap.get(data.getWeather());
+            //if the icon doesn't exist default to cloud
+            weatherTabIcons[i] = mIconMap.getOrDefault(data.getWeather(), R.drawable.weather_cloud_24dp);
         }
 
         ViewPager2 viewPager = view.findViewById(R.id.view_pager);
