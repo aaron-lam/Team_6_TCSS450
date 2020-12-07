@@ -1,6 +1,7 @@
 package edu.uw.tcss450.group6project.ui.chat;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,6 +126,11 @@ public class ChatListRecyclerViewAdapter extends
                             (ChatListFragmentDirections.actionNavigationChatToChatFragment(chatRoomId)));
             binding.buttonDeleteChat.setOnClickListener(view -> {
                 chatRoomViewModel.deleteChatRoom(jwt, chat.getChatRoomID(), email, this);
+            });
+            binding.buttonAddContact.setOnClickListener(view -> {
+                Navigation.findNavController(view)
+                        .navigate(ChatListFragmentDirections
+                                .actionNavigationChatToChatContactAddFormFragment(chatRoomId));
             });
             binding.textParticipants.setText(chat.participantsAsString());
             binding.textPreview.setText(chat.getLastMessage());
