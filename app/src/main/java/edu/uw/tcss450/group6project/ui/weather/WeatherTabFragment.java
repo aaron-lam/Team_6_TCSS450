@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -156,6 +157,7 @@ public class WeatherTabFragment extends Fragment {
 
         if(item.getItemId() == R.id.action_map) {
             Log.d("Weather Tab", "Pressed Map");
+            Navigation.findNavController(getView()).navigate(WeatherTabFragmentDirections.actionNavigationWeatherToMapsFragment());
         }
 
         return super.onOptionsItemSelected(item);

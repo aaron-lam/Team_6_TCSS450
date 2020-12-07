@@ -41,6 +41,7 @@ public class SignInFragment extends Fragment {
 
     private String m_Text = "";
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,9 +57,6 @@ public class SignInFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mBinding = FragmentSignInBinding.inflate(inflater, container, false);
-
-        mBinding.fieldSignInEmail.setText("amn34@uw.edu");
-        mBinding.fieldSignInPassword.setText("Password*1");
 
         return mBinding.getRoot();
     }
