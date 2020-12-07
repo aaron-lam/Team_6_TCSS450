@@ -38,6 +38,15 @@ public class PushReceiver extends BroadcastReceiver {
         //So perform logic/routing based on the "type"
         //feel free to change the key or type of values.
         String typeOfMessage = intent.getStringExtra("type");
+        if (typeOfMessage.equals("msg")) {
+            processMessage(context, intent);
+        }
+        else if (typeOfMessage.equals("newRoom")) {
+            processNewRoom(context, intent);
+        }
+    }
+
+    private void processMessage(Context context, Intent intent) {
         ChatMessage message = null;
         int chatId = -1;
         try{
@@ -62,7 +71,6 @@ public class PushReceiver extends BroadcastReceiver {
             i.putExtras(intent.getExtras());
 
             context.sendBroadcast(i);
-
         } else {
             //app is in the background so create and post a notification
             Log.d("PUSHY", "Message received in background: " + message.getMessage());
@@ -70,29 +78,66 @@ public class PushReceiver extends BroadcastReceiver {
             Intent i = new Intent(context, AuthActivity.class);
             i.putExtras(intent.getExtras());
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-                    i, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            //research more on notifications the how to display them
-            //https://developer.android.com/guide/topics/ui/notifiers/notifications
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setAutoCancel(true)
-                    .setSmallIcon(R.drawable.ic_chat_notification)
-                    .setContentTitle("Message from: " + message.getEmail())
-                    .setContentText(message.getMessage())
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setContentIntent(pendingIntent);
-
-            // Automatically configure a ChatMessageNotification Channel for devices running Android O+
-            Pushy.setNotificationChannel(builder, context);
-
-            // Get an instance of the NotificationManager service
-            NotificationManager notificationManager =
-                    (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-
-            // Build the notification and display it
-            notificationManager.notify(1, builder.build());
+            sendNotification(context, i, "Message from: " + message.getEmail(), message.getMessage());
         }
+    }
 
+    private void processNewRoom(Context context, Intent intent) {
+        String roomName = intent.getStringExtra("roomName");
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
+
+        if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+            //app is in the foreground so send the message to the active Activities
+            Log.d("PUSHY", "New chat room created in foreground: " + roomName);
+
+            //create an Intent to broadcast a message to other parts of the app.
+            Intent i = new Intent(RECEIVED_NEW_MESSAGE);
+            i.putExtras(intent.getExtras());
+
+            context.sendBroadcast(i);
+
+        } else {
+            //app is in the background so create and post a notification
+            Log.d("PUSHY", "New chat room created in background: " + roomName);
+
+            Intent i = new Intent(context, AuthActivity.class);
+            i.putExtra("roomName", roomName);
+            i.putExtras(intent.getExtras());
+
+            sendNotification(context, i, "You were added in a new chat room: " + roomName, "");
+        }
+    }
+
+    /**
+     * Send notification in background
+     * @param context context
+     * @param i intent
+     * @param title notification title
+     * @param text notification text
+     */
+    private void sendNotification(Context context, Intent i, String title, String text) {
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+                i, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //research more on notifications the how to display them
+        //https://developer.android.com/guide/topics/ui/notifiers/notifications
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_chat_notification)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent);
+
+        // Automatically configure a ChatMessageNotification Channel for devices running Android O+
+        Pushy.setNotificationChannel(builder, context);
+
+        // Get an instance of the NotificationManager service
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+
+        // Build the notification and display it
+        notificationManager.notify(1, builder.build());
     }
 }

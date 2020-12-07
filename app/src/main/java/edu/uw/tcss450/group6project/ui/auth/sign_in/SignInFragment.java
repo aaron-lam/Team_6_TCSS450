@@ -57,9 +57,6 @@ public class SignInFragment extends Fragment {
                              Bundle savedInstanceState) {
         mBinding = FragmentSignInBinding.inflate(inflater, container, false);
 
-        mBinding.fieldSignInEmail.setText("amn34@uw.edu");
-        mBinding.fieldSignInPassword.setText("Password*1");
-
         return mBinding.getRoot();
     }
 
