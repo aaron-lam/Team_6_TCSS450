@@ -4,10 +4,13 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -22,7 +25,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -112,6 +118,7 @@ public class WeatherTabFragment extends Fragment {
                     } else {
                         //TODO set an error message
                         Log.i("Zip Code Query", "Invalid");
+                        displayZipCodeError();
                     }
                     mSearchView.clearFocus(); //removes the keyboard
                     return true;
@@ -126,6 +133,22 @@ public class WeatherTabFragment extends Fragment {
             mSearchView.setOnQueryTextListener(mSearchListener);
         }
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void displayZipCodeError() {
+        Snackbar snackbar = Snackbar.make(getView(), R.string.weather_zip_error, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(Color.RED);
+        snackbar.setTextColor(Color.WHITE);
+        //Dismiss the snackbar when it's clicked
+        snackbar.setAction("Dismiss", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call your action method here
+                snackbar.dismiss();
+            }
+        });
+        snackbar.show();
+
     }
 
     @Override

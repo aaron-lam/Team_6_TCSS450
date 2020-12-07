@@ -71,6 +71,9 @@
     <string name="toast_create_room_success">Chat room is successfully created.</string>
     <string name="chat_room_btn_create_text">Create Chat Room</string>
 
+    <!-- Weather Fragment -->
+    <string name="weather_zip_error">Invalid Zip Code</string>
+
     <!-- JSON Headers -->
     <string name="header_jwt_auth">Authorization</string>
 
