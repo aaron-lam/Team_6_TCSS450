@@ -249,7 +249,8 @@ public class WeatherTabFragment extends Fragment {
             if(position == 0) {
                 return new WeatherForecastFragment(mForecastData);
             }
-            return new WeatherFragment(mIcons[position-1], mDailyData.get(position - 1));
+            return new WeatherFragment(mIcons[position-1], mDailyData.get(position - 1),
+                    mWeatherModel.getCity(), mWeatherModel.getState());
         }
 
         @Override
