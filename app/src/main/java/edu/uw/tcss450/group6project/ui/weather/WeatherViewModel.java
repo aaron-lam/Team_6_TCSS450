@@ -131,6 +131,15 @@ public class WeatherViewModel extends AndroidViewModel {
         return mWeatherData.getValue().getForecastData();
     }
 
+    public String getState() {
+        return mWeatherData.getValue().getState();
+    }
+
+    public String getCity() {
+        return mWeatherData.getValue().getCity();
+    }
+
+
     /**
      * When a successful call is made to the server. Parses the retrieved JSON
      * and stores the data in the view model.
@@ -194,6 +203,23 @@ public class WeatherViewModel extends AndroidViewModel {
             } else {
                 Log.e("WEATHER MODEL ERROR!", "No forecast data array");
             }
+
+            if(root.has(getString.apply(R.string.keys_json_weather_city))) {
+                String city = root.getString(getString.apply(R.string.keys_json_weather_city));
+                Log.d("Weather City", city);
+                mWeatherData.getValue().setCity(city);
+            } else {
+                Log.e("WEATHER MODEL ERROR!", "No city data");
+            }
+
+            if(root.has(getString.apply(R.string.keys_json_weather_state))) {
+                String state = root.getString(getString.apply(R.string.keys_json_weather_state));
+                Log.d("Weather City", state);
+                mWeatherData.getValue().setState(state);
+            } else {
+                Log.e("WEATHER MODEL ERROR!", "No city data");
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("ERROR!", e.getMessage());
