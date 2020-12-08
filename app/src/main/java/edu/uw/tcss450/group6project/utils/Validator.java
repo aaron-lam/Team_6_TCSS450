@@ -64,14 +64,21 @@ public class Validator extends AppCompatActivity {
         this.mNewPassword = password;
     }
 
-    /** Constructor for "forgot password"
+    /** Can be used to validate either email or username individually.
      *
-     * @param activity
-     * @param email
+     * @param activity The current activity
+     * @param input the text to be validated
+     * @param caseChoice pass in "email" to validate an email, and "username" to validate a username
      */
-    public Validator(FragmentActivity activity, EditText email) {
-        this.mActivity = activity;
-        this.mEmail = email;
+    public Validator(FragmentActivity activity, EditText input, String caseChoice) {
+
+        if (caseChoice.equals("email")) {
+            this.mActivity = activity;
+            this.mEmail = input;
+        } else if (caseChoice.equals("username")) {
+            this.mActivity = activity;
+            this.mUsername = input;
+        }
     }
 
     /** Validates all fields.
@@ -150,6 +157,7 @@ public class Validator extends AppCompatActivity {
      * @return Whether or not the inputted username is valid.
      */
     private boolean validateUsername() {
+
         if (mUsername.getText().toString().length() < 1) {
             mUsername.setError(mEmptyFieldError);
             return false;

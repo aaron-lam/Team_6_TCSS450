@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/field_contacts_add_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/all_username"
+        android:inputType="textEmailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/text_contacts_add_instructions"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/button_contacts_add_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/all_submit_button"
+        app:layout_constraintEnd_toEndOf="@+id/field_contacts_add_username"
+        app:layout_constraintTop_toBottomOf="@+id/field_contacts_add_username" />
+
+    <TextView
+        android:id="@+id/text_contacts_add_instructions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/add_contact_instructions"
+        android:textAlignment="viewStart"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="174dp" />
+
+    <Button
+        android:id="@+id/button_contacts_add_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/all_cancel_button"
+        app:layout_constraintStart_toStartOf="@+id/field_contacts_add_username"
+        app:layout_constraintTop_toBottomOf="@+id/field_contacts_add_username" />
+</androidx.constraintlayout.widget.ConstraintLayout>

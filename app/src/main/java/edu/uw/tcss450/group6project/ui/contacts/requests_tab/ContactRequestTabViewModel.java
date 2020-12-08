@@ -100,7 +100,7 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
      * @param jwt user JWT token
      */
     public void connectGet(String jwt) {
-        String url = "https://team6-tcss450-web-service.herokuapp.com/requests";
+        String url = "https://team6-tcss450-web-service.herokuapp.com/contactRequests";
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -127,7 +127,7 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
     }
 
     public void connectConfirm(String jwt, String memberId) {
-        String url = "https://team6-tcss450-web-service.herokuapp.com/requests/" + memberId;
+        String url = "https://team6-tcss450-web-service.herokuapp.com/contactRequests/" + memberId;
         Request request = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
@@ -168,7 +168,7 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
     }
 
     public void connectDeny(String jwt, String memberId) {
-        String url = "https://team6-tcss450-web-service.herokuapp.com/requests/" + memberId;
+        String url = "https://team6-tcss450-web-service.herokuapp.com/contactRequests/" + memberId;
         Request request = new JsonObjectRequest(
                 Request.Method.DELETE,
                 url,

@@ -4,6 +4,7 @@
     <!-- Universal  -->
     <string name="all_email_address">Email Address</string>
     <string name="all_password">Password</string>
+    <string name="all_username">Username</string>
     <string name="all_register">Register</string>
     <string name="all_signIn">Sign In</string>
     <string name="all_chat">Chat</string>
@@ -27,7 +28,6 @@
     <!-- Register Page -->
     <string name="register_first_name_hint">First Name</string>
     <string name="register_last_name_hint">Last Name</string>
-    <string name="register_username_hint">Username</string>
     <string name="register_retype_password_hint">Retype Password</string>
     <string name="register_username_exists_error">Username already in use</string>
     <string name="register_email_exists_error">Email already in use</string>
@@ -37,6 +37,9 @@
     <string name="change_password_old_password_hint">Old Password</string>
     <string name="change_password_new_password_hint">New Password</string>
     <string name="change_password_retype_password_hint">Retype New Password</string>
+
+    <!-- Add Contact Popup -->
+    <string name="add_contact_instructions">Enter the username of the member that you want to add as a contact and click "Submit".</string>
 
     <!-- Forgot Password Popup -->
     <string name="forgot_password_title">Password Recovery</string>

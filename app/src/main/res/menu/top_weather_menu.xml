@@ -8,11 +8,10 @@
         android:title="Search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
+
     <item
         android:id="@+id/action_map"
         android:icon="@drawable/weather_map_24dp"
         android:title="Map Search"
         app:showAsAction="always"/>
-
-
 </menu>

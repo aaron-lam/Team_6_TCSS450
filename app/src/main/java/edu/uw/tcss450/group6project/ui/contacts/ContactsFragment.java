@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group6project.ui.contacts;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +11,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,6 +21,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import edu.uw.tcss450.group6project.R;
+import edu.uw.tcss450.group6project.SettingsActivity;
+import edu.uw.tcss450.group6project.ui.contacts.add_contact.AddContactDialog;
 import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabFragment;
 import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabFragment;
 
@@ -23,6 +30,21 @@ import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabFr
  *
  */
 public class ContactsFragment extends Fragment {
+
+    AddContactDialog mAddContactDialog;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAddContactDialog = new AddContactDialog(this);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        return inflater.inflate(R.layout.fragment_contacts, container, false);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -32,7 +54,7 @@ public class ContactsFragment extends Fragment {
 
     private void createContactsTab(View view) {
 
-        String[] tabNames = {"Contacts","Search","Requests"};
+        String[] tabNames = {"Contacts","Requests"};
 
         ViewPager2 viewPager = view.findViewById(R.id.contacts_view_pager);
         viewPager.setAdapter(new ContactsAdapter(this));
@@ -43,6 +65,22 @@ public class ContactsFragment extends Fragment {
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             tab.setText(tabNames[position]);
         }).attach();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.top_contact_list_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.button_contacts_menu_add:
+                mAddContactDialog.buildAddContactDialog();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private class ContactsAdapter extends FragmentStateAdapter {
@@ -57,23 +95,15 @@ public class ContactsFragment extends Fragment {
 
             if (position == 0) {
                 return new ContactListTabFragment();
-            } else if (position == 1) {
-                return new ContactListTabFragment();
             } else {
                 return new ContactRequestTabFragment();
             }
         }
 
+        // There are two options, contacts or contact requests
         @Override
         public int getItemCount() {
-            return 3;
+            return 2;
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contacts, container, false);
     }
 }

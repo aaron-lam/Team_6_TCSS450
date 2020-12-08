@@ -132,7 +132,7 @@ public class ContactListTabRecyclerViewAdapter extends
          */
         void setContact(final Contact contact) {
             mContact = contact;
-            binding.textContactListName.setText(contact.getFirstName());
+            binding.textContactListName.setText(contact.getUserName());
         }
     }
 }
