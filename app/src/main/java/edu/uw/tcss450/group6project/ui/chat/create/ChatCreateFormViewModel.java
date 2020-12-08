@@ -161,6 +161,12 @@ public class ChatCreateFormViewModel extends AndroidViewModel {
                 add(request);
     }
 
+    /**
+     * Create a new chat room.
+     * @param jwt user JWT token
+     * @param roomName room name
+     * @param fragment chat create form fragment
+     */
     public void connectPost(String jwt, String roomName, ChatCreateFormFragment fragment) {
         String url = getApplication().getResources().getString(R.string.base_url) + "chats";
         JSONObject body = new JSONObject();
@@ -198,6 +204,12 @@ public class ChatCreateFormViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    /**
+     * Add new contacts to chat room
+     * @param jwt user JWT token
+     * @param roomName room name
+     * @param fragment chat create form fragment
+     */
     public void addNewContactsToRoom(String jwt, int roomName, ChatContactAddFormFragment fragment) {
         if (Objects.requireNonNull(mSelectedContactsSet.getValue()).isEmpty()) {
             fragment.handleAddNewContactsToRoomError("Please select at least one contact.", 0);
@@ -246,6 +258,10 @@ public class ChatCreateFormViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    /**
+     * Update contact list.
+     * @param memberId member id
+     */
     public void updateContact(String memberId) {
         Set<String> newSet = mSelectedContactsSet.getValue();
         if (Objects.requireNonNull(mSelectedContactsSet.getValue()).contains(memberId)) {

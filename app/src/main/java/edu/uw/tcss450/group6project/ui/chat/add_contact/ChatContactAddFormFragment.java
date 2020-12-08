@@ -13,15 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.Objects;
-
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentChatAddContactFormBinding;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
+import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
 import edu.uw.tcss450.group6project.ui.chat.create.ChatCreateFormRecyclerViewAdapter;
 import edu.uw.tcss450.group6project.ui.chat.create.ChatCreateFormViewModel;
-
-import static android.content.Intent.getIntent;
 
 /**
  * A fragment to display a chat room create form
