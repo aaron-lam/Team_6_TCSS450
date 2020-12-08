@@ -27,6 +27,7 @@ import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 public class ChatListFragment extends Fragment {
 
     private ChatRoomViewModel mChatRoomModel;
+    private ChatSendViewModel mChatSendViewModel;
     /** Model to store info about the user. */
     private UserInfoViewModel mUserModel;
 
@@ -39,6 +40,7 @@ public class ChatListFragment extends Fragment {
         mUserModel = provider.get(UserInfoViewModel.class);
         mChatRoomModel = provider.get(ChatRoomViewModel.class);
         mChatRoomModel.loadChatRooms(mUserModel.getEmail(), mUserModel.getJWT());
+        mChatSendViewModel = provider.get(ChatSendViewModel.class);
     }
 
     @Override
@@ -53,7 +55,11 @@ public class ChatListFragment extends Fragment {
 
         FragmentChatListBinding binding = FragmentChatListBinding.bind(view);
         rv = binding.listRoot;
-        rv.setAdapter(new ChatListRecyclerViewAdapter(this.mChatRoomModel, mUserModel.getJWT(), mUserModel.getEmail()));
+        rv.setAdapter(new ChatListRecyclerViewAdapter(
+                this.mChatRoomModel,
+                this.mChatSendViewModel,
+                mUserModel.getJWT(),
+                mUserModel.getEmail()));
 
         //if any of the chats receive messages, update the preview
         mChatRoomModel.addRoomObserver(getViewLifecycleOwner(),

@@ -271,7 +271,9 @@ public class ChatRoomViewModel extends AndroidViewModel {
      */
     public void addMessage(final int chatId, final ChatMessage message) {
         ChatRoom room = mChatRooms.get(chatId);
-        room.addMessage(message);
+        if (room != null) {
+            room.addMessage(message);
+        }
     }
 
     /**

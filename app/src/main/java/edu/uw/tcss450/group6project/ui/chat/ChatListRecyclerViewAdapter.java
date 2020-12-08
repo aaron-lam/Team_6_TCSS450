@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ public class ChatListRecyclerViewAdapter extends
         RecyclerView.Adapter<ChatListRecyclerViewAdapter.ChatListViewHolder> {
 
     private ChatRoomViewModel chatRoomViewModel;
+    private ChatSendViewModel chatSendViewModel;
 
     /**
      * A list of chats.
@@ -54,8 +56,9 @@ public class ChatListRecyclerViewAdapter extends
      * @param jwt user jwt
      * @param email user email
      */
-    public ChatListRecyclerViewAdapter(ChatRoomViewModel chatRoomViewModel, final String jwt, final String email) {
+    public ChatListRecyclerViewAdapter(ChatRoomViewModel chatRoomViewModel, ChatSendViewModel chatSendViewModel, final String jwt, final String email) {
         this.chatRoomViewModel = chatRoomViewModel;
+        this.chatSendViewModel = chatSendViewModel;
         this.mChats = chatRoomViewModel.getChatRooms();
         this.jwt = jwt;
         this.email = email;
@@ -79,6 +82,10 @@ public class ChatListRecyclerViewAdapter extends
         return mChats.size();
     }
 
+    /**
+     * Remove chat room of specific position.
+     * @param position position of chat room
+     */
     public void removeItem(int position) {
         this.mChats.remove(position);
         notifyItemRemoved(position);
@@ -125,7 +132,8 @@ public class ChatListRecyclerViewAdapter extends
                     Navigation.findNavController(mView).navigate
                             (ChatListFragmentDirections.actionNavigationChatToChatFragment(chatRoomId)));
             binding.buttonDeleteChat.setOnClickListener(view -> {
-                chatRoomViewModel.deleteChatRoom(jwt, chat.getChatRoomID(), email, this);
+                chatSendViewModel.sendMessage(chatRoomId, jwt, email + " has left the chat.");
+                chatRoomViewModel.deleteChatRoom(jwt, chatRoomId, email, this);
             });
             binding.buttonAddContact.setOnClickListener(view -> {
                 Navigation.findNavController(view)
@@ -136,6 +144,9 @@ public class ChatListRecyclerViewAdapter extends
             binding.textPreview.setText(chat.getLastMessage());
         }
 
+        /**
+         * The callback of after removing chat room
+         */
         public void deleteChatCallback() {
             removeItem(this.getAdapterPosition());
             Toast.makeText(mContext, R.string.chat_delete, Toast.LENGTH_SHORT).show();
