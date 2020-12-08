@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -22,9 +23,12 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.SettingsActivity;
+import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.contacts.add_contact.AddContactDialog;
 import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabFragment;
+import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabViewModel;
 import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabFragment;
+import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabViewModel;
 
 /** The main page of contacts, which contains the other tabs
  *
@@ -32,11 +36,18 @@ import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabFr
 public class ContactsFragment extends Fragment {
 
     AddContactDialog mAddContactDialog;
+    UserInfoViewModel mUserInfoViewModel;
+    ContactListTabViewModel mContactListTabViewModel;
+    ContactRequestTabViewModel mContactRequestTabViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAddContactDialog = new AddContactDialog(this);
+        ViewModelProvider provider = new ViewModelProvider(getActivity());
+        mContactListTabViewModel = provider.get(ContactListTabViewModel.class);
+        mUserInfoViewModel = provider.get(UserInfoViewModel.class);
+        mContactRequestTabViewModel = provider.get(ContactRequestTabViewModel.class);
     }
 
     @Override
@@ -58,6 +69,20 @@ public class ContactsFragment extends Fragment {
 
         ViewPager2 viewPager = view.findViewById(R.id.contacts_view_pager);
         viewPager.setAdapter(new ContactsAdapter(this));
+
+        // Update both lists (contacts & contact requests) whenever they are brought into focus
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                if (position == 0) {
+                    mContactListTabViewModel.connectGet(mUserInfoViewModel.getJWT());
+                } else {
+                    mContactRequestTabViewModel.connectGet(mUserInfoViewModel.getJWT());
+                }
+            }
+        });
 
         TabLayout tabLayout = view.findViewById(R.id.contacts_tab_layout);
         tabLayout.setTabMode(TabLayout.MODE_AUTO);

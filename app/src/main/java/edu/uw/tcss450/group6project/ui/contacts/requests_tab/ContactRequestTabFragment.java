@@ -45,8 +45,12 @@ public class ContactRequestTabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         FragmentContactRequestTabBinding binding = FragmentContactRequestTabBinding.bind(requireView());
 
+        // If the list has items, update the recyclerview. If it doesn't, update the recyclerview with an empty list
         mModel.addContactRequestListObserver(getViewLifecycleOwner(), contactRequestList -> {
             if (!contactRequestList.isEmpty()) {
+                binding.contactRequestsListRoot.setAdapter(new ContactRequestTabRecyclerViewAdapter(contactRequestList,this,mUserModel));
+            } else {
+                contactRequestList.clear();
                 binding.contactRequestsListRoot.setAdapter(new ContactRequestTabRecyclerViewAdapter(contactRequestList,this,mUserModel));
             }
         });
