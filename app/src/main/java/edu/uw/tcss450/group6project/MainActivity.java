@@ -306,6 +306,9 @@ public class MainActivity extends AppCompatActivity {
                 //message.
                 mModel.addMessage(intent.getIntExtra("chatid", -1), cm);
             }
+            else if (intent.hasExtra("roomName") && nd.getId() != R.id.navigation_chat) {
+                mNewMessageModel.increment();
+            }
         }
     }
 
