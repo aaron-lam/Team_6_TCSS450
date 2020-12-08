@@ -37,20 +37,12 @@
             android:id="@+id/forecast_weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="35dp"
             android:src="@drawable/weather_cloud_24dp"
+            app:layout_constraintEnd_toStartOf="@+id/forecast_image_temp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/forecast_background" />
-
-        <TextView
-            android:id="@+id/forecast_text_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="10 AM"
-            app:layout_constraintStart_toEndOf="@+id/forecast_weather"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -75,11 +67,11 @@
 
         <TextView
             android:id="@+id/forecast_text_humidity"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="35dp"
-            android:text="76%"
+            android:text="100%"
             app:layout_constraintEnd_toStartOf="@+id/forcast_display_wind"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -98,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="35dp"
+            android:layout_marginEnd="36dp"
             android:text="47°"
             app:layout_constraintEnd_toStartOf="@+id/forecast_image_humidity"
             app:layout_constraintTop_toTopOf="@+id/forecast_background" />
@@ -108,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="20dp"
             android:text="103 mph"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

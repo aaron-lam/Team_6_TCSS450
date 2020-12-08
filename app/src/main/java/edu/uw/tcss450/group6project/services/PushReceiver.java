@@ -46,6 +46,11 @@ public class PushReceiver extends BroadcastReceiver {
         }
     }
 
+    /**
+     * Process push notifications of receiving new message.
+     * @param context context
+     * @param intent intent
+     */
     private void processMessage(Context context, Intent intent) {
         ChatMessage message = null;
         int chatId = -1;
@@ -82,6 +87,11 @@ public class PushReceiver extends BroadcastReceiver {
         }
     }
 
+    /**
+     * Process push notifications of joining new chat room.
+     * @param context context
+     * @param intent intent
+     */
     private void processNewRoom(Context context, Intent intent) {
         String roomName = intent.getStringExtra("roomName");
         ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();

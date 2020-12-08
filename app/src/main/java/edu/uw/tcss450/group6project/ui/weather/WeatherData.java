@@ -5,29 +5,45 @@ import java.util.List;
 
 public class WeatherData {
 
-    private List<WeatherDailyData> dailyList;
-    private List<WeatherDailyData> forecastList;
+    private List<WeatherDailyData> mDailyList;
+    private List<WeatherDailyData> mForecastList;
+    private String mCity;
+    private String mState;
 
     public WeatherData() {
-        dailyList = new ArrayList<>();
-        forecastList = new ArrayList<>();
+        mDailyList = new ArrayList<>();
+        mForecastList = new ArrayList<>();
     }
 
     public WeatherDailyData getCurrentWeather() {
-        return dailyList.get(0);
+        return mDailyList.get(0);
     }
 
     public List<WeatherDailyData> getDailyData() {
-        return dailyList;
+        return mDailyList;
     }
 
     public List<WeatherDailyData> getForecastData() {
-        return forecastList;
+        return mForecastList;
     }
 
     public boolean isEmpty() {
-        return dailyList.isEmpty();
+        return mDailyList.isEmpty();
     }
 
+    public String getCity() {
+        return mCity;
+    }
 
+    public void setCity(String city) {
+        mCity = city;
+    }
+
+    public String getState() {
+        return mState;
+    }
+
+    public void setState(String state) {
+        mState = state;
+    }
 }
