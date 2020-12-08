@@ -13,10 +13,13 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import androidx.lifecycle.ViewModelProvider;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentHomeBinding;
+import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.chat.ChatRoom;
 import edu.uw.tcss450.group6project.ui.chat.ChatGenerator;
+import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
 
 /**
  * A fragment for displaying the home landing page
@@ -26,9 +29,16 @@ import edu.uw.tcss450.group6project.ui.chat.ChatGenerator;
  */
 public class HomeFragment extends Fragment {
 
+    private UserInfoViewModel mUserModel;
+    private ChatRoomViewModel mChatRoomModel;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ViewModelProvider provider = new ViewModelProvider(getActivity());
+        mUserModel = provider.get(UserInfoViewModel.class);
+        mChatRoomModel = provider.get(ChatRoomViewModel.class);
+        mChatRoomModel.loadChatRooms(mUserModel.getEmail(), mUserModel.getJWT());
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
