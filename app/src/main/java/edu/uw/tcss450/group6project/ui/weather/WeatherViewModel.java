@@ -234,8 +234,6 @@ public class WeatherViewModel extends AndroidViewModel {
      */
     private void handleError(VolleyError error) {
         //you should add much better error handling in a production release.
-        //i.e. YOUR PROJECT
-        Log.e("CONNECTION ERROR", error.getLocalizedMessage());
-        throw new IllegalStateException(error.getMessage());
+        
     }
 }

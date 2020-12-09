@@ -104,6 +104,7 @@ public class WeatherTabFragment extends Fragment {
 
         if (mSearchView != null) {
             mSearchView.setInputType(InputType.TYPE_CLASS_NUMBER);
+            mSearchView.setQueryHint("Zip Code");
             mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
             mSearchListener = new SearchView.OnQueryTextListener() {
 
@@ -115,12 +116,15 @@ public class WeatherTabFragment extends Fragment {
                     if(validinput) {
                         Log.i("Zip Code Query", "Valid");
                         mWeatherModel.connectZipCode(query);
-
+                        mSearchView.setIconified(true);
+                        mSearchView.setQuery("", false);
+                        mSearchView.setIconified(true);
                     } else {
                         //TODO set an error message
                         Log.i("Zip Code Query", "Invalid");
                         displayZipCodeError();
                     }
+
                     mSearchView.clearFocus(); //removes the keyboard
                     return true;
                 }
