@@ -23,6 +23,7 @@ import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentChatCreateFormBinding;
 import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
+import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
 import edu.uw.tcss450.group6project.ui.contacts.Contact;
 
 /**
@@ -37,6 +38,7 @@ public class ChatCreateFormFragment extends Fragment {
     private FragmentChatCreateFormBinding mBinding;
     /** Model to store info about the user. */
     private UserInfoViewModel mUserModel;
+    private ChatRoomViewModel mChatRoomModel;
     private Context mContext;
 
     @Override
@@ -45,6 +47,7 @@ public class ChatCreateFormFragment extends Fragment {
         mModel = new ViewModelProvider(requireActivity()).get(ChatCreateFormViewModel.class);
         ViewModelProvider provider = new ViewModelProvider(getActivity());
         mUserModel = provider.get(UserInfoViewModel.class);
+        mChatRoomModel = provider.get(ChatRoomViewModel.class);
         mModel.connectGet(mUserModel.getJWT());
         mContext = this.getContext();
     }
@@ -85,9 +88,7 @@ public class ChatCreateFormFragment extends Fragment {
      */
     public void createNewChatRoomCallback() {
         Toast.makeText(mContext, R.string.toast_create_room_success, Toast.LENGTH_SHORT).show();
-        // go to previous fragment
-        if(getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStackImmediate();
-        }
+        mBinding.editTextRoomName.setText("");
+        mChatRoomModel.loadChatRooms(mUserModel.getEmail(), mUserModel.getJWT());
     }
 }
