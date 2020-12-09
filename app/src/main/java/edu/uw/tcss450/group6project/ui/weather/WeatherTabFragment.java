@@ -120,7 +120,6 @@ public class WeatherTabFragment extends Fragment {
                         mSearchView.setQuery("", false);
                         mSearchView.setIconified(true);
                     } else {
-                        //TODO set an error message
                         Log.i("Zip Code Query", "Invalid");
                         displayZipCodeError();
                     }
