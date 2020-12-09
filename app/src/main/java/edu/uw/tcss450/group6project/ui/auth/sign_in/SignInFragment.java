@@ -117,7 +117,8 @@ public class SignInFragment extends Fragment {
             } else {
                 successfulSignIn(
                         mBinding.fieldSignInEmail.getText().toString(),
-                        mUserViewModel.getJWT()
+                        mUserViewModel.getJWT(),
+                        mUserViewModel.getUsername()
                 );
             }
         }
@@ -130,7 +131,7 @@ public class SignInFragment extends Fragment {
      * @param view is the current view
      */
     private void handleHome(View view) {
-        NavDirections action = SignInFragmentDirections.actionSignInFragmentToMainActivity("testBypass","");
+        NavDirections action = SignInFragmentDirections.actionSignInFragmentToMainActivity("testBypass","", "no user");
         Navigation.findNavController(view).navigate(action);
     }
 
@@ -139,8 +140,8 @@ public class SignInFragment extends Fragment {
      * @param email The user's email
      * @param jwt The web authentication token
      */
-    public void successfulSignIn(final String email, final String jwt) {
-        Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToMainActivity(email,jwt));
+    public void successfulSignIn(final String email, final String jwt, final String username) {
+        Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToMainActivity(email, jwt, username));
     }
 
     /** This method sends the users credentials to the web service for authentication.
@@ -185,7 +186,8 @@ public class SignInFragment extends Fragment {
                     mUserViewModel = new ViewModelProvider(getActivity(),
                             new UserInfoViewModel.UserInfoViewModelFactory(
                                     mBinding.fieldSignInEmail.getText().toString(),
-                                    response.getString("token")
+                                    response.getString("token"),
+                                    response.getString("username")
                             )).get(UserInfoViewModel.class);
                     sendPushyToken();
                 } catch (JSONException e) {

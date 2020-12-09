@@ -14,15 +14,19 @@ public class UserInfoViewModel extends ViewModel {
     private final String mEmail;
     /** The JWT auth for the current user. */
     private final String mJwt;
+    /** The username for the current user. */
+    private final String mUsername;
 
     /**
      * Private constructor for the factory method.
      * @param email email of the user
      * @param jwt jwt of the user
+     * @param username username of the user
      */
-    private UserInfoViewModel(final String email,  final String jwt) {
+    private UserInfoViewModel(final String email,  final String jwt, final String username) {
         mEmail = email;
         mJwt = jwt;
+        mUsername = username;
     }
 
     /**
@@ -41,21 +45,31 @@ public class UserInfoViewModel extends ViewModel {
         return mJwt;
     }
 
+    /**
+     * Returns the username of the user
+     * @return username of current user
+     */
+    public String getUsername() {
+        return mUsername;
+    }
+
     public static class UserInfoViewModelFactory implements ViewModelProvider.Factory {
 
         private final String email;
         private final String jwt;
+        private final String username;
 
-        public UserInfoViewModelFactory(String email, String jwt) {
+        public UserInfoViewModelFactory(String email, String jwt, String username) {
             this.email = email;
             this.jwt = jwt;
+            this.username = username;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass == UserInfoViewModel.class) {
-                return (T) new UserInfoViewModel(email, jwt);
+                return (T) new UserInfoViewModel(email, jwt, username);
             }
             throw new IllegalArgumentException(
                     "Argument must be: " + UserInfoViewModel.class);

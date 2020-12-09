@@ -22,6 +22,7 @@ import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.chat.ChatRoom;
 import edu.uw.tcss450.group6project.ui.chat.ChatGenerator;
 import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
+import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabViewModel;
 import edu.uw.tcss450.group6project.ui.weather.WeatherDailyData;
 import edu.uw.tcss450.group6project.ui.weather.WeatherViewModel;
 
@@ -36,19 +37,24 @@ public class HomeFragment extends Fragment {
     private UserInfoViewModel mUserModel;
     private WeatherViewModel mWeatherModel;
     private ChatRoomViewModel mChatRoomModel;
+    private ContactRequestTabViewModel mContactRequestModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewModelProvider provider = new ViewModelProvider(getActivity());
         mUserModel = provider.get(UserInfoViewModel.class);
+
         mChatRoomModel = provider.get(ChatRoomViewModel.class);
         mChatRoomModel.loadChatRooms(mUserModel.getEmail(), mUserModel.getJWT());
+
         mWeatherModel = provider.get(WeatherViewModel.class);
+
+        mContactRequestModel = provider.get(ContactRequestTabViewModel.class);
+        mContactRequestModel.connectGet(mUserModel.getJWT());
 
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -62,7 +68,16 @@ public class HomeFragment extends Fragment {
                 binding.imageWeather.setImageResource(createIconMap().get(currentWeather.getWeather()));
             }
         });
-        setRecentChat();
+        mContactRequestModel.addContactRequestListObserver(getViewLifecycleOwner(), contactList -> {
+            if(contactList.isEmpty()) {
+                binding.textNewContacts.setText("No new contact requests");
+            } else {
+                binding.textNewContacts.setText("You have " + contactList.size() + " contact requests!");
+            }
+
+        });
+        //binding.textWelcome.setText("Welcome Back " + mUserModel.getUsername());
+
     }
 
     /**
@@ -80,18 +95,5 @@ public class HomeFragment extends Fragment {
         return iconMap;
     }
 
-    /**
-     * Temporary for Design purposes
-     * Displays the 3 most recent chats
-     */
-    private void setRecentChat() {
-        FragmentHomeBinding binding = FragmentHomeBinding.bind(getView());
-        List<ChatRoom> chats = ChatGenerator.getChatList();
-        TextView[] recentParticipants = {binding.textParticipant1, binding.textParticipant2, binding.textParticipant3};
-        TextView[] recentMessages = {binding.textMessage1, binding.textMessage2, binding.textMessage3};
-        for(int i = 0; i < 3; i++) {
-            recentParticipants[i].setText(chats.get(i).getParticipants().toString());
-            recentMessages[i].setText(chats.get(i).getLastMessage());
-        }
-    }
+
 }
