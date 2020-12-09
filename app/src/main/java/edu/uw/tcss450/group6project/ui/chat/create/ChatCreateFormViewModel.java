@@ -125,6 +125,7 @@ public class ChatCreateFormViewModel extends AndroidViewModel {
             Log.e("ERROR!", e.getMessage());
         }
         mContactList.setValue(contacts);
+        Log.d("abc", mSelectedContactsSet.getValue().toString());
     }
 
     /**
@@ -226,6 +227,7 @@ public class ChatCreateFormViewModel extends AndroidViewModel {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mSelectedContactsSet.setValue(new HashSet<>());
         Request request = new JsonObjectRequest(
                 Request.Method.PUT,
                 url,
@@ -285,11 +287,11 @@ public class ChatCreateFormViewModel extends AndroidViewModel {
     }
 
     /**
-     * Method to handle a successful delete request of a specific chat room.
+     * Method to handle a successful add contacts request of a specific chat room.
      * @param response Response in JSON format
      */
     private void handleAddNewContactToRoomSuccess(JSONObject response, ChatContactAddFormFragment fragment) {
-        if (!response.has("sucess")) {
+        if (!response.has("success")) {
             throw new IllegalStateException("Unexpected response in ChatViewModel: " + response);
         }
         fragment.addNewContactsToRoomCallback();

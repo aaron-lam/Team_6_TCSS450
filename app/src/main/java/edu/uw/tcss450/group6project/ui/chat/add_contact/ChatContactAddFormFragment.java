@@ -16,6 +16,7 @@ import android.widget.Toast;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentChatAddContactFormBinding;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
+import edu.uw.tcss450.group6project.ui.chat.ChatRoom;
 import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
 import edu.uw.tcss450.group6project.ui.chat.create.ChatCreateFormRecyclerViewAdapter;
 import edu.uw.tcss450.group6project.ui.chat.create.ChatCreateFormViewModel;
@@ -32,6 +33,7 @@ public class ChatContactAddFormFragment extends Fragment {
     private FragmentChatAddContactFormBinding mBinding;
     /** Model to store info about the user. */
     private UserInfoViewModel mUserModel;
+    private ChatRoomViewModel mChatRoomModel;
     private Context mContext;
 
     @Override
@@ -40,6 +42,7 @@ public class ChatContactAddFormFragment extends Fragment {
         mModel = new ViewModelProvider(requireActivity()).get(ChatCreateFormViewModel.class);
         ViewModelProvider provider = new ViewModelProvider(getActivity());
         mUserModel = provider.get(UserInfoViewModel.class);
+        mChatRoomModel = provider.get(ChatRoomViewModel.class);
         mModel.connectGet(mUserModel.getJWT());
         mContext = this.getContext();
     }
@@ -81,9 +84,6 @@ public class ChatContactAddFormFragment extends Fragment {
      */
     public void addNewContactsToRoomCallback() {
         Toast.makeText(mContext, R.string.toast_add_contact_existed_room_success, Toast.LENGTH_SHORT).show();
-        // go to previous fragment
-        if(getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStackImmediate();
-        }
+        mChatRoomModel.loadChatRooms(mUserModel.getEmail(), mUserModel.getJWT());
     }
 }
