@@ -26,8 +26,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.badge.BadgeDrawable;
@@ -35,11 +33,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import edu.uw.tcss450.group6project.databinding.ActivityMainBinding;
 import edu.uw.tcss450.group6project.model.LocationViewModel;
+import edu.uw.tcss450.group6project.model.NewContactCountViewModel;
 import edu.uw.tcss450.group6project.model.NewMessageCountViewModel;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.services.PushReceiver;
 import edu.uw.tcss450.group6project.ui.chat.ChatMessage;
 import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
+import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabFragment;
+import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabViewModel;
+import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequest;
+import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabFragment;
+import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabViewModel;
 import edu.uw.tcss450.group6project.ui.weather.WeatherViewModel;
 
 /**
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MainPushMessageReceiver mPushMessageReceiver;
     private NewMessageCountViewModel mNewMessageModel;
+    private NewContactCountViewModel mNewContactCountViewModel;
     private WeatherViewModel mWeatherModel;
 
     private boolean mLoadedWeather;
@@ -84,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 ).get(UserInfoViewModel.class);
 
         mNewMessageModel = new ViewModelProvider(this).get(NewMessageCountViewModel.class);
+        mNewContactCountViewModel = new ViewModelProvider(this).get(NewContactCountViewModel.class);
         mWeatherModel = new ViewModelProvider(this).get(WeatherViewModel.class);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -102,8 +108,28 @@ public class MainActivity extends AppCompatActivity {
                 //This will need some extra logic for your project as it should have
                 //multiple chat rooms.
                 mNewMessageModel.reset();
+            } else if (destination.getId() == R.id.navigation_contacts) {
+                // See above comment, but for contacts
+                mNewContactCountViewModel.reset();
             }
         });
+
+        // Deals with contact tab badge (visual number notification on icon)
+        mNewContactCountViewModel.addContactCountObserver(this, count -> {
+            BadgeDrawable badge = binding.navView.getOrCreateBadge(R.id.navigation_contacts);
+            badge.setMaxCharacterCount(2);
+            if (count > 0) {
+                //new contact requests! update and show the notification badge.
+                badge.setNumber(count);
+                badge.setVisible(true);
+            } else {
+                //user did some action to clear the new messages, remove the badge
+                badge.clearNumber();
+                badge.setVisible(false);
+            }
+        });
+
+        // Deals with the new message / new chatroom badge for the messages tab icon
         mNewMessageModel.addMessageCountObserver(this, count -> {
             BadgeDrawable badge = binding.navView.getOrCreateBadge(R.id.navigation_chat);
             badge.setMaxCharacterCount(2);
@@ -290,9 +316,10 @@ public class MainActivity extends AppCompatActivity {
      * A BroadcastReceiver that listens for messages sent from PushReceiver
      */
     private class MainPushMessageReceiver extends BroadcastReceiver {
-        private ChatRoomViewModel mModel =
-                new ViewModelProvider(MainActivity.this)
-                        .get(ChatRoomViewModel.class);
+        ViewModelProvider vm = new ViewModelProvider(MainActivity.this);
+
+        private ChatRoomViewModel mChatRoomModel = vm.get(ChatRoomViewModel.class);
+
         @Override
         public void onReceive(Context context, Intent intent) {
             NavController nc =
@@ -308,12 +335,16 @@ public class MainActivity extends AppCompatActivity {
                 }
                 //Inform the view model holding chatroom messages of the new
                 //message.
-                mModel.addMessage(intent.getIntExtra("chatid", -1), cm);
+                mChatRoomModel.addMessage(intent.getIntExtra("chatid", -1), cm);
             }
             else if (intent.hasExtra("roomName") && nd.getId() != R.id.navigation_chat) {
                 mNewMessageModel.increment();
             }
+            // At this point, it must be a contact related notification, but you still need
+            // to check if you're on the contacts page before updating notifications
+            else if (nd.getId() != R.id.navigation_contacts) {
+                mNewContactCountViewModel.increment();
+            }
         }
     }
-
 }

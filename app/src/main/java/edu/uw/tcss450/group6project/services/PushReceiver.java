@@ -40,9 +40,16 @@ public class PushReceiver extends BroadcastReceiver {
         String typeOfMessage = intent.getStringExtra("type");
         if (typeOfMessage.equals("msg")) {
             processMessage(context, intent);
-        }
-        else if (typeOfMessage.equals("newRoom")) {
+        } else if (typeOfMessage.equals("newRoom")) {
             processNewRoom(context, intent);
+        } else if (typeOfMessage.equals("newContact")) {
+            processNewContactRequest(context, intent);
+        } else if (typeOfMessage.equals("deleteContact")) {
+            processDeleteContact(context, intent);
+        } else if (typeOfMessage.equals("confirmContact")) {
+            processConfirmContact(context, intent);
+        } else if (typeOfMessage.equals("denyContact")) {
+            processDenyContact(context, intent);
         }
     }
 
@@ -98,7 +105,7 @@ public class PushReceiver extends BroadcastReceiver {
         ActivityManager.getMyMemoryState(appProcessInfo);
 
         if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
-            //app is in the foreground so send the message to the active Activities
+            // app is in the foreground so send the message to the active Activities
             Log.d("PUSHY", "New chat room created in foreground: " + roomName);
 
             //create an Intent to broadcast a message to other parts of the app.
@@ -108,7 +115,7 @@ public class PushReceiver extends BroadcastReceiver {
             context.sendBroadcast(i);
 
         } else {
-            //app is in the background so create and post a notification
+            // app is in the background so create and post a notification
             Log.d("PUSHY", "New chat room created in background: " + roomName);
 
             Intent i = new Intent(context, AuthActivity.class);
@@ -116,6 +123,118 @@ public class PushReceiver extends BroadcastReceiver {
             i.putExtras(intent.getExtras());
 
             sendNotification(context, i, "You were added in a new chat room: " + roomName, "");
+        }
+    }
+
+    private void processNewContactRequest(Context context, Intent intent) {
+        String username = intent.getStringExtra("username"); // ^ this but username
+
+        // Not sure what this does but it seems important because all of them do it
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
+
+        // app is in the foreground so send the message to the active Activities
+        if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+            Log.d("PUSHY", "Contact request received in foreground from: " + username);
+
+            //create an Intent to broadcast a message to other parts of the app.
+            Intent i = new Intent(RECEIVED_NEW_MESSAGE);
+            i.putExtra("username",username);
+            i.putExtras(intent.getExtras());
+
+            context.sendBroadcast(i);
+        }
+
+        // app is in the background so create and post a notification
+        else {
+            Log.d("PUSHY", "Contact request received in background from: " + username);
+
+            Intent i = new Intent(context, AuthActivity.class);
+            i.putExtras(intent.getExtras());
+
+            sendNotification(context, i, "New contact request from: " + username, "");
+        }
+    }
+
+    private void processConfirmContact(Context context, Intent intent) {
+        String username = intent.getStringExtra("username"); // ^ this but username
+
+        // Not sure what this does but it seems important because all of them do it
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
+
+        // app is in the foreground so send the message to the active Activities
+        if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+            Log.d("PUSHY", "Contact request confirmed in background from: " + username);
+
+            //create an Intent to broadcast a message to other parts of the app.
+            Intent i = new Intent(RECEIVED_NEW_MESSAGE);
+            i.putExtra("username",username);
+            i.putExtras(intent.getExtras());
+
+            context.sendBroadcast(i);
+        }
+
+        // app is in the background so create and post a notification
+        else {
+            Log.d("PUSHY", "Contact request confirmed in background from: " + username);
+
+            Intent i = new Intent(context, AuthActivity.class);
+            i.putExtras(intent.getExtras());
+
+            sendNotification(context, i, "Your contact request was confirmed by: " + username, "");
+        }
+    }
+
+    // more silent
+    private void processDeleteContact(Context context, Intent intent) {
+        String userId = intent.getStringExtra("userId");
+
+        // Not sure what this does but it seems important because all of them do it
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
+
+        // app is in the foreground so send the message to the active Activities
+        if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+            Log.d("PUSHY", "Contact deleted in background from ID: " + userId);
+
+            //create an Intent to broadcast a message to other parts of the app.
+            Intent i = new Intent(RECEIVED_NEW_MESSAGE);
+            i.putExtra("userId",userId);
+            i.putExtras(intent.getExtras());
+
+            context.sendBroadcast(i);
+        }
+
+        // app is in the background so create and post a notification
+        else {
+            Log.d("PUSHY", "Contact deleted in background from ID: " + userId);
+        }
+    }
+
+    // more silent
+    private void processDenyContact(Context context, Intent intent) {
+        String userId = intent.getStringExtra("userId");
+
+        // Not sure what this does but it seems important because all of them do it
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
+
+        // app is in the foreground so send the message to the active Activities
+        if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+            Log.d("PUSHY", "Contact request denied in background fromID: " + userId);
+
+            //create an Intent to broadcast a message to other parts of the app.
+            Intent i = new Intent(RECEIVED_NEW_MESSAGE);
+            i.putExtra("userId",userId);
+            i.putExtras(intent.getExtras());
+
+            context.sendBroadcast(i);
+        }
+
+        // app is in the background so create and post a notification
+        else {
+            Log.d("PUSHY", "Contact request denied in background fromID: " + userId);
         }
     }
 

@@ -7,15 +7,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 /**
- * @author Charles Bryan
- * View Model to track if new messages have been sent
+ * @author Chase Alder
+ * View Model to track if new contact updates have been sent
  */
-public class NewMessageCountViewModel extends ViewModel {
-    private MutableLiveData<Integer> mNewMessageCount;
+public class NewContactCountViewModel extends ViewModel {
 
-    public NewMessageCountViewModel() {
-        mNewMessageCount = new MutableLiveData<>();
-        mNewMessageCount.setValue(0);
+    private MutableLiveData<Integer> mNewContactCount;
+
+    public NewContactCountViewModel() {
+        mNewContactCount = new MutableLiveData<>();
+        mNewContactCount.setValue(0);
     }
 
     /**
@@ -23,22 +24,22 @@ public class NewMessageCountViewModel extends ViewModel {
      * @param owner owner of the current view lifecycle
      * @param observer observer
      */
-    public void addMessageCountObserver(@NonNull LifecycleOwner owner,
+    public void addContactCountObserver(@NonNull LifecycleOwner owner,
                                         @NonNull Observer<? super Integer> observer) {
-        mNewMessageCount.observe(owner, observer);
+        mNewContactCount.observe(owner, observer);
     }
 
     /**
      * Increases the number of messages by 1.
      */
     public void increment() {
-        mNewMessageCount.setValue(mNewMessageCount.getValue() + 1);
+        mNewContactCount.setValue(mNewContactCount.getValue() + 1);
     }
 
     /**
      * Sets the number of new messages back to 0.
      */
     public void reset() {
-        mNewMessageCount.setValue(0);
+        mNewContactCount.setValue(0);
     }
 }
