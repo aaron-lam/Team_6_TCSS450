@@ -62,7 +62,8 @@ public class HomeFragment extends Fragment {
                 binding.imageWeather.setImageResource(createIconMap().get(currentWeather.getWeather()));
             }
         });
-        setRecentChat();
+        //binding.textWelcome.setText("Welcome Back " + mUserModel.getUsername());
+
     }
 
     /**
@@ -80,18 +81,5 @@ public class HomeFragment extends Fragment {
         return iconMap;
     }
 
-    /**
-     * Temporary for Design purposes
-     * Displays the 3 most recent chats
-     */
-    private void setRecentChat() {
-        FragmentHomeBinding binding = FragmentHomeBinding.bind(getView());
-        List<ChatRoom> chats = ChatGenerator.getChatList();
-        TextView[] recentParticipants = {binding.textParticipant1, binding.textParticipant2, binding.textParticipant3};
-        TextView[] recentMessages = {binding.textMessage1, binding.textMessage2, binding.textMessage3};
-        for(int i = 0; i < 3; i++) {
-            recentParticipants[i].setText(chats.get(i).getParticipants().toString());
-            recentMessages[i].setText(chats.get(i).getLastMessage());
-        }
-    }
+
 }
