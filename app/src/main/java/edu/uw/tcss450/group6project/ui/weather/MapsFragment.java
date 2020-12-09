@@ -90,7 +90,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
 
         // Create a LatLngBounds that includes the US
         LatLngBounds usBounds = new LatLngBounds(
-                new LatLng(34.79, -125.55), // SW bounds
+                new LatLng(30.79, -127.34), // SW bounds
                 new LatLng(47.69, -67.25)  // NE bounds
         );
 
