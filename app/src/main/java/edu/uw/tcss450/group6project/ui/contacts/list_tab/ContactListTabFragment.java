@@ -35,7 +35,7 @@ import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabRe
 /**
  * A fragment for displaying the list of contacts.
  *
- * @author Robert M., Aaron L.
+ * @author Robert M., Aaron L., Chase Alder
  * @version 1.0
  */
 public class ContactListTabFragment extends Fragment {
@@ -65,6 +65,9 @@ public class ContactListTabFragment extends Fragment {
         update();
     }
 
+    /** This updates the list of contacts for the client, even if the user is on the page
+     *
+     */
     public void update() {
         mModel.connectGet(mUserModel.getJWT());
         FragmentContactListTabBinding binding = FragmentContactListTabBinding.bind(requireView());
@@ -99,6 +102,10 @@ public class ContactListTabFragment extends Fragment {
         }
     }
 
+    /** This receives broadcasts, and refreshes the contact list if it receives one and you're on
+     *  the contacts page when it happens.
+     *
+     */
     private class ContactListBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

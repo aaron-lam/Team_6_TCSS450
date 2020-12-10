@@ -1,7 +1,8 @@
 package edu.uw.tcss450.group6project.ui.contacts.requests_tab;
 
-import edu.uw.tcss450.group6project.ui.contacts.Contact;
-
+/** Used to construct a contact request object, used on the contact request tab of contacts
+ * @author chasealder
+ */
 public class ContactRequest {
 
     private String mMemberId;
@@ -12,14 +13,25 @@ public class ContactRequest {
         mUsername = builder.mUsername;
     }
 
+    /** MemberId getter
+     *
+     * @return MemberId of the user who wants to be contacts
+     */
     public String getMemberId() {
         return mMemberId;
     }
 
+    /** Username getter
+     *
+     * @return Username of the user who wants to be contacts
+     */
     public String getUsername() {
         return mUsername;
     }
 
+    /** Helper class for creating immutable contact request object
+     *
+     */
     public static class Builder {
         private final String mMemberId;
         private final String mUsername;

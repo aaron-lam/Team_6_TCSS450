@@ -23,6 +23,7 @@ import edu.uw.tcss450.group6project.utils.Validator;
 
 /** This fragment represents the new user registration page.
  *
+ * @author chasealder
  */
 public class RegisterFragment extends Fragment {
 

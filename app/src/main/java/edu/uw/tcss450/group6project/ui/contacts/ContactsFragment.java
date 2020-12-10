@@ -1,7 +1,5 @@
 package edu.uw.tcss450.group6project.ui.contacts;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,7 +20,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import edu.uw.tcss450.group6project.R;
-import edu.uw.tcss450.group6project.SettingsActivity;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.contacts.add_contact.AddContactDialog;
 import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabFragment;
@@ -30,8 +27,9 @@ import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabViewModel
 import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabFragment;
 import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabViewModel;
 
-/** The main page of contacts, which contains the other tabs
+/** The main page of contacts, which contains the other tabs (list and requests)
  *
+ * @author chasealder
  */
 public class ContactsFragment extends Fragment {
 
@@ -63,6 +61,10 @@ public class ContactsFragment extends Fragment {
         createContactsTab(view);
     }
 
+    /** Adds the ViewPager and TabLayout (tabs) to the contacts fragment
+     *
+     * @param view the current view
+     */
     private void createContactsTab(View view) {
 
         String[] tabNames = {"Contacts","Requests"};
@@ -108,6 +110,10 @@ public class ContactsFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /** Used to determine which fragment to show based on the tab position
+     *
+     * @author chasealder
+     */
     private class ContactsAdapter extends FragmentStateAdapter {
 
         public ContactsAdapter(@NonNull Fragment fragment) {

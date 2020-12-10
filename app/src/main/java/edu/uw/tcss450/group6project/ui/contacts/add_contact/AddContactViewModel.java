@@ -33,11 +33,21 @@ public class AddContactViewModel extends AndroidViewModel {
         mResponse.setValue(new JSONObject());
     }
 
+    /** Adds a response observer
+     *
+     * @param owner
+     * @param observer
+     */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {
         mResponse.observe(owner, observer);
     }
 
+    /** Sends request to web service to add a new contact
+     *
+     * @param jwt current user's java web token
+     * @param username username of the person you are trying to add as a contact
+     */
     public void connectAddContact(final String jwt, final String username) {
         String url = "https://team6-tcss450-web-service.herokuapp.com/contacts/";
         JSONObject body = new JSONObject();

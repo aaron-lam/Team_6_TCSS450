@@ -19,7 +19,7 @@ import edu.uw.tcss450.group6project.ui.contacts.Contact;
 /**
  * A RecyclerViewAdapter to create scrolling list view of contacts.
  *
- * @author Robert M
+ * @author Robert M, Chase Alder
  * @version 3 November 2020
  */
 public class ContactListTabRecyclerViewAdapter extends
@@ -103,7 +103,7 @@ public class ContactListTabRecyclerViewAdapter extends
         }
 
         /**
-         * Helper method to handle deleting a contact.  Not yet implemented.
+         * Helper method to handle deleting a contact.
          *
          * @param button the delete button
          */

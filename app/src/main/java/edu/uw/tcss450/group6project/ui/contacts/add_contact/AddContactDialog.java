@@ -23,6 +23,10 @@ import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.utils.Validator;
 
+/** Used to create the dialog popup for adding a new contact.
+ *
+ * @author chasealder
+ */
 public class AddContactDialog {
 
     private Fragment mCurrentFragment;
@@ -42,6 +46,9 @@ public class AddContactDialog {
         mUserInfoViewModel = viewProvider.get(UserInfoViewModel.class);
     }
 
+    /** This is the method that actually builds the dialog and displays it.
+     *
+     */
     public void buildAddContactDialog() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mCurrentFragment.getContext());
         mBuilder.setTitle(R.string.contact_add);
@@ -80,12 +87,20 @@ public class AddContactDialog {
         });
     }
 
+    /** This method use the AddContactViewModel to send the contact add request to the web service.
+     *
+     * @param username the username of the member you want to add as a contact
+     */
     private void verifyAddContactWithServer(String username) {
         mAddContactViewModel.connectAddContact(mUserInfoViewModel.getJWT(),username);
         //This is an Asynchronous call. No statements after should rely on the
         //result of connectAddContact().
     }
 
+    /** Handles the response from the web service after trying to add a new contact
+     *
+     * @param response the response from the web service
+     */
     private void observeResponse(final JSONObject response) {
         if (response.length() > 0) {
             // On failure...
@@ -116,6 +131,9 @@ public class AddContactDialog {
         }
     }
 
+    /** This is an inner class, used to create a popup confirming a contact was added successfully.
+     * @author chasealder
+     */
     public static class ContactAddSuccessfulDialog extends AppCompatDialogFragment {
 
         @NonNull

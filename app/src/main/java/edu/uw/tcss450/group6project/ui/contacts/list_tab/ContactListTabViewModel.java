@@ -60,11 +60,6 @@ public class ContactListTabViewModel extends AndroidViewModel {
         mContactList.observe(owner, observer);
     }
 
-    public void addDeleteResponseObserver(@NonNull LifecycleOwner owner,
-                                          @NonNull Observer<? super JSONObject> observer) {
-        mResponse.observe(owner, observer);
-    }
-
     /**
      * Handles errors when making requests to the server.
      * @param error the error message
@@ -145,7 +140,11 @@ public class ContactListTabViewModel extends AndroidViewModel {
                             add(request);
     }
 
-
+    /** Used to send a request to the web service to delete a contact
+     *
+     * @param jwt the current users java web token
+     * @param memberId the memberid of the user they want to delete from their contacts
+     */
     public void connectDelete(String jwt, String memberId) {
         String url = "https://team6-tcss450-web-service.herokuapp.com/contacts/" + memberId;
         Request request = new JsonObjectRequest(
@@ -187,6 +186,10 @@ public class ContactListTabViewModel extends AndroidViewModel {
         mContactList.setValue(tempList);
     }
 
+    /** Handles any errors that are thrown by the contact delete request.
+     *
+     * @param error the error from Volley
+     */
     private void handleDeleteError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {
             try {

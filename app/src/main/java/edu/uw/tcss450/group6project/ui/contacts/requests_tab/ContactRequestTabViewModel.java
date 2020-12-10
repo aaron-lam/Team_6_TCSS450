@@ -28,6 +28,11 @@ import java.util.function.IntFunction;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.ui.contacts.Contact;
 
+/** ViewModel for the contact request tab. Holds the list and handles sending/registering related
+ *  things with the web service
+ *
+ * @author chasealder
+ */
 public class ContactRequestTabViewModel extends AndroidViewModel {
 
     private MutableLiveData<JSONObject> mResponse;
@@ -126,6 +131,11 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
                 add(request);
     }
 
+    /** Confirm a contact request
+     *
+     * @param jwt java web token of current user
+     * @param memberId memberId of the user you are confirming the contact with
+     */
     public void connectConfirm(String jwt, String memberId) {
         String url = "https://team6-tcss450-web-service.herokuapp.com/contactRequests/" + memberId;
         Request request = new JsonObjectRequest(
@@ -167,6 +177,11 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
         mContactRequestList.setValue(tempList);
     }
 
+    /** Deny a contact request
+     *
+     * @param jwt java web token of current user
+     * @param memberId memberId of the user you are denying the contact with
+     */
     public void connectDeny(String jwt, String memberId) {
         String url = "https://team6-tcss450-web-service.herokuapp.com/contactRequests/" + memberId;
         Request request = new JsonObjectRequest(

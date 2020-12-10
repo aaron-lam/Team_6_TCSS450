@@ -16,6 +16,9 @@ import edu.uw.tcss450.group6project.databinding.FragmentContactRequestCardBindin
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabRecyclerViewAdapter;
 
+/** The RecyclerView that handles the scrolling list of contact requests
+ * @author chasealder
+ */
 public class ContactRequestTabRecyclerViewAdapter extends
         RecyclerView.Adapter<ContactRequestTabRecyclerViewAdapter.ContactRequestViewHolder> {
 
@@ -97,11 +100,18 @@ public class ContactRequestTabRecyclerViewAdapter extends
             binding.buttonContactRequestDeny.setOnClickListener(this::handleDeny);
         }
 
-
+        /** Used to deny a contact request. Called by hitting the deny button on a contact request
+         *
+         * @param button the deny button
+         */
         private void handleDeny(final View button) {
             mContactRequestTabViewModel.connectDeny(mUserInfoViewModel.getJWT(),mContactRequest.getMemberId());
         }
 
+        /** Used to confirm a contact request. Called by hitting the confirm button on a contact request
+         *
+         * @param button the confirm button
+         */
         private void handleConfirm(final View button) {
             mContactRequestTabViewModel.connectConfirm(mUserInfoViewModel.getJWT(),mContactRequest.getMemberId());
         }

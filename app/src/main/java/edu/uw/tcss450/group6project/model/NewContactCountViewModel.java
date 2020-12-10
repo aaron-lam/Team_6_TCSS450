@@ -30,14 +30,14 @@ public class NewContactCountViewModel extends ViewModel {
     }
 
     /**
-     * Increases the number of messages by 1.
+     * Increases the number of contact updates by 1.
      */
     public void increment() {
         mNewContactCount.setValue(mNewContactCount.getValue() + 1);
     }
 
     /**
-     * Sets the number of new messages back to 0.
+     * Sets the number of new contact updates back to 0.
      */
     public void reset() {
         mNewContactCount.setValue(0);

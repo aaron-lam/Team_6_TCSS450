@@ -32,6 +32,9 @@ import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
 import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabRecyclerViewAdapter;
 import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabViewModel;
 
+/** The fragment representing the contact request tab of the contacts page.
+ * @author chasealder
+ */
 public class ContactRequestTabFragment extends Fragment {
 
     private ContactRequestTabViewModel mModel;
@@ -60,6 +63,9 @@ public class ContactRequestTabFragment extends Fragment {
         update();
     }
 
+    /** Updates the list of contact requests, even if the user is on the page.
+     *
+     */
     public void update() {
         mModel.connectGet(mUserModel.getJWT());
         FragmentContactRequestTabBinding binding = FragmentContactRequestTabBinding.bind(requireView());
@@ -94,6 +100,10 @@ public class ContactRequestTabFragment extends Fragment {
         }
     }
 
+    /** Triggers when a broadcast is received, and updates the contact request list if the user is
+     * on the contacts page.
+     *
+     */
     private class ContactRequestBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

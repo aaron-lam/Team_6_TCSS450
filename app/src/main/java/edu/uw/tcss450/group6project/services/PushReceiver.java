@@ -96,8 +96,8 @@ public class PushReceiver extends BroadcastReceiver {
 
     /**
      * Process push notifications of joining new chat room.
-     * @param context context
-     * @param intent intent
+     * @param context context the current context
+     * @param intent intent the intent sent by web services
      */
     private void processNewRoom(Context context, Intent intent) {
         String roomName = intent.getStringExtra("roomName");
@@ -126,6 +126,11 @@ public class PushReceiver extends BroadcastReceiver {
         }
     }
 
+    /** Process push notifications of receiving a new contact request.
+     *
+     * @param context context the current context
+     * @param intent intent the intent sent by web services
+     */
     private void processNewContactRequest(Context context, Intent intent) {
         String username = intent.getStringExtra("username"); // ^ this but username
 
@@ -156,6 +161,11 @@ public class PushReceiver extends BroadcastReceiver {
         }
     }
 
+    /** Process push notifications of a contact request you sent being confirmed
+     *
+     * @param context context the current context
+     * @param intent intent the intent sent by web services
+     */
     private void processConfirmContact(Context context, Intent intent) {
         String username = intent.getStringExtra("username"); // ^ this but username
 
@@ -186,7 +196,11 @@ public class PushReceiver extends BroadcastReceiver {
         }
     }
 
-    // more silent
+    /** Process push notifications of one of your contacts being deleted. Not shown to user.
+     *
+     * @param context context the current context
+     * @param intent intent the intent sent by web services
+     */
     private void processDeleteContact(Context context, Intent intent) {
         String userId = intent.getStringExtra("userId");
 
@@ -212,7 +226,11 @@ public class PushReceiver extends BroadcastReceiver {
         }
     }
 
-    // more silent
+    /** Process push notifications of one of your contact requests being denied. Not shown to user.
+     *
+     * @param context context the current context
+     * @param intent intent the intent sent by web services
+     */
     private void processDenyContact(Context context, Intent intent) {
         String userId = intent.getStringExtra("userId");
 
