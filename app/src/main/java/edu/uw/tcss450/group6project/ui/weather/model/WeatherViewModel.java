@@ -1,4 +1,4 @@
-package edu.uw.tcss450.group6project.ui.weather;
+package edu.uw.tcss450.group6project.ui.weather.model;
 
 import android.app.Application;
 import android.util.Log;
@@ -19,13 +19,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.IntFunction;
 
 import edu.uw.tcss450.group6project.R;
+import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
+import edu.uw.tcss450.group6project.ui.weather.model.WeatherData;
 
 /**
  * View Model class to store data about weather.

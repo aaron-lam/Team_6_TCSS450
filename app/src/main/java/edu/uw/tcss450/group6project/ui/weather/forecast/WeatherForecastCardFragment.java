@@ -1,4 +1,4 @@
-package edu.uw.tcss450.group6project.ui.weather;
+package edu.uw.tcss450.group6project.ui.weather.forecast;
 
 import android.os.Bundle;
 

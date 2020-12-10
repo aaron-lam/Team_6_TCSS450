@@ -12,21 +12,28 @@ import android.view.ViewGroup;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentWeatherBinding;
+import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
 
 /**
- * A fragment for displaying the weather.
+ * A fragment for displaying the daily weather.
  *
  * @author Robert M
  * @author Anthony N
  * @version 1.0
  */
-public class WeatherFragment extends Fragment {
+public class DailyWeatherFragment extends Fragment {
 
+    /** Weather icon to display*/
     private int mIcon;
+    /** Temperature (F)*/
     private double mTemperature;
+    /** Humidity (%)*/
     private int mHumidity;
+    /** Wind Speed (mph)*/
     private double mWindSpeed;
+    /** City of the weather*/
     private String mCity;
+    /** State of the weather*/
     private String mState;
 
     /**
@@ -34,7 +41,7 @@ public class WeatherFragment extends Fragment {
      * @param icon icon for the current weather conditions.
      * @param data weather data for the day.
      */
-    public WeatherFragment(int icon, WeatherDailyData data, String city, String state) {
+    public DailyWeatherFragment(int icon, WeatherDailyData data, String city, String state) {
         mIcon = icon;
         mTemperature = data.getTemp();
         mHumidity = data.getHumidity();

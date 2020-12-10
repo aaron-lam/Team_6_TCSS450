@@ -64,7 +64,7 @@
         android:label="@string/all_create_chat_room" />
     <fragment
         android:id="@+id/mapsFragment"
-        android:name="edu.uw.tcss450.group6project.ui.weather.MapsFragment"
+        android:name="edu.uw.tcss450.group6project.ui.weather.WeatherMapFragment"
         android:label="Zip Code Search"
         tools:layout="@layout/fragment_maps" />
 

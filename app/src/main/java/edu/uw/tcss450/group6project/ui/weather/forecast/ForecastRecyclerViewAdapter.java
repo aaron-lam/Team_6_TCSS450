@@ -1,4 +1,4 @@
-package edu.uw.tcss450.group6project.ui.weather;
+package edu.uw.tcss450.group6project.ui.weather.forecast;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,7 @@ import java.util.Map;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentWeatherForecastCardBinding;
+import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
 
 public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter<ForecastRecyclerViewAdapter.ForecastViewHolder> {
 

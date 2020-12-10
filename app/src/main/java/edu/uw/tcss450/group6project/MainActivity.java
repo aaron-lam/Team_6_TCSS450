@@ -39,12 +39,7 @@ import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.services.PushReceiver;
 import edu.uw.tcss450.group6project.ui.chat.ChatMessage;
 import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
-import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabFragment;
-import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabViewModel;
-import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequest;
-import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabFragment;
-import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabViewModel;
-import edu.uw.tcss450.group6project.ui.weather.WeatherViewModel;
+import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
 
 /**
  * An activity for all functions after authentication.

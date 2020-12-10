@@ -1,11 +1,10 @@
-package edu.uw.tcss450.group6project.ui.weather;
+package edu.uw.tcss450.group6project.ui.weather.forecast;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -17,6 +16,7 @@ import java.util.List;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentWeatherForecastBinding;
+import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
 
 
 public class WeatherForecastFragment extends Fragment {
