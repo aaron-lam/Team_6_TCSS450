@@ -72,12 +72,10 @@ public class ContactRequestTabFragment extends Fragment {
 
         // If the list has items, update the recyclerview. If it doesn't, update the recyclerview with an empty list
         mModel.addContactRequestListObserver(getViewLifecycleOwner(), contactRequestList -> {
-            if (!contactRequestList.isEmpty()) {
-                binding.contactRequestsListRoot.setAdapter(new ContactRequestTabRecyclerViewAdapter(contactRequestList,this,mUserModel));
-            } else {
+            if (contactRequestList.isEmpty()) {
                 contactRequestList.clear();
-                binding.contactRequestsListRoot.setAdapter(new ContactRequestTabRecyclerViewAdapter(contactRequestList,this,mUserModel));
             }
+            binding.contactRequestsListRoot.setAdapter(new ContactRequestTabRecyclerViewAdapter(contactRequestList,this,mUserModel));
         });
     }
 
@@ -107,10 +105,6 @@ public class ContactRequestTabFragment extends Fragment {
     private class ContactRequestBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            NavController nc =
-                    Navigation.findNavController(
-                            getActivity(), R.id.nav_host_fragment);
-            NavDestination nd = nc.getCurrentDestination();
 
             // If it's a message for the contacts page...
             if (!(intent.hasExtra("chatMessage") || intent.hasExtra("roomName"))) {

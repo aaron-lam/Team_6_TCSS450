@@ -97,7 +97,10 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
             e.printStackTrace();
             Log.e("ERROR!", e.getMessage());
         }
-        mContactRequestList.setValue(contactRequests);
+
+        if (contactRequests.size() > 0) {
+            mContactRequestList.setValue(contactRequests);
+        }
     }
 
     /**
