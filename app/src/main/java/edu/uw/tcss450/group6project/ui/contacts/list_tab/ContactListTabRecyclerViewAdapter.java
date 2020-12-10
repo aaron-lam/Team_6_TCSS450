@@ -100,7 +100,6 @@ public class ContactListTabRecyclerViewAdapter extends
 
             binding = FragmentContactListCardBinding.bind(view);
             binding.buttonDeleteContact.setOnClickListener(this::handleDelete);
-            binding.buttonOpenChat.setOnClickListener(this::createChat);
         }
 
         /**
@@ -110,19 +109,6 @@ public class ContactListTabRecyclerViewAdapter extends
          */
         private void handleDelete(final View button) {
             mContactListTabViewModel.connectDelete(mUserInfoViewModel.getJWT(),mContact.getMemberId());
-        }
-
-        /**
-         * Helper method to open a new chat with the selected contact.
-         *
-         * @param button the create chat button
-         */
-        private void createChat(final View button) {
-//            List<String> participants = new ArrayList<>();
-//            participants.add(binding.textContactName.getText().toString());
-//            ChatRoom newChat = new ChatRoom(participants);
-//            Navigation.findNavController(mView).navigate
-//                    (ContactListFragmentDirections.actionNavigationContactsToChatFragment(newChat));
         }
 
         /**

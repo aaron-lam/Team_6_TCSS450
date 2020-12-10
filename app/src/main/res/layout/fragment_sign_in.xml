@@ -42,26 +42,13 @@
         android:id="@+id/field_sign_in_email"
         android:layout_width="369dp"
         android:layout_height="42dp"
-        android:layout_marginTop="284dp"
+        android:layout_marginTop="232dp"
         android:ems="10"
         android:hint="@string/sign_in_email_hint"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/testHome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:text="@string/nav_home_title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_sign_in_register" />
 
     <TextView
         android:id="@+id/button_sign_in_forgot_password"

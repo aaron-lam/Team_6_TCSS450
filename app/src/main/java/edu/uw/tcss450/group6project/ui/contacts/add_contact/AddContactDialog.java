@@ -44,7 +44,7 @@ public class AddContactDialog {
 
     public void buildAddContactDialog() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(mCurrentFragment.getContext());
-        mBuilder.setTitle(R.string.forgot_password_title);
+        mBuilder.setTitle(R.string.contact_add);
         mView = mCurrentFragment.getLayoutInflater().inflate(R.layout.dialog_contacts_add,null);
 
         // Grabbing references to all the elements in the fragment

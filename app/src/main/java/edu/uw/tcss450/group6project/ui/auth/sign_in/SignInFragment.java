@@ -64,7 +64,6 @@ public class SignInFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mBinding.testHome.setOnClickListener(this::handleHome);
 
         mBinding.buttonSignInRegister.setOnClickListener(button -> {
             Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToRegisterFragment2());
@@ -124,16 +123,6 @@ public class SignInFragment extends Fragment {
         }
     }
 
-
-
-    /** This is a method used for testing. It skips directly to the home page without needing to sign in.
-     *
-     * @param view is the current view
-     */
-    private void handleHome(View view) {
-        NavDirections action = SignInFragmentDirections.actionSignInFragmentToMainActivity("testBypass","", "no user");
-        Navigation.findNavController(view).navigate(action);
-    }
 
     /** This is called when a user's sign in attempt has been successfully authenticated.
      *
