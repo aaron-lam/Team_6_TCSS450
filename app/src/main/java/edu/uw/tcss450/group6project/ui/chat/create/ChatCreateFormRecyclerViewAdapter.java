@@ -105,7 +105,7 @@ public class ChatCreateFormRecyclerViewAdapter extends
          */
         void setContact(final Contact contact) {
             mContact = contact;
-            binding.textContact.setText(contact.getFirstName());
+            binding.textContact.setText(contact.getUserName());
             binding.checkboxAdd.setOnClickListener(this::addContactToNewRoom);
         }
     }
