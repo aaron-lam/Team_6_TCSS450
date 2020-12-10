@@ -1,20 +1,32 @@
 package edu.uw.tcss450.group6project.ui.chat;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import edu.uw.tcss450.group6project.MainActivity;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentChatBinding;
+import edu.uw.tcss450.group6project.model.NewMessageCountViewModel;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
+import edu.uw.tcss450.group6project.services.PushReceiver;
+import edu.uw.tcss450.group6project.ui.contacts.list_tab.ContactListTabFragment;
 
 /**
  * A fragment to display a single chat between users.
@@ -33,7 +45,9 @@ public class ChatFragment extends Fragment {
     private ChatRoomViewModel mChatRoomViewModel;
 
     private ChatSendViewModel mSendModel;
+    private NewMessageCountViewModel mNewMessageModel;
 
+    private ChatRoomReceiver mPushMessageReceiver;
 
 
     @Override
@@ -48,6 +62,7 @@ public class ChatFragment extends Fragment {
         mSendModel = provider.get(ChatSendViewModel.class);
         mChatRoomViewModel = provider.get(ChatRoomViewModel.class);
         mChatRoomViewModel.getFirstMessages(mChatRoomID, mUserModel.getJWT());
+        mNewMessageModel = provider.get(NewMessageCountViewModel.class);
     }
 
     @Override
@@ -62,7 +77,6 @@ public class ChatFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FragmentChatBinding binding = FragmentChatBinding.bind(view);
-
 
         //Send the chat messages to the recycler view
         final RecyclerView rv = binding.listRoot;
@@ -98,5 +112,49 @@ public class ChatFragment extends Fragment {
         //when we get the response back from the server, clear the edittext
         mSendModel.addResponseObserver(getViewLifecycleOwner(), response ->
                 binding.editMessage.setText(""));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mPushMessageReceiver == null) {
+            mPushMessageReceiver = new ChatRoomReceiver();
+        }
+        IntentFilter iFilter = new IntentFilter(PushReceiver.RECEIVED_NEW_MESSAGE);
+        getActivity().registerReceiver(mPushMessageReceiver, iFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mPushMessageReceiver != null) {
+            getActivity().unregisterReceiver(mPushMessageReceiver);
+        }
+    }
+
+    /**
+     * A BroadcastReceiver that listens for messages sent from PushReceiver
+     */
+    private class ChatRoomReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            NavController nc =
+                    Navigation.findNavController(
+                            getActivity(), R.id.nav_host_fragment);
+            NavDestination nd = nc.getCurrentDestination();
+            if (intent.hasExtra("chatMessage")) {
+
+                int chatRoomID = intent.getIntExtra("chatid", -1);
+                //If the user is not on the chat screen, update the
+                // NewMessageCountView Model
+                Log.d("Push Notification Chat Message", Integer.toString(chatRoomID));
+                Log.d("Current Chat Room ID", Integer.toString(mChatRoomID));
+                if (mChatRoomID != chatRoomID) {
+                    mNewMessageModel.increment();
+                }
+            }
+
+        }
     }
 }

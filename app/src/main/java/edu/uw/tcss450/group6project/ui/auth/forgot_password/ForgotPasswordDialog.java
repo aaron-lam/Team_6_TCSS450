@@ -68,7 +68,7 @@ public class ForgotPasswordDialog implements View.OnClickListener {
 
         // Submit button functionality
         mSubmit.setOnClickListener(button -> {
-            Validator validator = new Validator(signInFragment.getActivity(), mEmail);
+            Validator validator = new Validator(signInFragment.getActivity(), mEmail, "email");
 
             // If all fields are valid, send the request
             if (validator.validateAll()) {

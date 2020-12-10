@@ -38,6 +38,27 @@ public class PushReceiver extends BroadcastReceiver {
         //So perform logic/routing based on the "type"
         //feel free to change the key or type of values.
         String typeOfMessage = intent.getStringExtra("type");
+        if (typeOfMessage.equals("msg")) {
+            processMessage(context, intent);
+        } else if (typeOfMessage.equals("newRoom")) {
+            processNewRoom(context, intent);
+        } else if (typeOfMessage.equals("newContact")) {
+            processNewContactRequest(context, intent);
+        } else if (typeOfMessage.equals("deleteContact")) {
+            processDeleteContact(context, intent);
+        } else if (typeOfMessage.equals("confirmContact")) {
+            processConfirmContact(context, intent);
+        } else if (typeOfMessage.equals("denyContact")) {
+            processDenyContact(context, intent);
+        }
+    }
+
+    /**
+     * Process push notifications of receiving new message.
+     * @param context context
+     * @param intent intent
+     */
+    private void processMessage(Context context, Intent intent) {
         ChatMessage message = null;
         int chatId = -1;
         try{
@@ -62,7 +83,6 @@ public class PushReceiver extends BroadcastReceiver {
             i.putExtras(intent.getExtras());
 
             context.sendBroadcast(i);
-
         } else {
             //app is in the background so create and post a notification
             Log.d("PUSHY", "Message received in background: " + message.getMessage());
@@ -70,29 +90,201 @@ public class PushReceiver extends BroadcastReceiver {
             Intent i = new Intent(context, AuthActivity.class);
             i.putExtras(intent.getExtras());
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-                    i, PendingIntent.FLAG_UPDATE_CURRENT);
+            sendNotification(context, i, "Message from: " + message.getEmail(), message.getMessage());
+        }
+    }
 
-            //research more on notifications the how to display them
-            //https://developer.android.com/guide/topics/ui/notifiers/notifications
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setAutoCancel(true)
-                    .setSmallIcon(R.drawable.ic_chat_notification)
-                    .setContentTitle("Message from: " + message.getEmail())
-                    .setContentText(message.getMessage())
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setContentIntent(pendingIntent);
+    /**
+     * Process push notifications of joining new chat room.
+     * @param context context the current context
+     * @param intent intent the intent sent by web services
+     */
+    private void processNewRoom(Context context, Intent intent) {
+        String roomName = intent.getStringExtra("roomName");
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
 
-            // Automatically configure a ChatMessageNotification Channel for devices running Android O+
-            Pushy.setNotificationChannel(builder, context);
+        if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+            // app is in the foreground so send the message to the active Activities
+            Log.d("PUSHY", "New chat room created in foreground: " + roomName);
 
-            // Get an instance of the NotificationManager service
-            NotificationManager notificationManager =
-                    (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+            //create an Intent to broadcast a message to other parts of the app.
+            Intent i = new Intent(RECEIVED_NEW_MESSAGE);
+            i.putExtras(intent.getExtras());
 
-            // Build the notification and display it
-            notificationManager.notify(1, builder.build());
+            context.sendBroadcast(i);
+
+        } else {
+            // app is in the background so create and post a notification
+            Log.d("PUSHY", "New chat room created in background: " + roomName);
+
+            Intent i = new Intent(context, AuthActivity.class);
+            i.putExtra("roomName", roomName);
+            i.putExtras(intent.getExtras());
+
+            sendNotification(context, i, "You were added in a new chat room: " + roomName, "");
+        }
+    }
+
+    /** Process push notifications of receiving a new contact request.
+     *
+     * @param context context the current context
+     * @param intent intent the intent sent by web services
+     */
+    private void processNewContactRequest(Context context, Intent intent) {
+        String username = intent.getStringExtra("username"); // ^ this but username
+
+        // Not sure what this does but it seems important because all of them do it
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
+
+        // app is in the foreground so send the message to the active Activities
+        if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+            Log.d("PUSHY", "Contact request received in foreground from: " + username);
+
+            //create an Intent to broadcast a message to other parts of the app.
+            Intent i = new Intent(RECEIVED_NEW_MESSAGE);
+            i.putExtra("username",username);
+            i.putExtras(intent.getExtras());
+
+            context.sendBroadcast(i);
         }
 
+        // app is in the background so create and post a notification
+        else {
+            Log.d("PUSHY", "Contact request received in background from: " + username);
+
+            Intent i = new Intent(context, AuthActivity.class);
+            i.putExtras(intent.getExtras());
+
+            sendNotification(context, i, "New contact request from: " + username, "");
+        }
+    }
+
+    /** Process push notifications of a contact request you sent being confirmed
+     *
+     * @param context context the current context
+     * @param intent intent the intent sent by web services
+     */
+    private void processConfirmContact(Context context, Intent intent) {
+        String username = intent.getStringExtra("username"); // ^ this but username
+
+        // Not sure what this does but it seems important because all of them do it
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
+
+        // app is in the foreground so send the message to the active Activities
+        if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+            Log.d("PUSHY", "Contact request confirmed in background from: " + username);
+
+            //create an Intent to broadcast a message to other parts of the app.
+            Intent i = new Intent(RECEIVED_NEW_MESSAGE);
+            i.putExtra("username",username);
+            i.putExtras(intent.getExtras());
+
+            context.sendBroadcast(i);
+        }
+
+        // app is in the background so create and post a notification
+        else {
+            Log.d("PUSHY", "Contact request confirmed in background from: " + username);
+
+            Intent i = new Intent(context, AuthActivity.class);
+            i.putExtras(intent.getExtras());
+
+            sendNotification(context, i, "Your contact request was confirmed by: " + username, "");
+        }
+    }
+
+    /** Process push notifications of one of your contacts being deleted. Not shown to user.
+     *
+     * @param context context the current context
+     * @param intent intent the intent sent by web services
+     */
+    private void processDeleteContact(Context context, Intent intent) {
+        String userId = intent.getStringExtra("userId");
+
+        // Not sure what this does but it seems important because all of them do it
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
+
+        // app is in the foreground so send the message to the active Activities
+        if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+            Log.d("PUSHY", "Contact deleted in background from ID: " + userId);
+
+            //create an Intent to broadcast a message to other parts of the app.
+            Intent i = new Intent(RECEIVED_NEW_MESSAGE);
+            i.putExtra("userId",userId);
+            i.putExtras(intent.getExtras());
+
+            context.sendBroadcast(i);
+        }
+
+        // app is in the background so create and post a notification
+        else {
+            Log.d("PUSHY", "Contact deleted in background from ID: " + userId);
+        }
+    }
+
+    /** Process push notifications of one of your contact requests being denied. Not shown to user.
+     *
+     * @param context context the current context
+     * @param intent intent the intent sent by web services
+     */
+    private void processDenyContact(Context context, Intent intent) {
+        String userId = intent.getStringExtra("userId");
+
+        // Not sure what this does but it seems important because all of them do it
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
+
+        // app is in the foreground so send the message to the active Activities
+        if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+            Log.d("PUSHY", "Contact request denied in background fromID: " + userId);
+
+            //create an Intent to broadcast a message to other parts of the app.
+            Intent i = new Intent(RECEIVED_NEW_MESSAGE);
+            i.putExtra("userId",userId);
+            i.putExtras(intent.getExtras());
+
+            context.sendBroadcast(i);
+        }
+
+        // app is in the background so create and post a notification
+        else {
+            Log.d("PUSHY", "Contact request denied in background fromID: " + userId);
+        }
+    }
+
+    /**
+     * Send notification in background
+     * @param context context
+     * @param i intent
+     * @param title notification title
+     * @param text notification text
+     */
+    private void sendNotification(Context context, Intent i, String title, String text) {
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+                i, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //research more on notifications the how to display them
+        //https://developer.android.com/guide/topics/ui/notifiers/notifications
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_chat_notification)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent);
+
+        // Automatically configure a ChatMessageNotification Channel for devices running Android O+
+        Pushy.setNotificationChannel(builder, context);
+
+        // Get an instance of the NotificationManager service
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+
+        // Build the notification and display it
+        notificationManager.notify(1, builder.build());
     }
 }

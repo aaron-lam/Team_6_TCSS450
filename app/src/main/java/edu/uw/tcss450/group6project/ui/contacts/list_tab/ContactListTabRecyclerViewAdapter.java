@@ -1,56 +1,52 @@
-package edu.uw.tcss450.group6project.ui.contacts;
+package edu.uw.tcss450.group6project.ui.contacts.list_tab;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tcss450.group6project.R;
-import edu.uw.tcss450.group6project.databinding.FragmentContactCardBinding;
-import edu.uw.tcss450.group6project.ui.chat.ChatRoom;
+import edu.uw.tcss450.group6project.databinding.FragmentContactListCardBinding;
+import edu.uw.tcss450.group6project.model.UserInfoViewModel;
+import edu.uw.tcss450.group6project.ui.contacts.Contact;
 
 /**
  * A RecyclerViewAdapter to create scrolling list view of contacts.
  *
- * @author Robert M
+ * @author Robert M, Chase Alder
  * @version 3 November 2020
  */
-public class ContactRecyclerViewAdapter extends
-        RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder> {
+public class ContactListTabRecyclerViewAdapter extends
+        RecyclerView.Adapter<ContactListTabRecyclerViewAdapter.ContactViewHolder> {
 
     /**
      * The list of contacts.
      */
-    private final List<String> mContacts;
-
-    /**
-     * The fragment's context.
-     */
-    private Context mContext;
+    private final List<Contact> mContacts;
+    private Fragment mFragment;
+    private UserInfoViewModel mUserInfoViewModel;
 
     /**
      * Constructs the RecyclerView.
      *
-     * @param items a list of contacts
+     * @param contacts a list of contacts
      */
-    public ContactRecyclerViewAdapter(List<String> items) {
-        this.mContacts = items;
+    public ContactListTabRecyclerViewAdapter(List<Contact> contacts, Fragment fragment, UserInfoViewModel userInfoViewModel) {
+        this.mContacts = contacts;
+        this.mFragment = fragment;
     }
 
     @NonNull
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
         return new ContactViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_contact_card, parent, false));
+                .inflate(R.layout.fragment_contact_list_card, parent, false));
     }
 
     @Override
@@ -79,12 +75,14 @@ public class ContactRecyclerViewAdapter extends
         /**
          * The binding for the contact list card.
          */
-        public FragmentContactCardBinding binding;
+        public FragmentContactListCardBinding binding;
 
         /**
          * The contact.
          */
-        private String mContact;
+        private Contact mContact;
+
+        private ContactListTabViewModel mContactListTabViewModel;
 
         /**
          * Constructs the contact view.
@@ -94,32 +92,23 @@ public class ContactRecyclerViewAdapter extends
         public ContactViewHolder(View view) {
             super(view);
             mView = view;
-            binding = FragmentContactCardBinding.bind(view);
+
+            // Get the UserInfoViewModel and ContactListTabViewModel (used for contact deletion)
+            ViewModelProvider provider = new ViewModelProvider(mFragment.getActivity());
+            mContactListTabViewModel = provider.get(ContactListTabViewModel.class);
+            mUserInfoViewModel = provider.get(UserInfoViewModel.class);
+
+            binding = FragmentContactListCardBinding.bind(view);
             binding.buttonDeleteContact.setOnClickListener(this::handleDelete);
-            binding.buttonOpenChat.setOnClickListener(this::createChat);
         }
 
         /**
-         * Helper method to handle deleting a contact.  Not yet implemented.
+         * Helper method to handle deleting a contact.
          *
          * @param button the delete button
          */
         private void handleDelete(final View button) {
-//            mContacts.remove(mContacts.indexOf(mContact));
-            Toast.makeText(mContext, R.string.all_incomplete, Toast.LENGTH_SHORT).show();
-        }
-
-        /**
-         * Helper method to open a new chat with the selected contact.
-         *
-         * @param button the create chat button
-         */
-        private void createChat(final View button) {
-//            List<String> participants = new ArrayList<>();
-//            participants.add(binding.textContactName.getText().toString());
-//            ChatRoom newChat = new ChatRoom(participants);
-//            Navigation.findNavController(mView).navigate
-//                    (ContactListFragmentDirections.actionNavigationContactsToChatFragment(newChat));
+            mContactListTabViewModel.connectDelete(mUserInfoViewModel.getJWT(),mContact.getMemberId());
         }
 
         /**
@@ -127,11 +116,9 @@ public class ContactRecyclerViewAdapter extends
          *
          * @param contact the contact being set
          */
-        void setContact(final String contact) {
+        void setContact(final Contact contact) {
             mContact = contact;
-            binding.textContactName.setText(contact);
+            binding.textContactListName.setText(contact.getUserName());
         }
-
     }
-
 }

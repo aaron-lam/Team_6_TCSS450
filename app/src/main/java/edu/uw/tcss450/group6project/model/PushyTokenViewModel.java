@@ -139,7 +139,7 @@ public class PushyTokenViewModel extends AndroidViewModel {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 // add headers <key,value>
-                headers.put("Authorization", jwt);
+                headers.put(getApplication().getResources().getString(R.string.header_jwt_auth), jwt);
                 return headers;
             }
         };

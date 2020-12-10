@@ -4,6 +4,8 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -30,7 +32,7 @@ import edu.uw.tcss450.group6project.io.RequestQueueSingleton;
 /**
  * View Model to store information about the chat rooms the user is in
  * and messages sent by and to the user.
- * @author Charles Bryan, Anthony Nguyen
+ * @author Charles Bryan, Anthony Nguyen, Aaron Lam
  */
 public class ChatRoomViewModel extends AndroidViewModel {
 
@@ -109,7 +111,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
      */
     public void loadChatRooms(final String email, final String jwt) {
 
-        String url = "https://team6-tcss450-web-service.herokuapp.com/chats/email/" + email;
+        String url = getApplication().getResources().getString(R.string.url_chat_chatrooms) + email;
 
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -118,6 +120,45 @@ public class ChatRoomViewModel extends AndroidViewModel {
                 response -> handleChatRoomSuccess(response, jwt),
                 this::handleError) {
 
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put(getApplication().getResources().getString(R.string.header_jwt_auth), jwt);
+                return headers;
+            }
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10_000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //Instantiate the RequestQueue and add the request to the queue
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+
+    }
+
+    /**
+     * Request to delete a user from a chat room
+     * @param jwt jwt of the user
+     * @param chatId id of the chat room
+     * @param email email of the user
+     */
+    public void deleteChatRoom(final String jwt,
+                               final int chatId,
+                               final String email,
+                               ChatListRecyclerViewAdapter.ChatListViewHolder holder) {
+
+        String url = getApplication().getResources().getString(R.string.base_url)
+                + "chats/" + chatId + "/" + email;
+
+        Request request = new JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                null,
+                response -> handleChatRoomDeleteSuccess(response, chatId, holder),
+                this::handleError) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -134,9 +175,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
         //Instantiate the RequestQueue and add the request to the queue
         RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
                 .addToRequestQueue(request);
-
     }
-
 
 
     /**
@@ -152,8 +191,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
      */
     public void getFirstMessages(final int chatId, final String jwt) {
 
-        String url = getApplication().getResources().getString(R.string.base_url) +
-                "messages/" + chatId;
+        String url = getApplication().getResources().getString(R.string.url_chat_messages) + chatId;
 
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -166,7 +204,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 // add headers <key,value>
-                headers.put("Authorization", jwt);
+                headers.put(getApplication().getResources().getString(R.string.header_jwt_auth), jwt);
                 return headers;
             }
         };
@@ -195,8 +233,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
      * @param jwt the users signed JWT
      */
     public void getNextMessages(final int chatId, final String jwt) {
-        String url = getApplication().getResources().getString(R.string.base_url) +
-                "messages/" +
+        String url = getApplication().getResources().getString(R.string.url_chat_messages) +
                 chatId +
                 "/" +
                 mChatRooms.get(chatId).getMessages().get(0).getMessageID();
@@ -212,7 +249,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 // add headers <key,value>
-                headers.put("Authorization", jwt);
+                headers.put(getApplication().getResources().getString(R.string.header_jwt_auth), jwt);
                 return headers;
             }
         };
@@ -236,7 +273,9 @@ public class ChatRoomViewModel extends AndroidViewModel {
      */
     public void addMessage(final int chatId, final ChatMessage message) {
         ChatRoom room = mChatRooms.get(chatId);
-        room.addMessage(message);
+        if (room != null) {
+            room.addMessage(message);
+        }
     }
 
     /**
@@ -249,7 +288,6 @@ public class ChatRoomViewModel extends AndroidViewModel {
         if(!response.has("rowCount") || !response.has("rows")) {
             throw new IllegalStateException("Unexpected response in ChatViewModel: " + response);
         }
-
         try {
             int roomCount = response.getInt("rowCount");
             Log.d("Handle Chat Room Success", Integer.toString(roomCount));
@@ -304,6 +342,18 @@ public class ChatRoomViewModel extends AndroidViewModel {
             Log.e("JSON PARSE ERROR", "Found in handleChatMessageSuccess ChatViewModel");
             Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
         }
+    }
+
+    /**
+     * Method to handle a successful delete request of a specific chat room.
+     * @param response Response in JSON format
+     */
+    private void handleChatRoomDeleteSuccess(final JSONObject response, final int chatId, ChatListRecyclerViewAdapter.ChatListViewHolder holder) {
+        if (!response.has("sucess")) {
+            throw new IllegalStateException("Unexpected response in ChatViewModel: " + response);
+        }
+        this.mChatRooms.remove(chatId);
+        holder.deleteChatCallback();
     }
 
     /**

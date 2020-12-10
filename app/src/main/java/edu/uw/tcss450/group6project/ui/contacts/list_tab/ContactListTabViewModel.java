@@ -1,4 +1,4 @@
-package edu.uw.tcss450.group6project.ui.contacts;
+package edu.uw.tcss450.group6project.ui.contacts.list_tab;
 
 import android.app.Application;
 import android.util.Log;
@@ -26,21 +26,28 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import edu.uw.tcss450.group6project.R;
+import edu.uw.tcss450.group6project.model.UserInfoViewModel;
+import edu.uw.tcss450.group6project.ui.contacts.Contact;
 
 /**
  * View Model class for persistent contact data.
  * @author Aaron L
  * @version 18 November 2020
  */
-public class ContactViewModel extends AndroidViewModel {
+public class ContactListTabViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Contact>> mContactList;
+    private MutableLiveData<JSONObject> mResponse;
 
-    public ContactViewModel(@NonNull Application application) {
+    public ContactListTabViewModel(@NonNull Application application) {
         super(application);
         mContactList = new MutableLiveData<>();
         mContactList.setValue(new ArrayList<>());
+        mResponse = new MutableLiveData<>();
+        mResponse.setValue(new JSONObject());
     }
 
     /**
@@ -57,7 +64,7 @@ public class ContactViewModel extends AndroidViewModel {
      * Handles errors when making requests to the server.
      * @param error the error message
      */
-    private void handleError(final VolleyError error) {
+    private void handleGetError(final VolleyError error) {
         //you should add much better error handling in a production release. //i.e. YOUR PROJECT
         mContactList.setValue(new ArrayList<>());
     }
@@ -67,7 +74,7 @@ public class ContactViewModel extends AndroidViewModel {
      * and stores the data in the view model.
      * @param result JSON retrieved from server containing contact data
      */
-    private void handleResult(final JSONObject result) {
+    private void handleGetResult(final JSONObject result) {
         IntFunction<String> getString =
                 getApplication().getResources()::getString;
         List<Contact> contacts = new ArrayList<>();
@@ -86,7 +93,10 @@ public class ContactViewModel extends AndroidViewModel {
                                             R.string.keys_json_contact_last)),
                             jsonContact.getString(
                                     getString.apply(
-                                            R.string.keys_json_contact_username)))
+                                            R.string.keys_json_contact_username)),
+                            jsonContact.getString(
+                                    getString.apply(
+                                            R.string.keys_json_contact_userId)))
                             .build();
                     contacts.add(contact);
                 }
@@ -110,8 +120,8 @@ public class ContactViewModel extends AndroidViewModel {
                 Request.Method.GET,
                 url,
                 null, //no body for this get request
-                this::handleResult,
-                this::handleError) {
+                this::handleGetResult,
+                this::handleGetError) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -121,16 +131,86 @@ public class ContactViewModel extends AndroidViewModel {
             }
         };
         request.setRetryPolicy(new
-
                 DefaultRetryPolicy( 10_000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)); //Instantiate the RequestQueue and add the request to the queue
         Volley.newRequestQueue(
-
                 getApplication().
-
                         getApplicationContext()).
+                            add(request);
+    }
 
-                add(request);
+    /** Used to send a request to the web service to delete a contact
+     *
+     * @param jwt the current users java web token
+     * @param memberId the memberid of the user they want to delete from their contacts
+     */
+    public void connectDelete(String jwt, String memberId) {
+        String url = "https://team6-tcss450-web-service.herokuapp.com/contacts/" + memberId;
+        Request request = new JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                null, //no body for this get request
+                mResponse::setValue,
+                this::handleDeleteError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        request.setRetryPolicy(new
+                DefaultRetryPolicy( 10_000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)); //Instantiate the RequestQueue and add the request to the queue
+        Volley.newRequestQueue(
+                getApplication().
+                        getApplicationContext()).
+                            add(request);
+
+        // Get the current list of contacts
+        List<Contact> tempList = mContactList.getValue();
+        Contact tempContact = null;
+
+        // Find the contact
+        for (Contact c : tempList) {
+            if (c.getMemberId() == memberId) {
+                tempContact = c;
+            }
+        }
+
+        // Remove the contact and update the list
+        tempList.remove(tempContact);
+        mContactList.setValue(tempList);
+    }
+
+    /** Handles any errors that are thrown by the contact delete request.
+     *
+     * @param error the error from Volley
+     */
+    private void handleDeleteError(final VolleyError error) {
+        if (Objects.isNull(error.networkResponse)) {
+            try {
+                mResponse.setValue(new JSONObject("{" +
+                        "error:\"" + error.getMessage() +
+                        "\"}"));
+            } catch (JSONException e) {
+                Log.e("JSON PARSE", "JSON Parse Error in handleError");
+            }
+        }
+        else {
+            String data = new String(error.networkResponse.data, Charset.defaultCharset())
+                    .replace('\"', '\'');
+            try {
+                JSONObject response = new JSONObject();
+                response.put("code", error.networkResponse.statusCode);
+                response.put("data", new JSONObject(data));
+                mResponse.setValue(response);
+            } catch (JSONException e) {
+                Log.e("JSON PARSE", "JSON Parse Error in handleError");
+            }
+        }
     }
 }

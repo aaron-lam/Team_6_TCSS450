@@ -1,7 +1,6 @@
 package edu.uw.tcss450.group6project.ui.contacts;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Represents a confirmed contact on the user's contact list.
@@ -26,6 +25,8 @@ public class Contact implements Serializable {
      */
     private final String mUserName;
 
+    private final String mMemberId;
+
     /**
      * Helper class for building immutable Contact object.
      *
@@ -35,6 +36,7 @@ public class Contact implements Serializable {
         private final String mFirstName;
         private final String mLastName;
         private final String mUserName;
+        private final String mMemberId;
 
 
         /**
@@ -44,10 +46,11 @@ public class Contact implements Serializable {
          * @param lastName contact's last name
          * @param userName contact's username
          */
-        public Builder(String firstName, String lastName, String userName) {
+        public Builder(String firstName, String lastName, String userName, String memberId) {
             this.mFirstName = firstName;
             this.mLastName = lastName;
             this.mUserName = userName;
+            this.mMemberId = memberId;
         }
 
         public Contact build() {
@@ -63,6 +66,7 @@ public class Contact implements Serializable {
         mFirstName = builder.mFirstName;
         mLastName = builder.mLastName;
         mUserName = builder.mUserName;
+        mMemberId = builder.mMemberId;
     }
 
     /**
@@ -89,5 +93,9 @@ public class Contact implements Serializable {
      */
     public String getUserName() {
         return mUserName;
+    }
+
+    public String getMemberId() {
+        return mMemberId;
     }
 }

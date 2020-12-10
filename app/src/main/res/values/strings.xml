@@ -4,9 +4,11 @@
     <!-- Universal  -->
     <string name="all_email_address">Email Address</string>
     <string name="all_password">Password</string>
+    <string name="all_username">Username</string>
     <string name="all_register">Register</string>
     <string name="all_signIn">Sign In</string>
     <string name="all_chat">Chat</string>
+    <string name="all_create_chat_room">Create Chat Room</string>
     <string name="all_incomplete">That function is not yet implemented.</string>
     <string name="all_empty_field_error">Cannot be empty</string>
     <string name="all_email_invalid_error">Must be a valid email</string>
@@ -26,7 +28,6 @@
     <!-- Register Page -->
     <string name="register_first_name_hint">First Name</string>
     <string name="register_last_name_hint">Last Name</string>
-    <string name="register_username_hint">Username</string>
     <string name="register_retype_password_hint">Retype Password</string>
     <string name="register_username_exists_error">Username already in use</string>
     <string name="register_email_exists_error">Email already in use</string>
@@ -36,6 +37,9 @@
     <string name="change_password_old_password_hint">Old Password</string>
     <string name="change_password_new_password_hint">New Password</string>
     <string name="change_password_retype_password_hint">Retype New Password</string>
+
+    <!-- Add Contact Popup -->
+    <string name="add_contact_instructions">Enter the username of the member that you want to add as a contact and click "Submit".</string>
 
     <!-- Forgot Password Popup -->
     <string name="forgot_password_title">Password Recovery</string>
@@ -48,12 +52,13 @@
 
     <!-- Chat List -->
     <string name="chat_goto">Open chat</string>
+    <string name="chat_delete">The chat room is deleted</string>
 
     <!-- Contact List -->
     <string name="contact_delete">Delete</string>
     <string name="contact_chat">Open Chat</string>
     <string name="contact_empty_list_toast">Your contact list is empty</string>
-
+    <string name="contact_add">Add New Contact</string>
     <!-- Settings Page -->
     <string name="settings_change_password_button">Change Password</string>
     <string name="settings_title">Settings</string>
@@ -62,18 +67,61 @@
     <string name="settings_change_theme_option_two">Blue</string>
     <string name="settings_change_theme_option_three">Green</string>
 
+
+    <!-- Weather Fragment   -->
+    <string name="weather_48hour">48-hour</string>
+    <string name="weather_zip">Zip Code</string>
+    <string name="weather_temperature">Temperature</string>
+    <string name="weather_humidity">Humidity</string>
+    <string name="weather_windspeed">Wind Speed</string>
+
+    <!-- Create Chat Room Page -->
+    <string name="create_room_title">Please add your contacts to your new chat room:</string>
+    <string name="create_room_field_room_name">Room Name</string>
+    <string name="error_room_name_empty">Room name cannot be empty.</string>
+    <string name="toast_create_room_success">Chat room is successfully created.</string>
+    <string name="chat_room_btn_create_text">Create Chat Room</string>
+
+    <!-- Weather Fragment -->
+    <string name="weather_zip_error">Invalid Zip Code</string>
+
+    <!-- JSON Headers -->
+    <string name="header_jwt_auth">Authorization</string>
+
     <!-- JSON Keys  -->
     <string name="keys_json_data">data</string>
+
+
+    <string name="keys_json_weather_daily">daily</string>
+    <string name="keys_json_weather_forecast">forecast</string>
     <string name="keys_json_weather_day">day</string>
     <string name="keys_json_weather_weather">weather</string>
     <string name="keys_json_weather_temp">temp</string>
+    <string name="keys_json_weather_humidity">humidity</string>
+    <string name="keys_json_weather_wind">wind_speed</string>
+    <string name="keys_json_weather_lat">lat</string>
+    <string name="keys_json_weather_long">long</string>
+    <string name="keys_json_weather_zip">zipcode</string>
+    <string name="keys_json_weather_city">city</string>
+    <string name="keys_json_weather_state">state</string>
 
     <string name="keys_json_contacts">contacts</string>
     <string name="keys_json_contact_first">firstname</string>
     <string name="keys_json_contact_last">lastname</string>
     <string name="keys_json_contact_username">username</string>
+    <string name="keys_json_contact_userId">memberid</string>
+
+    <string name="keys_json_contact_requests">contactRequests</string>
 
     <!-- URL for webservice -->
     <string name="base_url">https://team6-tcss450-web-service.herokuapp.com/</string>
+    <string name="url_weather_location">https://team6-tcss450-web-service.herokuapp.com/weather/location/</string>
+    <string name="url_chat_chatrooms">https://team6-tcss450-web-service.herokuapp.com/chats/email/</string>
+    <string name="url_chat_messages">https://team6-tcss450-web-service.herokuapp.com/messages/</string>
+
+
+    <string name="chat_room_btn_add_contact_text">Add Contacts to Chat Room</string>
+    <string name="add_contact_room_title">Please add your new contacts to the existed chat room</string>
+    <string name="toast_add_contact_existed_room_success">Add new contacts to the room successfully</string>
 
 </resources>

@@ -1,4 +1,3 @@
-
 package edu.uw.tcss450.group6project.model;
 
 import androidx.annotation.NonNull;

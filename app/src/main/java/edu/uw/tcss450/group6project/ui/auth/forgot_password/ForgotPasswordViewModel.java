@@ -56,7 +56,6 @@ public class ForgotPasswordViewModel extends AndroidViewModel {
      */
     public void connectForgotPassword(final String email) {
 
-        // NOT SURE IF THIS IS THE RIGHT WAY TO DO THIS
         String url = "https://team6-tcss450-web-service.herokuapp.com/password/reset" +
                 "?email="+email;
 

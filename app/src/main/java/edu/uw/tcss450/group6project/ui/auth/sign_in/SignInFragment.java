@@ -41,6 +41,7 @@ public class SignInFragment extends Fragment {
 
     private String m_Text = "";
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,13 +57,13 @@ public class SignInFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mBinding = FragmentSignInBinding.inflate(inflater, container, false);
+
         return mBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mBinding.testHome.setOnClickListener(this::handleHome);
 
         mBinding.buttonSignInRegister.setOnClickListener(button -> {
             Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToRegisterFragment2());
@@ -115,30 +116,21 @@ public class SignInFragment extends Fragment {
             } else {
                 successfulSignIn(
                         mBinding.fieldSignInEmail.getText().toString(),
-                        mUserViewModel.getJWT()
+                        mUserViewModel.getJWT(),
+                        mUserViewModel.getUsername()
                 );
             }
         }
     }
 
 
-
-    /** This is a method used for testing. It skips directly to the home page without needing to sign in.
-     *
-     * @param view is the current view
-     */
-    private void handleHome(View view) {
-        NavDirections action = SignInFragmentDirections.actionSignInFragmentToMainActivity("testBypass","");
-        Navigation.findNavController(view).navigate(action);
-    }
-
     /** This is called when a user's sign in attempt has been successfully authenticated.
      *
      * @param email The user's email
      * @param jwt The web authentication token
      */
-    public void successfulSignIn(final String email, final String jwt) {
-        Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToMainActivity(email,jwt));
+    public void successfulSignIn(final String email, final String jwt, final String username) {
+        Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToMainActivity(email, jwt, username));
     }
 
     /** This method sends the users credentials to the web service for authentication.
@@ -183,7 +175,8 @@ public class SignInFragment extends Fragment {
                     mUserViewModel = new ViewModelProvider(getActivity(),
                             new UserInfoViewModel.UserInfoViewModelFactory(
                                     mBinding.fieldSignInEmail.getText().toString(),
-                                    response.getString("token")
+                                    response.getString("token"),
+                                    response.getString("username")
                             )).get(UserInfoViewModel.class);
                     sendPushyToken();
                 } catch (JSONException e) {

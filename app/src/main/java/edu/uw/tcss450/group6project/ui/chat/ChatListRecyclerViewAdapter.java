@@ -1,10 +1,14 @@
 package edu.uw.tcss450.group6project.ui.chat;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,11 +20,14 @@ import edu.uw.tcss450.group6project.databinding.FragmentChatlistCardBinding;
 /**
  * A RecyclerViewAdapter to create scrolling list view of chats.
  *
- * @author Robert M
+ * @author Robert M, Aaron L
  * @version 2 November 2020
  */
 public class ChatListRecyclerViewAdapter extends
         RecyclerView.Adapter<ChatListRecyclerViewAdapter.ChatListViewHolder> {
+
+    private ChatRoomViewModel chatRoomViewModel;
+    private ChatSendViewModel chatSendViewModel;
 
     /**
      * A list of chats.
@@ -28,17 +35,39 @@ public class ChatListRecyclerViewAdapter extends
     private final List<ChatRoom> mChats;
 
     /**
+     * User jwt token.
+     */
+    private final String jwt;
+
+    /**
+     * User email.
+     */
+    private final String email;
+
+    /**
+     * The fragment's context.
+     */
+    private Context mContext;
+
+    /**
      * Parameterized constructor method taking a list of chats.
      *
-     * @param items the list of chats
+     * @param chatRoomViewModel chat room view model
+     * @param jwt user jwt
+     * @param email user email
      */
-    public ChatListRecyclerViewAdapter(List<ChatRoom> items) {
-        this.mChats = items;
+    public ChatListRecyclerViewAdapter(ChatRoomViewModel chatRoomViewModel, ChatSendViewModel chatSendViewModel, final String jwt, final String email) {
+        this.chatRoomViewModel = chatRoomViewModel;
+        this.chatSendViewModel = chatSendViewModel;
+        this.mChats = chatRoomViewModel.getChatRooms();
+        this.jwt = jwt;
+        this.email = email;
     }
 
     @NonNull
     @Override
     public ChatListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
         return new ChatListViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_chatlist_card, parent, false));
     }
@@ -51,6 +80,16 @@ public class ChatListRecyclerViewAdapter extends
     @Override
     public int getItemCount() {
         return mChats.size();
+    }
+
+    /**
+     * Remove chat room of specific position.
+     * @param position position of chat room
+     */
+    public void removeItem(int position) {
+        this.mChats.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mChats.size());
     }
 
     /**
@@ -84,16 +123,33 @@ public class ChatListRecyclerViewAdapter extends
         /**
          * Sets each card view for a chat in the recycler view.
          *
-         * @param chat the chat to setup
+         * @param chat the chatroom to setup
          */
         void setChat(final ChatRoom chat) {
+            int chatRoomId = chat.getChatRoomID();
             mChat = chat;
             binding.buttonFullChat.setOnClickListener(view ->
                     Navigation.findNavController(mView).navigate
-                            (ChatListFragmentDirections.actionNavigationChatToChatFragment(chat.getChatRoomID())));
-
+                            (ChatListFragmentDirections.actionNavigationChatToChatFragment(chatRoomId)));
+            binding.buttonDeleteChat.setOnClickListener(view -> {
+                chatSendViewModel.sendMessage(chatRoomId, jwt, email + " has left the chat.");
+                chatRoomViewModel.deleteChatRoom(jwt, chatRoomId, email, this);
+            });
+            binding.buttonAddContact.setOnClickListener(view -> {
+                Navigation.findNavController(view)
+                        .navigate(ChatListFragmentDirections
+                                .actionNavigationChatToChatContactAddFormFragment(chatRoomId));
+            });
             binding.textParticipants.setText(chat.participantsAsString());
             binding.textPreview.setText(chat.getLastMessage());
+        }
+
+        /**
+         * The callback of after removing chat room
+         */
+        public void deleteChatCallback() {
+            removeItem(this.getAdapterPosition());
+            Toast.makeText(mContext, R.string.chat_delete, Toast.LENGTH_SHORT).show();
         }
     }
 }
