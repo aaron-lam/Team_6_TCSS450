@@ -7,47 +7,36 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <ImageView
-        android:id="@+id/image_weather"
-        android:layout_width="92dp"
-        android:layout_height="86dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="28dp"
-        android:src="@drawable/navbar_weather_24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splitLine_hor" />
-
     <View
         android:id="@+id/splitLine_hor"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginTop="72dp"
         android:background="@color/themeOneDarkColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_clock" />
 
-    <View
-        android:id="@+id/splitLine_hor2"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="4dp"
-        android:background="@color/themeOneDarkColor"
+    <ImageView
+        android:id="@+id/image_weather"
+        android:layout_width="92dp"
+        android:layout_height="86dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/navbar_weather_24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_weather" />
+        app:layout_constraintTop_toBottomOf="@+id/splitLine_hor" />
 
     <TextView
         android:id="@+id/label_weather"
         android:layout_width="266dp"
         android:layout_height="46dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="32dp"
         android:text="Current Weather"
         android:textColor="?attr/title_text_color"
         android:textSize="34sp"
         app:layout_constraintEnd_toStartOf="@+id/image_weather"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/splitLine_hor" />
 
@@ -56,37 +45,60 @@
         android:layout_width="266dp"
         android:layout_height="29dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:text="Tacoma, WA: 47°F"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/image_weather"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_weather" />
+
+    <View
+        android:id="@+id/splitLine_hor2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="48dp"
+        android:background="@color/themeOneDarkColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_weather" />
 
     <TextClock
         android:id="@+id/text_clock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="48dp"
         android:format12Hour="hh:mm:ss"
         android:text="11:19:01"
         android:textColor="?attr/title_text_color"
-        android:textSize="50dp"
+        android:textSize="82sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/text_view_hello_message" />
 
     <TextView
         android:id="@+id/text_new_contacts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
         android:text="You have X contact requests"
         android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splitLine_hor2" />
+        app:layout_constraintTop_toBottomOf="@+id/splitLine_hor2"
+        app:layout_constraintVertical_bias="0.244" />
+
+    <TextView
+        android:id="@+id/text_view_hello_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="Good morning, user"
+        android:textSize="32sp"
+        android:textColor="?attr/title_text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

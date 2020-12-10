@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,8 +73,24 @@ public class HomeFragment extends Fragment {
             }
 
         });
-        //binding.textWelcome.setText("Welcome Back " + mUserModel.getUsername());
+        binding.textViewHelloMessage.setText("Good " + getTimeGreeting() + ", " + mUserModel.getUsername());
+    }
 
+    /**
+     * Return time greeting based on current time
+     * @return time greeting
+     */
+    private String getTimeGreeting() {
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+        if (timeOfDay < 12) {
+            return "morning";
+        } else if (timeOfDay < 16) {
+            return "afternoon";
+        } else if (timeOfDay < 21) {
+            return "evening";
+        }
+        return "night";
     }
 
     /**
