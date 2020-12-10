@@ -65,7 +65,7 @@
     <fragment
         android:id="@+id/mapsFragment"
         android:name="edu.uw.tcss450.group6project.ui.weather.MapsFragment"
-        android:label="fragment_maps"
+        android:label="Zip Code Search"
         tools:layout="@layout/fragment_maps" />
 
     <fragment

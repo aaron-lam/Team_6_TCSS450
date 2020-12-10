@@ -67,6 +67,14 @@
     <string name="settings_change_theme_option_two">Blue</string>
     <string name="settings_change_theme_option_three">Green</string>
 
+
+    <!-- Weather Fragment   -->
+    <string name="weather_48hour">48-hour</string>
+    <string name="weather_zip">Zip Code</string>
+    <string name="weather_temperature">Temperature</string>
+    <string name="weather_humidity">Humidity</string>
+    <string name="weather_windspeed">Wind Speed</string>
+
     <!-- Create Chat Room Page -->
     <string name="create_room_title">Please add your contacts to your new chat room:</string>
     <string name="create_room_field_room_name">Room Name</string>
@@ -107,14 +115,10 @@
 
     <!-- URL for webservice -->
     <string name="base_url">https://team6-tcss450-web-service.herokuapp.com/</string>
-
     <string name="url_weather_location">https://team6-tcss450-web-service.herokuapp.com/weather/location/</string>
     <string name="url_chat_chatrooms">https://team6-tcss450-web-service.herokuapp.com/chats/email/</string>
     <string name="url_chat_messages">https://team6-tcss450-web-service.herokuapp.com/messages/</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_maps">Map</string>
 
     <string name="chat_room_btn_add_contact_text">Add Contacts to Chat Room</string>
     <string name="add_contact_room_title">Please add your new contacts to the existed chat room</string>

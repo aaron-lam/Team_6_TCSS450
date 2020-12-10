@@ -214,7 +214,7 @@ public class WeatherViewModel extends AndroidViewModel {
 
             if(root.has(getString.apply(R.string.keys_json_weather_state))) {
                 String state = root.getString(getString.apply(R.string.keys_json_weather_state));
-                Log.d("Weather City", state);
+                Log.d("Weather State", state);
                 mWeatherData.getValue().setState(state);
             } else {
                 Log.e("WEATHER MODEL ERROR!", "No city data");

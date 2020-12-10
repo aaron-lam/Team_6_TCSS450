@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
     private NewContactCountViewModel mNewContactCountViewModel;
     private WeatherViewModel mWeatherModel;
 
-    private boolean mLoadedWeather;
-
     SharedPreferences sp;
     int curTheme;
 
@@ -144,13 +142,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mWeatherModel.addWeatherDataListObserver(this, weatherData -> {
-            if(!weatherData.isEmpty()) {
-                mLoadedWeather = true;
-                checkViewModelsLoaded();
-            }
-        });
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
@@ -163,17 +154,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             //The user has already allowed the use of Locations. Get the current location.
             requestLocation();
-        }
-    }
-
-    /**
-     * Removes the loading layout if all the view models have been loaded
-     */
-    private void checkViewModelsLoaded() {
-        //TODO Add the other view models here (Chat/Messages)
-        if(mLoadedWeather) {
-            Log.d("Main Activity", "All View Models Loaded");
-            //remove layout wait
         }
     }
 

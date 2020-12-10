@@ -56,8 +56,11 @@ public class WeatherFragment extends Fragment {
         FragmentWeatherBinding binding = FragmentWeatherBinding.bind(getView());
         binding.weatherCurrentWeather.setImageResource(mIcon);
         binding.textLocation.setText(mCity + ", " + mState);
-        binding.textTemperature.setText("Temperature: " + ((int) Math.round(mTemperature)) + "°F");
-        binding.textHumidity.setText("Humidity: " + mHumidity + "%");
-        binding.textWindspeed.setText("Wind Speed: " + ((int) Math.round(mWindSpeed)) + " mph");
+        binding.textTemperature.setText(getResources().getString(R.string.weather_temperature) +
+                ": " + ((int) Math.round(mTemperature)) + "°F");
+        binding.textHumidity.setText(getResources().getString(R.string.weather_humidity) +
+                ": " + mHumidity + "%");
+        binding.textWindspeed.setText(getResources().getString(R.string.weather_windspeed) +
+                ": " + + ((int) Math.round(mWindSpeed)) + " mph");
     }
 }

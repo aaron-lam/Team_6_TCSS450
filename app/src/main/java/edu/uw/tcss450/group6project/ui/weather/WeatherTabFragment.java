@@ -104,7 +104,7 @@ public class WeatherTabFragment extends Fragment {
 
         if (mSearchView != null) {
             mSearchView.setInputType(InputType.TYPE_CLASS_NUMBER);
-            mSearchView.setQueryHint("Zip Code");
+            mSearchView.setQueryHint(getResources().getString(R.string.weather_zip));
             mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
             mSearchListener = new SearchView.OnQueryTextListener() {
 
@@ -199,7 +199,7 @@ public class WeatherTabFragment extends Fragment {
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             if(position == 0) {
-                tab.setText("24-hour");
+                tab.setText(getResources().getString(R.string.weather_48hour));
                 tab.setIcon(R.drawable.weather_calendar_24dp);
             } else {
                 tab.setText(weatherTabText[position-1]);
