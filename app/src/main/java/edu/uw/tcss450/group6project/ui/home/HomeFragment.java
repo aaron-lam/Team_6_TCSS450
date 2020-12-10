@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment {
                 WeatherDailyData currentWeather = weatherData.getCurrentWeather();
                 binding.textWeather.setText(weatherData.getCity() + ", " + weatherData.getState()
                 + ": " + (int) Math.round(currentWeather.getTemp()) + "°F");
-                binding.imageWeather.setImageResource(createIconMap().get(currentWeather.getWeather()));
+                binding.imageWeather.setImageResource(createIconMap().getOrDefault(currentWeather.getWeather(), R.drawable.weather_cloud_24dp));
             }
         });
         mContactRequestModel.addContactRequestListObserver(getViewLifecycleOwner(), contactList -> {
