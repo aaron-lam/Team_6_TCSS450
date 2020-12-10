@@ -2,15 +2,11 @@ package edu.uw.tcss450.group6project.ui.weather;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -26,8 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -39,9 +33,11 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import edu.uw.tcss450.group6project.R;
-import edu.uw.tcss450.group6project.SettingsActivity;
 import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
 import edu.uw.tcss450.group6project.model.LocationViewModel;
+import edu.uw.tcss450.group6project.ui.weather.forecast.WeatherForecastFragment;
+import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
+import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
 
 /**
  * A fragment to navigate between single day
@@ -104,7 +100,7 @@ public class WeatherTabFragment extends Fragment {
 
         if (mSearchView != null) {
             mSearchView.setInputType(InputType.TYPE_CLASS_NUMBER);
-            mSearchView.setQueryHint("Zip Code");
+            mSearchView.setQueryHint(getResources().getString(R.string.weather_zip));
             mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
             mSearchListener = new SearchView.OnQueryTextListener() {
 
@@ -199,7 +195,7 @@ public class WeatherTabFragment extends Fragment {
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             if(position == 0) {
-                tab.setText("24-hour");
+                tab.setText(getResources().getString(R.string.weather_48hour));
                 tab.setIcon(R.drawable.weather_calendar_24dp);
             } else {
                 tab.setText(weatherTabText[position-1]);
@@ -252,7 +248,7 @@ public class WeatherTabFragment extends Fragment {
             if(position == 0) {
                 return new WeatherForecastFragment(mForecastData);
             }
-            return new WeatherFragment(mIcons[position-1], mDailyData.get(position - 1),
+            return new DailyWeatherFragment(mIcons[position-1], mDailyData.get(position - 1),
                     mWeatherModel.getCity(), mWeatherModel.getState());
         }
 

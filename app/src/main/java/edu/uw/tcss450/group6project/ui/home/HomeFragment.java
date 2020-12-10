@@ -9,22 +9,18 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import androidx.lifecycle.ViewModelProvider;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentHomeBinding;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
-import edu.uw.tcss450.group6project.ui.chat.ChatRoom;
-import edu.uw.tcss450.group6project.ui.chat.ChatGenerator;
 import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
 import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabViewModel;
-import edu.uw.tcss450.group6project.ui.weather.WeatherDailyData;
-import edu.uw.tcss450.group6project.ui.weather.WeatherViewModel;
+import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
+import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
 
 /**
  * A fragment for displaying the home landing page

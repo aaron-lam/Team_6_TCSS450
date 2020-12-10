@@ -1,4 +1,4 @@
-package edu.uw.tcss450.group6project.ui.weather;
+package edu.uw.tcss450.group6project.ui.weather.model;
 
 import android.app.Application;
 import android.util.Log;
@@ -19,13 +19,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.IntFunction;
 
 import edu.uw.tcss450.group6project.R;
+import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
+import edu.uw.tcss450.group6project.ui.weather.model.WeatherData;
 
 /**
  * View Model class to store data about weather.
@@ -214,7 +215,7 @@ public class WeatherViewModel extends AndroidViewModel {
 
             if(root.has(getString.apply(R.string.keys_json_weather_state))) {
                 String state = root.getString(getString.apply(R.string.keys_json_weather_state));
-                Log.d("Weather City", state);
+                Log.d("Weather State", state);
                 mWeatherData.getValue().setState(state);
             } else {
                 Log.e("WEATHER MODEL ERROR!", "No city data");

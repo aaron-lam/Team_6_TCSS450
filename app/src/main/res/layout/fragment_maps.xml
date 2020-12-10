@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/map"
-        tools:context=".ui.weather.MapsFragment"
+        tools:context=".ui.weather.WeatherMapFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>

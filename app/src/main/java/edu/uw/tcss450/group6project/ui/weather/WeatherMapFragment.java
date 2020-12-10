@@ -23,10 +23,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentMapsBinding;
-import edu.uw.tcss450.group6project.databinding.FragmentWeatherForecastBinding;
 import edu.uw.tcss450.group6project.model.LocationViewModel;
+import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener{
+public class WeatherMapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener{
 
     private LocationViewModel mLocationModel;
     private WeatherViewModel mWeatherModel;
