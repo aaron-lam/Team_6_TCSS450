@@ -312,8 +312,10 @@ public class MainActivity extends AppCompatActivity {
                 //message.
                 mChatRoomModel.addMessage(intent.getIntExtra("chatid", -1), cm);
             }
-            else if (intent.hasExtra("roomName") && nd.getId() != R.id.navigation_chat) {
-                mNewMessageModel.increment();
+            else if (intent.hasExtra("roomName")) {
+                if(nd.getId() != R.id.navigation_chat) {
+                    mNewMessageModel.increment();
+                }
             }
             // At this point, it must be a contact related notification, but you still need
             // to check if you're on the contacts page before updating notifications
