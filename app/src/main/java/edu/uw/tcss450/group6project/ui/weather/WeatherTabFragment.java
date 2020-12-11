@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
 import edu.uw.tcss450.group6project.model.LocationViewModel;
+import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.weather.forecast.WeatherForecastFragment;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
@@ -50,6 +51,8 @@ public class WeatherTabFragment extends Fragment {
 
     private LocationViewModel mLocationViewModel;
 
+    private UserInfoViewModel mUserModel;
+
     private SearchView mSearchView;
 
     private SearchView.OnQueryTextListener mSearchListener;
@@ -60,6 +63,7 @@ public class WeatherTabFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mWeatherModel = new ViewModelProvider(getActivity()).get(WeatherViewModel.class);
         mLocationViewModel = new ViewModelProvider(getActivity()).get(LocationViewModel.class);
+        mUserModel = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
         //Hard coded values for sprint 2 testing purposes
         Log.d("Weather Tab Lat", Double.toString(mLocationViewModel.getLatitude()));
         Log.d("Weather Tab Long", Double.toString(mLocationViewModel.getLongitude()));
@@ -111,7 +115,7 @@ public class WeatherTabFragment extends Fragment {
                     boolean validinput = isZipCode(query);
                     if(validinput) {
                         Log.i("Zip Code Query", "Valid");
-                        mWeatherModel.connectZipCode(query);
+                        mWeatherModel.connectZipCode(query, mUserModel.getJWT());
                         mSearchView.setIconified(true);
                         mSearchView.setQuery("", false);
                         mSearchView.setIconified(true);
