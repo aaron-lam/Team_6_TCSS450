@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     // Configuration for a bottom navigation bar.
     private AppBarConfiguration mAppBarConfiguration;
 
+    private UserInfoViewModel mUserModel;
     private MainPushMessageReceiver mPushMessageReceiver;
     private NewMessageCountViewModel mNewMessageModel;
     private NewContactCountViewModel mNewContactCountViewModel;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         mNewMessageModel = new ViewModelProvider(this).get(NewMessageCountViewModel.class);
         mNewContactCountViewModel = new ViewModelProvider(this).get(NewContactCountViewModel.class);
         mWeatherModel = new ViewModelProvider(this).get(WeatherViewModel.class);
+        mUserModel = new ViewModelProvider(this).get(UserInfoViewModel.class);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
@@ -200,7 +202,8 @@ public class MainActivity extends AppCompatActivity {
                                             .get(LocationViewModel.class);
                                 }
                                 mLocationModel.setLocation(location);
-                                mWeatherModel.connectLocation(mLocationModel.getLatitude(), mLocationModel.getLongitude());
+                                mWeatherModel.connectLocation(mLocationModel.getLatitude(),
+                                        mLocationModel.getLongitude(), mUserModel.getJWT());
                             } else {
                                 Log.e("LOCATION", "NULL");
                             }

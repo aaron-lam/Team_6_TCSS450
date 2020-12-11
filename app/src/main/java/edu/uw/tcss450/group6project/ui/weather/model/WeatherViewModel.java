@@ -47,7 +47,7 @@ public class WeatherViewModel extends AndroidViewModel {
         mWeatherData.setValue(new WeatherData());
     }
 
-    public void connectZipCode(String zipcode) {
+    public void connectZipCode(String zipcode, String jwt) {
         String url = getApplication().getResources().getString(R.string.url_weather_location);
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -58,6 +58,7 @@ public class WeatherViewModel extends AndroidViewModel {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
+                headers.put(getApplication().getResources().getString(R.string.header_jwt_auth), jwt);
                 headers.put(getApplication().getResources().getString(R.string.keys_json_weather_zip), zipcode);
                 return headers;
             }
@@ -77,7 +78,7 @@ public class WeatherViewModel extends AndroidViewModel {
      * @param latitude latitude of request
      * @param longitude longitude of request
      */
-    public void connectLocation(double latitude, double longitude) {
+    public void connectLocation(double latitude, double longitude, String jwt) {
         String url = getApplication().getResources().getString(R.string.url_weather_location);
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -88,6 +89,7 @@ public class WeatherViewModel extends AndroidViewModel {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
+                headers.put(getApplication().getResources().getString(R.string.header_jwt_auth), jwt);
                 headers.put(getApplication().getResources().getString(R.string.keys_json_weather_lat), Double.toString(latitude));
                 headers.put(getApplication().getResources().getString(R.string.keys_json_weather_long), Double.toString(longitude));
                 return headers;

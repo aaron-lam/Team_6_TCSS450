@@ -24,12 +24,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentMapsBinding;
 import edu.uw.tcss450.group6project.model.LocationViewModel;
+import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
 
 public class WeatherMapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener{
 
     private LocationViewModel mLocationModel;
     private WeatherViewModel mWeatherModel;
+    private UserInfoViewModel mUserModel;
     private GoogleMap mMap;
 
     private double mLatitude;
@@ -50,13 +52,14 @@ public class WeatherMapFragment extends Fragment implements OnMapReadyCallback, 
         FragmentMapsBinding binding =FragmentMapsBinding.bind(view);
         mLocationModel = new ViewModelProvider(getActivity()).get(LocationViewModel.class);
         mWeatherModel = new ViewModelProvider(getActivity()).get(WeatherViewModel.class);
+        mUserModel = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         binding.fab.setOnClickListener(click -> {
-            mWeatherModel.connectLocation(mLatitude, mLongitude);
+            mWeatherModel.connectLocation(mLatitude, mLongitude, mUserModel.getJWT());
             getActivity().onBackPressed();
         });
 
