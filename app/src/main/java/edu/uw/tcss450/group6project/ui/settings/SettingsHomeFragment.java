@@ -35,7 +35,7 @@ public class SettingsHomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        sp = getActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        sp = getActivity().getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
         int spTheme = sp.getInt("theme",0);
 
         if (spTheme == R.style.ThemeOne) {
@@ -51,7 +51,7 @@ public class SettingsHomeFragment extends Fragment {
         });
 
         mBinding.radioButtonSettingsThemeOne.setOnClickListener(button -> {
-            sp = getActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+            sp = getActivity().getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putInt("theme",R.style.ThemeOne);
             editor.commit();
@@ -60,7 +60,7 @@ public class SettingsHomeFragment extends Fragment {
         });
 
         mBinding.radioButtonSettingsThemeTwo.setOnClickListener(button -> {
-            sp = getActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+            sp = getActivity().getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putInt("theme",R.style.ThemeTwo);
             editor.commit();
@@ -69,7 +69,7 @@ public class SettingsHomeFragment extends Fragment {
         });
 
         mBinding.radioButtonSettingsThemeThree.setOnClickListener(button -> {
-            sp = getActivity().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+            sp = getActivity().getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putInt("theme",R.style.ThemeThree);
             editor.commit();

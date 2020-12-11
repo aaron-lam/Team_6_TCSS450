@@ -23,7 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-        sp = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        sp = getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
         theme.applyStyle(sp.getInt("theme",0), true);
         return theme;
     }

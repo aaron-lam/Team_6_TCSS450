@@ -51,7 +51,7 @@ public class AuthActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
 
-        sp = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        sp = getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
         int spTheme = sp.getInt("theme",0);
 
         if (spTheme != curTheme) {
@@ -63,7 +63,7 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-        sp = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        sp = getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
         curTheme = sp.getInt("theme",0);
         theme.applyStyle(curTheme, true);
         return theme;

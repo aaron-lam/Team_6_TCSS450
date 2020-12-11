@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
 
-        sp = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        sp = getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
         int spTheme = sp.getInt("theme",0);
 
         if (spTheme != curTheme) {
@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-        sp = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        sp = getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
         curTheme = sp.getInt("theme",0);
         theme.applyStyle(curTheme, true);
         return theme;
@@ -272,7 +272,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
-                // TODO: Make sure this works properly
             case R.id.button_top_options_menu_logout:
 
                 // Reset theme
@@ -280,11 +279,27 @@ public class MainActivity extends AppCompatActivity {
                 editor.putInt("theme",R.style.ThemeOne);
                 editor.commit();
 
+                // Run logout
+                logOut();
+
                 // Exit back to home page
                 this.finish();
+                intent = new Intent(this, AuthActivity.class);
+                startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logOut() {
+        SharedPreferences prefs =
+                getSharedPreferences(
+                        getString(R.string.keys_shared_prefs),
+                        Context.MODE_PRIVATE);
+        prefs.edit().remove(getString(R.string.keys_prefs_jwt)).apply();
+        prefs.edit().remove("username").apply();
+        //End the app completely
+        finishAndRemoveTask();
     }
 
     /**
@@ -311,9 +326,8 @@ public class MainActivity extends AppCompatActivity {
                 //Inform the view model holding chatroom messages of the new
                 //message.
                 mChatRoomModel.addMessage(intent.getIntExtra("chatid", -1), cm);
-            }
-            else if (intent.hasExtra("roomName")) {
-                if(nd.getId() != R.id.navigation_chat) {
+            } else if (intent.hasExtra("roomName")) {
+                if (nd.getId() != R.id.navigation_chat) {
                     mNewMessageModel.increment();
                 }
             }

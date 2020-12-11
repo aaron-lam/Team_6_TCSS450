@@ -67,6 +67,10 @@
     <string name="settings_change_theme_option_two">Blue</string>
     <string name="settings_change_theme_option_three">Green</string>
 
+    <!-- Auto Sign in JWT / logout -->
+    <string name="keys_shared_prefs">Group 6 app shared prefs</string>
+    <string name="keys_prefs_jwt">Shared Prefs JWT</string>
+    <string name="action_log_out">Log Out</string>
 
     <!-- Weather Fragment   -->
     <string name="weather_48hour">48-hour</string>
