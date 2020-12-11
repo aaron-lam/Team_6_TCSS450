@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group6project.ui.contacts.list_tab;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,7 +110,22 @@ public class ContactListTabRecyclerViewAdapter extends
          * @param button the delete button
          */
         private void handleDelete(final View button) {
-            mContactListTabViewModel.connectDelete(mUserInfoViewModel.getJWT(),mContact.getMemberId());
+
+            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        mContactListTabViewModel.connectDelete(mUserInfoViewModel.getJWT(),mContact.getMemberId());
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(button.getContext());
+            builder.setMessage("Are you sure you want to delete " + mContact.getUserName() + " from your contacts?")
+                    .setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
         }
 
         /**
