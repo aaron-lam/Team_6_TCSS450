@@ -90,6 +90,8 @@
     <string name="weather_zip_error">Invalid Zip Code</string>
     <string name="weather_unfavorite">Unfavorited Location</string>
     <string name="weather_favorite">Favorited Location</string>
+    <string name="weather_add_favorite">Add to favorites</string>
+    <string name="weather_remove_favorite">Remove from favorites</string>
 
     <!-- JSON Headers -->
     <string name="header_jwt_auth">Authorization</string>

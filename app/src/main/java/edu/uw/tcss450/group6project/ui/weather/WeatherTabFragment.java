@@ -176,14 +176,19 @@ public class WeatherTabFragment extends Fragment {
                 mFavoriteLocationModel.connectDelete(mWeatherModel.getCity(), mWeatherModel.getState(),
                         mWeatherModel.getLatitude(), mWeatherModel.getLongitude(), mUserModel.getJWT());
                 item.setIcon(R.drawable.weather_nonfavorite_24dp);
+                item.setTitle(R.string.weather_add_favorite);
                 makeSnackbar(R.string.weather_unfavorite, Color.BLUE, Color.WHITE);
             } else { //favorite the location
                 mFavoriteLocationModel.connectPost(mWeatherModel.getCity(), mWeatherModel.getState(),
                         mWeatherModel.getLatitude(), mWeatherModel.getLongitude(), mUserModel.getJWT());
                 item.setIcon(R.drawable.weather_favorite_24dp);
+                item.setTitle(R.string.weather_remove_favorite);
                 makeSnackbar(R.string.weather_favorite, Color.BLUE, Color.WHITE);
             }
             favorited = !favorited;
+        } else if(item.getItemId() == R.id.action_bookmark) {
+            Navigation.findNavController(getView()).navigate(WeatherTabFragmentDirections.
+                    actionNavigationWeatherToWeatherFavoriteLocationFragment());
         }
         return super.onOptionsItemSelected(item);
     }
@@ -199,10 +204,12 @@ public class WeatherTabFragment extends Fragment {
             Log.d("Weather Tab", "Favorited Location");
             favorited = true;
             starMenuItem.setIcon(R.drawable.weather_favorite_24dp);
+            starMenuItem.setTitle(R.string.weather_remove_favorite);
         } else {
             Log.d("Weather Tab", "NON Favorited Location");
             favorited = false;
             starMenuItem.setIcon(R.drawable.weather_nonfavorite_24dp);
+            starMenuItem.setTitle(R.string.weather_add_favorite);
         }
     }
 

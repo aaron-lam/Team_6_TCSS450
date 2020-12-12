@@ -16,9 +16,17 @@
         app:showAsAction="always"/>
 
     <item
+        android:id="@+id/action_bookmark"
+        android:icon="@drawable/weather_bookmark_24dp"
+        android:title="View Favorite Locations"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/action_favorite"
         android:icon="@drawable/weather_nonfavorite_24dp"
-        android:title="Favorite Location"
-        app:showAsAction="always"/>
+        android:title="@string/weather_add_favorite"
+        app:showAsAction="ifRoom"/>
+
+
 
 </menu>
