@@ -73,8 +73,10 @@ public class FavoriteLocationRecyclerViewAdapter extends
         void setFavoriteLocation(final FavoriteWeather favoriteWeather) {
             mFavoriteWeather = favoriteWeather;
             binding.textCitystate.setText(mFavoriteWeather.getCity() + ", " + mFavoriteWeather.getState());
-            binding.textLocation.setText("(" + mFavoriteWeather.getLatitude() + ", " +
-                    mFavoriteWeather.getLongitude() + ")");
+            String latitude = String.format("%.2f", mFavoriteWeather.getLatitude());
+            String longitude = String.format("%.2f", mFavoriteWeather.getLongitude());
+
+            binding.textLocation.setText("(" + latitude + ", " + longitude + ")");
         }
     }
 }

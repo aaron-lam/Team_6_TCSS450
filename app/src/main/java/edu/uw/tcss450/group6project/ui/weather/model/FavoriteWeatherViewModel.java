@@ -17,10 +17,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.IntFunction;
 
 import edu.uw.tcss450.group6project.R;
@@ -37,21 +39,13 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
 
     public void connectDelete(String city, String state, double latitude,
                             double longitude, String jwt) {
-        Log.d("Favorite Weather", "Unfavoriting Location");
+
         String url = getApplication().getResources().getString(R.string.url_weather_favorite);
-        JSONObject body = new JSONObject();
-        try {
-            body.put("city", city);
-            body.put("state", state);
-            body.put("lat", latitude);
-            body.put("long", longitude);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         Request request = new JsonObjectRequest(
                 Request.Method.DELETE,
                 url,
-                body, //push token found in the JSONObject body
+                null,
                 result -> handleFavoriteDelete(city, state, latitude, longitude), // we get a response but do nothing with it
                 this::handleError) {
 
@@ -60,9 +54,22 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
                 Map<String, String> headers = new HashMap<>();
                 // add headers <key,value>
                 headers.put("Authorization", jwt);
+                headers.put("city", city);
+                headers.put("state", state);
+                headers.put("lat", Double.toString(latitude));
+                headers.put("long", Double.toString(longitude));
                 return headers;
             }
         };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10_000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //Instantiate the RequestQueue and add the request to the queue
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+
     }
 
     public void connectPost(String city, String state, double latitude,
@@ -134,6 +141,7 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
 
     private void handleFavoriteDelete(String city, String state, double latitude,
                                    double longitude) {
+        Log.d("Favorite Location", "Deleting From List");
         //add favorite to view model
         FavoriteWeather favoriteWeather = new FavoriteWeather(city, state, latitude, longitude);
         mFavoriteWeather.getValue().remove(favoriteWeather);
@@ -188,8 +196,16 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
      * @param error the error message
      */
     private void handleError(VolleyError error) {
-        //you should add much better error handling in a production release.
-        error.printStackTrace();
+        if (Objects.isNull(error.networkResponse)) {
+            Log.e("NETWORK ERROR", error.getMessage());
+        }
+        else {
+            String data = new String(error.networkResponse.data, Charset.defaultCharset());
+            Log.e("CLIENT ERROR",
+                    error.networkResponse.statusCode +
+                            " " +
+                            data);
+        }
     }
 
     /**
