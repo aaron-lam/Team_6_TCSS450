@@ -88,6 +88,10 @@
 
     <!-- Weather Fragment -->
     <string name="weather_zip_error">Invalid Zip Code</string>
+    <string name="weather_unfavorite">Unfavorited Location</string>
+    <string name="weather_favorite">Favorited Location</string>
+    <string name="weather_add_favorite">Add to favorites</string>
+    <string name="weather_remove_favorite">Remove from favorites</string>
 
     <!-- JSON Headers -->
     <string name="header_jwt_auth">Authorization</string>
@@ -108,6 +112,9 @@
     <string name="keys_json_weather_zip">zipcode</string>
     <string name="keys_json_weather_city">city</string>
     <string name="keys_json_weather_state">state</string>
+    <string name="keys_json_weather_cityname">cityname</string>
+    <string name="keys_json_weather_statename">statename</string>
+    <string name="keys_json_weather_favorite">favorites</string>
 
     <string name="keys_json_contacts">contacts</string>
     <string name="keys_json_contact_first">firstname</string>
@@ -120,6 +127,7 @@
     <!-- URL for webservice -->
     <string name="base_url">https://team6-tcss450-web-service.herokuapp.com/</string>
     <string name="url_weather_location">https://team6-tcss450-web-service.herokuapp.com/weather/location/</string>
+    <string name="url_weather_favorite">https://team6-tcss450-web-service.herokuapp.com/weather/favorite/</string>
     <string name="url_chat_chatrooms">https://team6-tcss450-web-service.herokuapp.com/chats/email/</string>
     <string name="url_chat_messages">https://team6-tcss450-web-service.herokuapp.com/messages/</string>
 

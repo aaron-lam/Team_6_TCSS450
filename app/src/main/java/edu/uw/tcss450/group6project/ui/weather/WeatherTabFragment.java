@@ -37,6 +37,7 @@ import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
 import edu.uw.tcss450.group6project.model.LocationViewModel;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.weather.forecast.WeatherForecastFragment;
+import edu.uw.tcss450.group6project.ui.weather.model.FavoriteWeatherViewModel;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
 
@@ -53,10 +54,13 @@ public class WeatherTabFragment extends Fragment {
 
     private UserInfoViewModel mUserModel;
 
+    private FavoriteWeatherViewModel mFavoriteLocationModel;
+
     private SearchView mSearchView;
 
     private SearchView.OnQueryTextListener mSearchListener;
 
+    private boolean favorited;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,9 +68,7 @@ public class WeatherTabFragment extends Fragment {
         mWeatherModel = new ViewModelProvider(getActivity()).get(WeatherViewModel.class);
         mLocationViewModel = new ViewModelProvider(getActivity()).get(LocationViewModel.class);
         mUserModel = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
-        //Hard coded values for sprint 2 testing purposes
-        Log.d("Weather Tab Lat", Double.toString(mLocationViewModel.getLatitude()));
-        Log.d("Weather Tab Long", Double.toString(mLocationViewModel.getLongitude()));
+        mFavoriteLocationModel = new ViewModelProvider(getActivity()).get(FavoriteWeatherViewModel.class);
     }
 
     @Override
@@ -85,14 +87,23 @@ public class WeatherTabFragment extends Fragment {
         mWeatherModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherData -> {
             if(!weatherData.isEmpty()) {
                 createWeatherTab(view, weatherData.getForecastData(), weatherData.getDailyData());
+
             }
         });
+
+
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
         inflater.inflate(R.menu.top_weather_menu, menu);
+
+
+        setFavoriteIcon(menu.findItem(R.id.action_favorite));
+        mWeatherModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherData -> {
+            setFavoriteIcon(menu.findItem(R.id.action_favorite));
+        });
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
@@ -121,7 +132,7 @@ public class WeatherTabFragment extends Fragment {
                         mSearchView.setIconified(true);
                     } else {
                         Log.i("Zip Code Query", "Invalid");
-                        displayZipCodeError();
+                        makeSnackbar(R.string.weather_zip_error, Color.RED, Color.WHITE);
                     }
 
                     mSearchView.clearFocus(); //removes the keyboard
@@ -139,10 +150,10 @@ public class WeatherTabFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private void displayZipCodeError() {
-        Snackbar snackbar = Snackbar.make(getView(), R.string.weather_zip_error, Snackbar.LENGTH_SHORT);
-        snackbar.setBackgroundTint(Color.RED);
-        snackbar.setTextColor(Color.WHITE);
+    private void makeSnackbar(int stringId, int bgColor, int textColor) {
+        Snackbar snackbar = Snackbar.make(getView(), stringId, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(bgColor);
+        snackbar.setTextColor(textColor);
         //Dismiss the snackbar when it's clicked
         snackbar.setAction("Dismiss", new View.OnClickListener() {
             @Override
@@ -152,7 +163,6 @@ public class WeatherTabFragment extends Fragment {
             }
         });
         snackbar.show();
-
     }
 
     @Override
@@ -161,8 +171,25 @@ public class WeatherTabFragment extends Fragment {
         if(item.getItemId() == R.id.action_map) {
             Log.d("Weather Tab", "Pressed Map");
             Navigation.findNavController(getView()).navigate(WeatherTabFragmentDirections.actionNavigationWeatherToMapsFragment());
+        } else if (item.getItemId() == R.id.action_favorite) {
+            if(favorited) { //unfavorite the location
+                mFavoriteLocationModel.connectDelete(mWeatherModel.getCity(), mWeatherModel.getState(),
+                        mWeatherModel.getLatitude(), mWeatherModel.getLongitude(), mUserModel.getJWT());
+                item.setIcon(R.drawable.weather_nonfavorite_24dp);
+                item.setTitle(R.string.weather_add_favorite);
+                makeSnackbar(R.string.weather_unfavorite, Color.BLUE, Color.WHITE);
+            } else { //favorite the location
+                mFavoriteLocationModel.connectPost(mWeatherModel.getCity(), mWeatherModel.getState(),
+                        mWeatherModel.getLatitude(), mWeatherModel.getLongitude(), mUserModel.getJWT());
+                item.setIcon(R.drawable.weather_favorite_24dp);
+                item.setTitle(R.string.weather_remove_favorite);
+                makeSnackbar(R.string.weather_favorite, Color.BLUE, Color.WHITE);
+            }
+            favorited = !favorited;
+        } else if(item.getItemId() == R.id.action_bookmark) {
+            Navigation.findNavController(getView()).navigate(WeatherTabFragmentDirections.
+                    actionNavigationWeatherToWeatherFavoriteLocationFragment());
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -170,6 +197,20 @@ public class WeatherTabFragment extends Fragment {
     private boolean isZipCode(String submitText) {
         Pattern pattern = Pattern.compile("^[0-9]{5}(?:-[0-9]{4})?$");
         return pattern.matcher(submitText).matches();
+    }
+
+    private void setFavoriteIcon(MenuItem starMenuItem) {
+        if(mFavoriteLocationModel.containsLocation(mWeatherModel.getLatitude(), mWeatherModel.getLongitude())) {
+            Log.d("Weather Tab", "Favorited Location");
+            favorited = true;
+            starMenuItem.setIcon(R.drawable.weather_favorite_24dp);
+            starMenuItem.setTitle(R.string.weather_remove_favorite);
+        } else {
+            Log.d("Weather Tab", "NON Favorited Location");
+            favorited = false;
+            starMenuItem.setIcon(R.drawable.weather_nonfavorite_24dp);
+            starMenuItem.setTitle(R.string.weather_add_favorite);
+        }
     }
 
 

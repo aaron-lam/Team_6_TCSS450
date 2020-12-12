@@ -43,7 +43,7 @@
     <TextView
         android:id="@+id/text_weather"
         android:layout_width="266dp"
-        android:layout_height="29dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
         android:text="Tacoma, WA: 47°F"

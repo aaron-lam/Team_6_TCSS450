@@ -142,6 +142,13 @@ public class WeatherViewModel extends AndroidViewModel {
         return mWeatherData.getValue().getCity();
     }
 
+    public double getLatitude() {
+        return mWeatherData.getValue().getLatitude();
+    }
+
+    public double getLongitude() {
+        return  mWeatherData.getValue().getLongitude();
+    }
 
     /**
      * When a successful call is made to the server. Parses the retrieved JSON
@@ -221,6 +228,22 @@ public class WeatherViewModel extends AndroidViewModel {
                 mWeatherData.getValue().setState(state);
             } else {
                 Log.e("WEATHER MODEL ERROR!", "No city data");
+            }
+
+            if(root.has(getString.apply(R.string.keys_json_weather_lat))) {
+                double latitude = root.getDouble(getString.apply(R.string.keys_json_weather_lat));
+                Log.d("Weather Latitude", Double.toString(latitude));
+                mWeatherData.getValue().setLatitude(latitude);
+            } else {
+                Log.e("WEATHER MODEL ERROR!", "No latitude data");
+            }
+
+            if(root.has(getString.apply(R.string.keys_json_weather_long))) {
+                double longitude = root.getDouble(getString.apply(R.string.keys_json_weather_long));
+                Log.d("Weather Longitude", Double.toString(longitude));
+                mWeatherData.getValue().setLongitude(longitude);
+            } else {
+                Log.e("WEATHER MODEL ERROR!", "No latitude data");
             }
 
         } catch (JSONException e) {
