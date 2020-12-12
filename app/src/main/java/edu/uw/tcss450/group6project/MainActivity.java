@@ -39,6 +39,8 @@ import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.services.PushReceiver;
 import edu.uw.tcss450.group6project.ui.chat.ChatMessage;
 import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
+import edu.uw.tcss450.group6project.ui.weather.model.FavoriteWeather;
+import edu.uw.tcss450.group6project.ui.weather.model.FavoriteWeatherViewModel;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
 
 /**
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private NewMessageCountViewModel mNewMessageModel;
     private NewContactCountViewModel mNewContactCountViewModel;
     private WeatherViewModel mWeatherModel;
+    private FavoriteWeatherViewModel mFavoriteWeatherModel;
 
     SharedPreferences sp;
     int curTheme;
@@ -86,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
         mNewContactCountViewModel = new ViewModelProvider(this).get(NewContactCountViewModel.class);
         mWeatherModel = new ViewModelProvider(this).get(WeatherViewModel.class);
         mUserModel = new ViewModelProvider(this).get(UserInfoViewModel.class);
+
+        mFavoriteWeatherModel = new ViewModelProvider(this).get(FavoriteWeatherViewModel.class);
+        mFavoriteWeatherModel.connectGet(mUserModel.getJWT());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
