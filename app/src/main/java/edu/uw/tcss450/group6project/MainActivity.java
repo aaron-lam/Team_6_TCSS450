@@ -39,6 +39,8 @@ import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.services.PushReceiver;
 import edu.uw.tcss450.group6project.ui.chat.ChatMessage;
 import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
+import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequest;
+import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabViewModel;
 import edu.uw.tcss450.group6project.ui.weather.model.FavoriteWeather;
 import edu.uw.tcss450.group6project.ui.weather.model.FavoriteWeatherViewModel;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
@@ -318,6 +320,7 @@ public class MainActivity extends AppCompatActivity {
         ViewModelProvider vm = new ViewModelProvider(MainActivity.this);
 
         private ChatRoomViewModel mChatRoomModel = vm.get(ChatRoomViewModel.class);
+        private ContactRequestTabViewModel mContactRequestModel = vm.get(ContactRequestTabViewModel.class);
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -343,7 +346,14 @@ public class MainActivity extends AppCompatActivity {
             // At this point, it must be a contact related notification, but you still need
             // to check if you're on the contacts page before updating notifications
             else if (nd.getId() != R.id.navigation_contacts) {
+                if(intent.getStringExtra("type").equals("newContact")) {
+                    mContactRequestModel.addContactRequest(new ContactRequest.Builder(
+                            intent.getStringExtra("username"),
+                            intent.getStringExtra("memberid")
+                    ).build());
+                }
                 mNewContactCountViewModel.increment();
+
             }
         }
     }
