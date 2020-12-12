@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group6project.ui.weather.model;
 
+import java.util.Objects;
+
 public class FavoriteWeather {
 
     private String mCity;
@@ -29,4 +31,16 @@ public class FavoriteWeather {
     public double getLongitude() {
         return mLongitude;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FavoriteWeather that = (FavoriteWeather) o;
+        return Double.compare(that.mLatitude, mLatitude) == 0 &&
+                Double.compare(that.mLongitude, mLongitude) == 0 &&
+                Objects.equals(mCity, that.mCity) &&
+                Objects.equals(mState, that.mState);
+    }
+
 }

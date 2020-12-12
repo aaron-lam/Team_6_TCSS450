@@ -69,9 +69,6 @@ public class WeatherTabFragment extends Fragment {
         mLocationViewModel = new ViewModelProvider(getActivity()).get(LocationViewModel.class);
         mUserModel = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
         mFavoriteLocationModel = new ViewModelProvider(getActivity()).get(FavoriteWeatherViewModel.class);
-        //Hard coded values for sprint 2 testing purposes
-        Log.d("Weather Tab Lat", Double.toString(mLocationViewModel.getLatitude()));
-        Log.d("Weather Tab Long", Double.toString(mLocationViewModel.getLongitude()));
     }
 
     @Override
@@ -175,10 +172,14 @@ public class WeatherTabFragment extends Fragment {
             Log.d("Weather Tab", "Pressed Map");
             Navigation.findNavController(getView()).navigate(WeatherTabFragmentDirections.actionNavigationWeatherToMapsFragment());
         } else if (item.getItemId() == R.id.action_favorite) {
-            if(favorited) {
+            if(favorited) { //unfavorite the location
+                mFavoriteLocationModel.connectDelete(mWeatherModel.getCity(), mWeatherModel.getState(),
+                        mWeatherModel.getLatitude(), mWeatherModel.getLongitude(), mUserModel.getJWT());
                 item.setIcon(R.drawable.weather_nonfavorite_24dp);
                 makeSnackbar(R.string.weather_unfavorite, Color.BLUE, Color.WHITE);
-            } else {
+            } else { //favorite the location
+                mFavoriteLocationModel.connectPost(mWeatherModel.getCity(), mWeatherModel.getState(),
+                        mWeatherModel.getLatitude(), mWeatherModel.getLongitude(), mUserModel.getJWT());
                 item.setIcon(R.drawable.weather_favorite_24dp);
                 makeSnackbar(R.string.weather_favorite, Color.BLUE, Color.WHITE);
             }
@@ -195,9 +196,11 @@ public class WeatherTabFragment extends Fragment {
 
     private void setFavoriteIcon(MenuItem starMenuItem) {
         if(mFavoriteLocationModel.containsLocation(mWeatherModel.getLatitude(), mWeatherModel.getLongitude())) {
+            Log.d("Weather Tab", "Favorited Location");
             favorited = true;
             starMenuItem.setIcon(R.drawable.weather_favorite_24dp);
         } else {
+            Log.d("Weather Tab", "NON Favorited Location");
             favorited = false;
             starMenuItem.setIcon(R.drawable.weather_nonfavorite_24dp);
         }

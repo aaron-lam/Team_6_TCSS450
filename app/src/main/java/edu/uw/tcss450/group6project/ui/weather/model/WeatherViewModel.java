@@ -230,6 +230,22 @@ public class WeatherViewModel extends AndroidViewModel {
                 Log.e("WEATHER MODEL ERROR!", "No city data");
             }
 
+            if(root.has(getString.apply(R.string.keys_json_weather_lat))) {
+                double latitude = root.getDouble(getString.apply(R.string.keys_json_weather_lat));
+                Log.d("Weather Latitude", Double.toString(latitude));
+                mWeatherData.getValue().setLatitude(latitude);
+            } else {
+                Log.e("WEATHER MODEL ERROR!", "No latitude data");
+            }
+
+            if(root.has(getString.apply(R.string.keys_json_weather_long))) {
+                double longitude = root.getDouble(getString.apply(R.string.keys_json_weather_long));
+                Log.d("Weather Longitude", Double.toString(longitude));
+                mWeatherData.getValue().setLongitude(longitude);
+            } else {
+                Log.e("WEATHER MODEL ERROR!", "No latitude data");
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("ERROR!", e.getMessage());

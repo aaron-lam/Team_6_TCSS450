@@ -35,8 +35,39 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
         mFavoriteWeather = new MutableLiveData<>(new ArrayList<>());
     }
 
+    public void connectDelete(String city, String state, double latitude,
+                            double longitude, String jwt) {
+        Log.d("Favorite Weather", "Unfavoriting Location");
+        String url = getApplication().getResources().getString(R.string.url_weather_favorite);
+        JSONObject body = new JSONObject();
+        try {
+            body.put("city", city);
+            body.put("state", state);
+            body.put("lat", latitude);
+            body.put("long", longitude);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Request request = new JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                body, //push token found in the JSONObject body
+                result -> handleFavoriteDelete(city, state, latitude, longitude), // we get a response but do nothing with it
+                this::handleError) {
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+    }
+
     public void connectPost(String city, String state, double latitude,
                             double longitude, String jwt) {
+        Log.d("Favorite Weather", "Favoriting Location");
         String url = getApplication().getResources().getString(R.string.url_weather_favorite);
 
         JSONObject body = new JSONObject();
@@ -101,6 +132,14 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
                 .add(request);
     }
 
+    private void handleFavoriteDelete(String city, String state, double latitude,
+                                   double longitude) {
+        //add favorite to view model
+        FavoriteWeather favoriteWeather = new FavoriteWeather(city, state, latitude, longitude);
+        mFavoriteWeather.getValue().remove(favoriteWeather);
+        mFavoriteWeather.setValue(mFavoriteWeather.getValue());
+    }
+
     private void handleFavoriteAdd(String city, String state, double latitude,
                                    double longitude) {
         //add favorite to view model
@@ -126,8 +165,8 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
                 for(int i = 0 ; i < favorites.length(); i++) {
                     JSONObject favorite = favorites.getJSONObject(i);
                     FavoriteWeather favoriteWeather = new FavoriteWeather(
-                            favorite.getString("city"),
-                            favorite.getString("state"),
+                            favorite.getString("cityname"),
+                            favorite.getString("statename"),
                             favorite.getDouble("lat"),
                             favorite.getDouble("long"));
                     mFavoriteWeather.getValue().add(favoriteWeather);
@@ -160,8 +199,10 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
      * @return Whether the lat/long pair are already favorite
      */
     public boolean containsLocation(double latitude, double longitude) {
+
         for(FavoriteWeather fw: mFavoriteWeather.getValue()) {
-            if(fw.getLatitude() == latitude && fw.getLongitude() == longitude) {
+            if(Double.compare(fw.getLatitude(), latitude) == 0 &&
+                Double.compare(fw.getLongitude(), longitude) == 0) {
                 return true;
             }
         }
