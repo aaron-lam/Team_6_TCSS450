@@ -208,4 +208,8 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
         }
         return false;
     }
+
+    public List<FavoriteWeather> getFavorites() {
+        return mFavoriteWeather.getValue();
+    }
 }

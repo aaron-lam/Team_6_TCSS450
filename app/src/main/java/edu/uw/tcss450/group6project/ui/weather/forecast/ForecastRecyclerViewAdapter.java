@@ -51,15 +51,13 @@ public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter<ForecastRe
         }
 
         void setHourlyWeather(final WeatherDailyData hourlyForecast) {
-                mHourlyForecast = hourlyForecast;
-                binding.forecastTextTemp.setText(((int) Math.round(hourlyForecast.getTemp())) + "°");
-                binding.forecastTextHumidity.setText(hourlyForecast.getHumidity() + "%");
-                binding.forecastTextWind.setText(((int) Math.round(hourlyForecast.getWindSpeed())) + " mph");
-                Map<String, Integer> iconMap = createIconMap();
-                binding.forecastWeather.setImageResource(iconMap.get(hourlyForecast.getWeather()));
-            }
+            mHourlyForecast = hourlyForecast;
+            binding.forecastTextTemp.setText(((int) Math.round(hourlyForecast.getTemp())) + "°");
+            binding.forecastTextHumidity.setText(hourlyForecast.getHumidity() + "%");
+            binding.forecastTextWind.setText(((int) Math.round(hourlyForecast.getWindSpeed())) + " mph");
+            Map<String, Integer> iconMap = createIconMap();
+            binding.forecastWeather.setImageResource(iconMap.get(hourlyForecast.getWeather()));
         }
-
         /**
          * Creates a mapping of weather conditions to an icon
          * @return Map of weather icons
@@ -74,6 +72,5 @@ public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter<ForecastRe
 
             return iconMap;
         }
-
-
+    }
 }
