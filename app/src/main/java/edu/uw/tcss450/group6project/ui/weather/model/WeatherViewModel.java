@@ -142,6 +142,13 @@ public class WeatherViewModel extends AndroidViewModel {
         return mWeatherData.getValue().getCity();
     }
 
+    public double getLatitude() {
+        return mWeatherData.getValue().getLatitude();
+    }
+
+    public double getLongitude() {
+        return  mWeatherData.getValue().getLongitude();
+    }
 
     /**
      * When a successful call is made to the server. Parses the retrieved JSON

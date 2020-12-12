@@ -15,6 +15,11 @@ public class WeatherData {
     private String mCity;
     /** State of the forecast*/
     private String mState;
+    /** Latitude of the forecast*/
+    private double mLatitude;
+    /** Longitude of the forecast*/
+    private double mLongitude;
+
 
     /**
      * Public constructor
@@ -44,17 +49,26 @@ public class WeatherData {
         return mDailyList.isEmpty();
     }
 
-    /** Getter for the city of weather conditions*/
+    /**
+     * Getter for the city
+     * @return City of the current weather
+     */
     public String getCity() {
         return mCity;
     }
 
-    /** Setter for the city */
+    /**
+     * Setter for the city
+     * @param city new city
+     */
     public void setCity(String city) {
         mCity = city;
     }
 
-    /** Getter for the state*/
+    /**
+     * Getter for the state
+     * @return State (Location) of current weather
+     */
     public String getState() {
         return mState;
     }
@@ -63,4 +77,37 @@ public class WeatherData {
     public void setState(String state) {
         mState = state;
     }
+
+    /**
+     * Getter for the latitude
+     * @return Current Weather Latitude
+     */
+    public double getLatitude() {
+        return mLatitude;
+    }
+
+    /**
+     * Setter for the latitude
+     * @param latitude new latitude
+     */
+    public void setLatitude(double latitude) {
+        mLatitude = latitude;
+    }
+
+    /**
+     * Getter for the longitude
+     * @return Current weather Longitude
+     */
+    public double getLongitude() {
+        return mLongitude;
+    }
+
+    /**
+     * Setter for the longitude
+     * @param longitude new longitude
+     */
+    public void setLongitude(double longitude) {
+        mLongitude = longitude;
+    }
+
 }

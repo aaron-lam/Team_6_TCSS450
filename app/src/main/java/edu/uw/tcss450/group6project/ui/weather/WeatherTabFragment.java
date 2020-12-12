@@ -37,6 +37,7 @@ import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
 import edu.uw.tcss450.group6project.model.LocationViewModel;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.weather.forecast.WeatherForecastFragment;
+import edu.uw.tcss450.group6project.ui.weather.model.FavoriteWeatherViewModel;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
 
@@ -53,11 +54,13 @@ public class WeatherTabFragment extends Fragment {
 
     private UserInfoViewModel mUserModel;
 
+    private FavoriteWeatherViewModel mFavoriteLocationModel;
+
     private SearchView mSearchView;
 
     private SearchView.OnQueryTextListener mSearchListener;
 
-    private boolean favorited = true;
+    private boolean favorited;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class WeatherTabFragment extends Fragment {
         mWeatherModel = new ViewModelProvider(getActivity()).get(WeatherViewModel.class);
         mLocationViewModel = new ViewModelProvider(getActivity()).get(LocationViewModel.class);
         mUserModel = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
+        mFavoriteLocationModel = new ViewModelProvider(getActivity()).get(FavoriteWeatherViewModel.class);
         //Hard coded values for sprint 2 testing purposes
         Log.d("Weather Tab Lat", Double.toString(mLocationViewModel.getLatitude()));
         Log.d("Weather Tab Long", Double.toString(mLocationViewModel.getLongitude()));
@@ -86,6 +90,7 @@ public class WeatherTabFragment extends Fragment {
         mWeatherModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherData -> {
             if(!weatherData.isEmpty()) {
                 createWeatherTab(view, weatherData.getForecastData(), weatherData.getDailyData());
+
             }
         });
 
@@ -98,9 +103,10 @@ public class WeatherTabFragment extends Fragment {
         inflater.inflate(R.menu.top_weather_menu, menu);
 
 
-        if(favorited) {
-            menu.findItem(R.id.action_favorite).setIcon(R.drawable.weather_favorite_24dp);
-        }
+        setFavoriteIcon(menu.findItem(R.id.action_favorite));
+        mWeatherModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherData -> {
+            setFavoriteIcon(menu.findItem(R.id.action_favorite));
+        });
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
@@ -185,6 +191,16 @@ public class WeatherTabFragment extends Fragment {
     private boolean isZipCode(String submitText) {
         Pattern pattern = Pattern.compile("^[0-9]{5}(?:-[0-9]{4})?$");
         return pattern.matcher(submitText).matches();
+    }
+
+    private void setFavoriteIcon(MenuItem starMenuItem) {
+        if(mFavoriteLocationModel.containsLocation(mWeatherModel.getLatitude(), mWeatherModel.getLongitude())) {
+            favorited = true;
+            starMenuItem.setIcon(R.drawable.weather_favorite_24dp);
+        } else {
+            favorited = false;
+            starMenuItem.setIcon(R.drawable.weather_nonfavorite_24dp);
+        }
     }
 
 

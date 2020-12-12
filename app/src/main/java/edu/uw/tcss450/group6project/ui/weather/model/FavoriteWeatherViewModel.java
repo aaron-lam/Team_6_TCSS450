@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.function.IntFunction;
 
 import edu.uw.tcss450.group6project.R;
+import edu.uw.tcss450.group6project.io.RequestQueueSingleton;
 
 public class FavoriteWeatherViewModel extends AndroidViewModel {
 
@@ -34,6 +35,46 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
         mFavoriteWeather = new MutableLiveData<>(new ArrayList<>());
     }
 
+    public void connectPost(String city, String state, double latitude,
+                            double longitude, String jwt) {
+        String url = getApplication().getResources().getString(R.string.url_weather_favorite);
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("city", city);
+            body.put("state", state);
+            body.put("lat", latitude);
+            body.put("long", longitude);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Request request = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                body, //push token found in the JSONObject body
+                result -> handleFavoriteAdd(city, state, latitude, longitude), // we get a response but do nothing with it
+                this::handleError) {
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10_000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //Instantiate the RequestQueue and add the request to the queue
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+
+    }
+
     public void connectGet(String jwt) {
         String url = getApplication().getResources().getString(R.string.url_weather_favorite);
 
@@ -41,7 +82,7 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
                 Request.Method.GET,
                 url,
                 null,
-                this::handleResult,
+                this::handleFavoriteLoad,
                 this::handleError) {
             @Override
             public Map<String, String> getHeaders() {
@@ -60,12 +101,20 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
                 .add(request);
     }
 
+    private void handleFavoriteAdd(String city, String state, double latitude,
+                                   double longitude) {
+        //add favorite to view model
+        FavoriteWeather favoriteWeather = new FavoriteWeather(city, state, latitude, longitude);
+        mFavoriteWeather.getValue().add(favoriteWeather);
+        mFavoriteWeather.setValue(mFavoriteWeather.getValue());
+    }
+
     /**
      * When a successful call is made to the server. Parses the retrieved JSON
      * and stores the data in the view model.
      * @param result JSON retrieved from server containing weather data
      */
-    private void handleResult(final JSONObject result) {
+    private void handleFavoriteLoad(final JSONObject result) {
         IntFunction<String> getString =
                 getApplication().getResources()::getString;
         try {
@@ -101,7 +150,21 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
      */
     private void handleError(VolleyError error) {
         //you should add much better error handling in a production release.
-
+        error.printStackTrace();
     }
 
+    /**
+     * Checks if a given lat/long are present in the user's favorite locations
+     * @param latitude latitude to search
+     * @param longitude longitude to search
+     * @return Whether the lat/long pair are already favorite
+     */
+    public boolean containsLocation(double latitude, double longitude) {
+        for(FavoriteWeather fw: mFavoriteWeather.getValue()) {
+            if(fw.getLatitude() == latitude && fw.getLongitude() == longitude) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
