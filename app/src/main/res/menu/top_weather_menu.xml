@@ -14,4 +14,11 @@
         android:icon="@drawable/weather_map_24dp"
         android:title="Map Search"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_favorite"
+        android:icon="@drawable/weather_nonfavorite_24dp"
+        android:title="Favorite Location"
+        app:showAsAction="always"/>
+
 </menu>

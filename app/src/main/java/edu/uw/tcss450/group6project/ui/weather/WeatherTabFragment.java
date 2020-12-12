@@ -57,6 +57,7 @@ public class WeatherTabFragment extends Fragment {
 
     private SearchView.OnQueryTextListener mSearchListener;
 
+    private boolean favorited = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,12 +88,19 @@ public class WeatherTabFragment extends Fragment {
                 createWeatherTab(view, weatherData.getForecastData(), weatherData.getDailyData());
             }
         });
+
+
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
         inflater.inflate(R.menu.top_weather_menu, menu);
+
+
+        if(favorited) {
+            menu.findItem(R.id.action_favorite).setIcon(R.drawable.weather_favorite_24dp);
+        }
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
@@ -121,7 +129,7 @@ public class WeatherTabFragment extends Fragment {
                         mSearchView.setIconified(true);
                     } else {
                         Log.i("Zip Code Query", "Invalid");
-                        displayZipCodeError();
+                        makeSnackbar(R.string.weather_zip_error, Color.RED, Color.WHITE);
                     }
 
                     mSearchView.clearFocus(); //removes the keyboard
@@ -139,10 +147,10 @@ public class WeatherTabFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private void displayZipCodeError() {
-        Snackbar snackbar = Snackbar.make(getView(), R.string.weather_zip_error, Snackbar.LENGTH_SHORT);
-        snackbar.setBackgroundTint(Color.RED);
-        snackbar.setTextColor(Color.WHITE);
+    private void makeSnackbar(int stringId, int bgColor, int textColor) {
+        Snackbar snackbar = Snackbar.make(getView(), stringId, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(bgColor);
+        snackbar.setTextColor(textColor);
         //Dismiss the snackbar when it's clicked
         snackbar.setAction("Dismiss", new View.OnClickListener() {
             @Override
@@ -152,7 +160,6 @@ public class WeatherTabFragment extends Fragment {
             }
         });
         snackbar.show();
-
     }
 
     @Override
@@ -161,8 +168,16 @@ public class WeatherTabFragment extends Fragment {
         if(item.getItemId() == R.id.action_map) {
             Log.d("Weather Tab", "Pressed Map");
             Navigation.findNavController(getView()).navigate(WeatherTabFragmentDirections.actionNavigationWeatherToMapsFragment());
+        } else if (item.getItemId() == R.id.action_favorite) {
+            if(favorited) {
+                item.setIcon(R.drawable.weather_nonfavorite_24dp);
+                makeSnackbar(R.string.weather_unfavorite, Color.BLUE, Color.WHITE);
+            } else {
+                item.setIcon(R.drawable.weather_favorite_24dp);
+                makeSnackbar(R.string.weather_favorite, Color.BLUE, Color.WHITE);
+            }
+            favorited = !favorited;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
