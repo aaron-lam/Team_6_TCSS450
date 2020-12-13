@@ -15,10 +15,20 @@ import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentWeatherForecastCardBinding;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
 
+/**
+ * Class that handles creating and setting the information of the cards in Recycler View.
+ * Each card displays information of a 1-hour forecast.
+ * @author Anthony
+ */
 public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter<ForecastRecyclerViewAdapter.ForecastViewHolder> {
 
+    /** List of the hourly forecasts to display in the recycler view. */
     private final List<WeatherDailyData> mForecastData;
 
+    /**
+     * Constructor for recycler view adapter to display the hourly forecast.
+     * @param forecastData list of forecast data to display.
+     */
     public ForecastRecyclerViewAdapter(List<WeatherDailyData> forecastData) {
         this.mForecastData = forecastData;
     }
@@ -40,6 +50,10 @@ public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter<ForecastRe
         return mForecastData.size();
     }
 
+    /**
+     * Class to handle setting contents of cards in the recycler view.
+     * @author Anthony
+     */
     public class ForecastViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public FragmentWeatherForecastCardBinding binding;
@@ -50,6 +64,10 @@ public class ForecastRecyclerViewAdapter extends RecyclerView.Adapter<ForecastRe
             binding = FragmentWeatherForecastCardBinding.bind(view);
         }
 
+        /**
+         * Sets the hourly forecast card to display the data of a hourly forecast.
+         * @param hourlyForecast hourly forecast to display.
+         */
         void setHourlyWeather(final WeatherDailyData hourlyForecast) {
             mHourlyForecast = hourlyForecast;
             binding.forecastTextTemp.setText(((int) Math.round(hourlyForecast.getTemp())) + "°");

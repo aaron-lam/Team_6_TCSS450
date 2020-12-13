@@ -18,14 +18,20 @@ import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentWeatherForecastBinding;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
 
-
+/**
+ * Fragment that displays a 48-hour weather forecast in a Recycler View.
+ * @author Anthony
+ */
 public class WeatherForecastFragment extends Fragment {
-
+    /** List of hourly-forecast data. */
     private List<WeatherDailyData> mForecastData;
 
+    /**
+     * Constructor for the fragment.
+     * @param forecastData List of hourly forecast data
+     */
     public WeatherForecastFragment(List<WeatherDailyData> forecastData) {
         mForecastData = forecastData;
-        Log.d("Forecast Fragment", "LIST SIZE: " + Integer.toString(mForecastData.size()));
     }
 
     @Override

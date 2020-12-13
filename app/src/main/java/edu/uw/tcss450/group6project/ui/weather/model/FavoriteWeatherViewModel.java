@@ -28,15 +28,32 @@ import java.util.function.IntFunction;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.io.RequestQueueSingleton;
 
+/**
+ * Class that stores and updates a user's favorite weather locations.
+ * @author Anthony
+ */
 public class FavoriteWeatherViewModel extends AndroidViewModel {
 
+    /** Model with a list of the user's favorite locations. */
     private MutableLiveData<List<FavoriteWeather>> mFavoriteWeather;
 
+    /**
+     * Constructor to initialize the view model.
+     * @param application
+     */
     public FavoriteWeatherViewModel(@NonNull Application application) {
         super(application);
         mFavoriteWeather = new MutableLiveData<>(new ArrayList<>());
     }
 
+    /**
+     * Connect to the web service and request to delete a location from the user's favorites.
+     * @param city city of location to delete
+     * @param state state of location to delete
+     * @param latitude latitude of location to delete
+     * @param longitude longitude of location to delete
+     * @param jwt jwt for authorization and user information
+     */
     public void connectDelete(String city, String state, double latitude,
                             double longitude, String jwt) {
 
@@ -72,6 +89,14 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
 
     }
 
+    /**
+     * Connect to webservice and request to add a location to the user's favorites.
+     * @param city city of the favorite location
+     * @param state state of the favorite location
+     * @param latitude latitude of the favorite location
+     * @param longitude longitude of the favorite location
+     * @param jwt jwt for authorization and user info
+     */
     public void connectPost(String city, String state, double latitude,
                             double longitude, String jwt) {
         Log.d("Favorite Weather", "Favoriting Location");
@@ -113,6 +138,10 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
 
     }
 
+    /**
+     * Connect to the webservice and retrieve a list of the user's favorite locations.
+     * @param jwt jwt for authorization and user info.
+     */
     public void connectGet(String jwt) {
         String url = getApplication().getResources().getString(R.string.url_weather_favorite);
 
@@ -139,6 +168,13 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
                 .add(request);
     }
 
+    /**
+     * Removes the city from the view model after the delete request is made.
+     * @param city city of location to delete
+     * @param state state of location to delete
+     * @param latitude latitude of location to delete
+     * @param longitude longitude of location to delete
+     */
     private void handleFavoriteDelete(String city, String state, double latitude,
                                    double longitude) {
         Log.d("Favorite Location", "Deleting From List");
@@ -148,6 +184,13 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
         mFavoriteWeather.setValue(mFavoriteWeather.getValue());
     }
 
+    /**
+     * Adds the city to the view model after a successful post requst is made
+     * @param city city of location to add
+     * @param state state of location to add
+     * @param latitude latitude of location to add
+     * @param longitude longitude of location to add
+     */
     private void handleFavoriteAdd(String city, String state, double latitude,
                                    double longitude) {
         //add favorite to view model
@@ -225,6 +268,7 @@ public class FavoriteWeatherViewModel extends AndroidViewModel {
         return false;
     }
 
+    /** Returns the list of favorites in the view model. */
     public List<FavoriteWeather> getFavorites() {
         return mFavoriteWeather.getValue();
     }

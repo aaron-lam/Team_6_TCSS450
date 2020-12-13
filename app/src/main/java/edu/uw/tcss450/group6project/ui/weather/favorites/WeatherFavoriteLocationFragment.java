@@ -19,9 +19,11 @@ import edu.uw.tcss450.group6project.databinding.FragmentWeatherForecastBinding;
 import edu.uw.tcss450.group6project.ui.weather.forecast.ForecastRecyclerViewAdapter;
 import edu.uw.tcss450.group6project.ui.weather.model.FavoriteWeatherViewModel;
 
-
+/**
+ * Fragment to display the user's favorite locations in a view model.
+ */
 public class WeatherFavoriteLocationFragment extends Fragment {
-
+    /** Model storing user's favorite locations. */
     private FavoriteWeatherViewModel mFavoriteLocations;
 
     @Override

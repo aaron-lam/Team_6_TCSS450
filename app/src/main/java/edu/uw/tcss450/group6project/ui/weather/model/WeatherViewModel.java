@@ -29,7 +29,7 @@ import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherData;
 
 /**
- * View Model class to store data about weather.
+ * View Model class to store and update data about weather.
  * @author Anthony
  */
 public class WeatherViewModel extends AndroidViewModel {
@@ -47,6 +47,11 @@ public class WeatherViewModel extends AndroidViewModel {
         mWeatherData.setValue(new WeatherData());
     }
 
+    /**
+     * Connects to the webservice and request the weather for an entered zipcode.
+     * @param zipcode zipcode of weather request
+     * @param jwt jwt for authorization and user info.
+     */
     public void connectZipCode(String zipcode, String jwt) {
         String url = getApplication().getResources().getString(R.string.url_weather_location);
         Request request = new JsonObjectRequest(
@@ -134,18 +139,34 @@ public class WeatherViewModel extends AndroidViewModel {
         return mWeatherData.getValue().getForecastData();
     }
 
+    /**
+     * Get the state of the current weather forecast.
+     * @return current state of weather info
+     */
     public String getState() {
         return mWeatherData.getValue().getState();
     }
 
+    /**
+     * Get the city of the current weather forecast.
+     * @return current city of weather info
+     */
     public String getCity() {
         return mWeatherData.getValue().getCity();
     }
 
+    /**
+     * Get the latitude of the current weather forecast.
+     * @return current latitude of weather info
+     */
     public double getLatitude() {
         return mWeatherData.getValue().getLatitude();
     }
 
+    /**
+     * Get the longitude of the current weather forecast.
+     * @return current longitude of weather info
+     */
     public double getLongitude() {
         return  mWeatherData.getValue().getLongitude();
     }

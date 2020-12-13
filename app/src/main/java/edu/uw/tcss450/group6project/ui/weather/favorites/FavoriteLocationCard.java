@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 
 import edu.uw.tcss450.group6project.R;
 
-
+/**
+ * Card Fragment that displays information about a favorite location.
+ */
 public class FavoriteLocationCard extends Fragment {
 
     @Override
