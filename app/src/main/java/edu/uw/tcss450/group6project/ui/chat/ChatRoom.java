@@ -18,6 +18,8 @@ public class ChatRoom implements Serializable {
     private MutableLiveData<List<ChatMessage>> mMessages;
     /** The Room ID of the chat room. */
     private int mChatRoomID;
+    /** Room name */
+    private String mRoomName;
 
     /**
      * Constructor for a new chat without any data.
@@ -29,13 +31,13 @@ public class ChatRoom implements Serializable {
     }
 
     /**
-     * Constructor for a new Chat, with a list of participants as the parameter.
-     *
-     * @param participants a list of participants in the Chat
+     * Constructor for a new chat without any data.
      */
-    public ChatRoom(List<String> participants) {
-        mParticipants = participants;
+    public ChatRoom(int roomID, String roomName) {
+        mParticipants = new ArrayList<>();
         mMessages = new MutableLiveData<>(new LinkedList<>());
+        mChatRoomID = roomID;
+        mRoomName = roomName;
     }
 
     /**
@@ -89,6 +91,14 @@ public class ChatRoom implements Serializable {
      */
     public List<ChatMessage> getMessages() {
         return mMessages.getValue();
+    }
+
+    /**
+     * Getter method for the chat room name.
+     * @return room name
+     */
+    public String getRoomName() {
+        return mRoomName;
     }
 
     /**

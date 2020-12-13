@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import edu.uw.tcss450.group6project.MainActivity;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentChatBinding;
@@ -81,7 +83,7 @@ public class ChatFragment extends Fragment {
         //Send the chat messages to the recycler view
         final RecyclerView rv = binding.listRoot;
         rv.setAdapter(new ChatRecyclerViewAdapter(mChatRoomViewModel.getMessageListByChatId(mChatRoomID),
-                mUserModel.getEmail()));
+                mUserModel.getUsername()));
 
         //When the user scrolls to the top of the RV, the swiper list will "refresh"
         //The user is out of messages, go out to the service and get more
@@ -153,6 +155,8 @@ public class ChatFragment extends Fragment {
                 if (mChatRoomID != chatRoomID) {
                     mNewMessageModel.increment();
                 }
+                List<ChatMessage> chatMessageList = mChatRoomViewModel.getMessageListByChatId(chatRoomID);
+                chatMessageList.get(chatMessageList.size() - 1).setIsRead(true);
             }
 
         }

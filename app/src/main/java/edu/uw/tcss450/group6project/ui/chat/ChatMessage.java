@@ -33,7 +33,12 @@ public class ChatMessage implements Serializable {
     /**
      * A boolean representing whether the message has been read.  Default value is false (unread).
      */
-    private final boolean mRead;
+    private boolean mRead;
+
+    /**
+     * A string of the username.
+     */
+    private final String mUsername;
 
     /**
      * Helper class for building chat messages.
@@ -44,7 +49,8 @@ public class ChatMessage implements Serializable {
         private final int mMessageID;
         private final String mEmail;
         private final String mMessage;
-        private boolean mRead = false;
+        private boolean mRead = true;
+        private String mUsername;
 
         /**
          *  Constructs a new builder.
@@ -57,6 +63,21 @@ public class ChatMessage implements Serializable {
             this.mMessageID = messageID;
             this.mEmail = email;
             this.mMessage = message;
+        }
+
+        /**
+         *  Constructs a new builder with username.
+         *
+         * @param messageID the id of the chat message
+         * @param email the email of the chat message's author
+         * @param message the content of the chat message
+         * @param username the username of the chat message's author
+         */
+        public Builder(int messageID, String email, String message, String username) {
+            this.mMessageID = messageID;
+            this.mEmail = email;
+            this.mMessage = message;
+            this.mUsername = username;
         }
 
         /**
@@ -89,9 +110,12 @@ public class ChatMessage implements Serializable {
      */
     public static ChatMessage createFromJsonString(final String cmAsJson) throws JSONException {
         final JSONObject msg = new JSONObject(cmAsJson);
-        return new ChatMessage.Builder(msg.getInt("messageid"),
+        ChatMessage cm = new ChatMessage.Builder(msg.getInt("messageid"),
                 msg.getString("email"),
-                msg.getString("message")).build(); //TODO Add timestamp
+                msg.getString("message"),
+                msg.getString("username")).build(); //TODO Add timestamp
+        cm.setIsRead(false);
+        return cm;
     }
 
 
@@ -105,6 +129,7 @@ public class ChatMessage implements Serializable {
         this.mEmail = builder.mEmail;
         this.mMessage = builder.mMessage;
         this.mRead = builder.mRead;
+        this.mUsername = builder.mUsername;
     }
 
     /**
@@ -133,6 +158,14 @@ public class ChatMessage implements Serializable {
         return mMessage;
     }
 
+    /**
+     * Getter method for the chat message's username.
+     *
+     * @return the username
+     */
+    public String getUsername() {
+        return mUsername;
+    }
 
     /**
      * Getter method for whether the message has been read or not.
@@ -141,6 +174,11 @@ public class ChatMessage implements Serializable {
      */
     public boolean isRead() {
         return mRead;
+    }
+
+
+    public void setIsRead(boolean isRead) {
+        this.mRead = isRead;
     }
 
     /**

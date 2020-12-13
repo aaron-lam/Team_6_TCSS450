@@ -31,8 +31,8 @@ public class ChatRecyclerViewAdapter extends
     /** A list of chats. */
     private final List<ChatMessage> mMessages;
 
-    /** Email of the user. */
-    private final String mEmail;
+    /** Username of the user. */
+    private final String mUsername;
 
 
     /**
@@ -40,9 +40,9 @@ public class ChatRecyclerViewAdapter extends
      *
      * @param messages the list of chats
      */
-    public ChatRecyclerViewAdapter(List<ChatMessage> messages, String email) {
+    public ChatRecyclerViewAdapter(List<ChatMessage> messages, String username) {
         mMessages = messages;
-        mEmail = email;
+        mUsername = username;
     }
 
     @NonNull
@@ -96,7 +96,7 @@ public class ChatRecyclerViewAdapter extends
 
             mMessage = msg;
 
-            if(mEmail.equals(msg.getEmail())) {
+            if (mUsername.equals(msg.getUsername())) {
                 //This message is from the user. Format it as such
                 binding.textMessage.setText(msg.getMessage());
                 ViewGroup.MarginLayoutParams layoutParams =
@@ -132,7 +132,7 @@ public class ChatRecyclerViewAdapter extends
                 card.requestLayout();
             } else {
                 //This message is from another user. Format it as such
-                binding.textMessage.setText(msg.getEmail() +
+                binding.textMessage.setText(msg.getUsername() +
                         ": " + msg.getMessage());
                 ViewGroup.MarginLayoutParams layoutParams =
                         (ViewGroup.MarginLayoutParams) card.getLayoutParams();

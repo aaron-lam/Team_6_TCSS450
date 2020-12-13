@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentChatCreateFormBinding;
@@ -88,7 +89,7 @@ public class ChatCreateFormFragment extends Fragment {
      */
     public void createNewChatRoomCallback() {
         Toast.makeText(mContext, R.string.toast_create_room_success, Toast.LENGTH_SHORT).show();
-        mBinding.editTextRoomName.setText("");
         mChatRoomModel.loadChatRooms(mUserModel.getEmail(), mUserModel.getJWT());
+        requireActivity().onBackPressed();
     }
 }

@@ -85,5 +85,6 @@ public class ChatContactAddFormFragment extends Fragment {
     public void addNewContactsToRoomCallback() {
         Toast.makeText(mContext, R.string.toast_add_contact_existed_room_success, Toast.LENGTH_SHORT).show();
         mChatRoomModel.loadChatRooms(mUserModel.getEmail(), mUserModel.getJWT());
+        requireActivity().onBackPressed();
     }
 }
