@@ -149,10 +149,7 @@ public class ChatListRecyclerViewAdapter extends
             mChat = chat;
             List<ChatMessage> messages = chat.getMessages();
             binding.buttonFullChat.setOnClickListener(view -> {
-                if (!messages.isEmpty()) {
-                    messages.get(messages.size() - 1).setIsRead(true);
-                }
-                newMessageCountViewModel.decrement();
+                setMessageRead();
                 Navigation.findNavController(mView).navigate
                         (ChatListFragmentDirections.actionNavigationChatToChatFragment(chatRoomId));
             });
@@ -170,6 +167,17 @@ public class ChatListRecyclerViewAdapter extends
             if (!messages.isEmpty() && !messages.get(messages.size() - 1).isRead()) {
                 binding.textPreview.setTypeface(null, Typeface.BOLD);
             }
+        }
+
+        void setMessageRead() {
+            int numUnread = 0;
+            for(ChatMessage cm: mChat.getMessages()) {
+                if(!cm.isRead()) {
+                    cm.setIsRead(true);
+                    numUnread++;
+                }
+            }
+            newMessageCountViewModel.decrement(numUnread);
         }
 
         /**
