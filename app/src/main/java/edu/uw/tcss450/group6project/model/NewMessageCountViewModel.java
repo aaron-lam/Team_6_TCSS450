@@ -40,7 +40,9 @@ public class NewMessageCountViewModel extends ViewModel {
      * Decreases the number of messages by 1.
      */
     public void decrement() {
-        mNewMessageCount.setValue(mNewMessageCount.getValue() - 1);
+        if (mNewMessageCount.getValue() > 0) {
+            mNewMessageCount.setValue(mNewMessageCount.getValue() - 1);
+        }
     }
 
     /**
