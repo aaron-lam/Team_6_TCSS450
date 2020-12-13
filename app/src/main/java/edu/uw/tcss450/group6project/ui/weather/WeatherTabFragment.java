@@ -33,8 +33,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import edu.uw.tcss450.group6project.R;
-import edu.uw.tcss450.group6project.databinding.FragmentWeatherTabBinding;
-import edu.uw.tcss450.group6project.model.LocationViewModel;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.weather.forecast.WeatherForecastFragment;
 import edu.uw.tcss450.group6project.ui.weather.model.FavoriteWeatherViewModel;
@@ -49,24 +47,17 @@ public class WeatherTabFragment extends Fragment {
 
     /** Model for the weather data*/
     private WeatherViewModel mWeatherModel;
-
-    private LocationViewModel mLocationViewModel;
-
     private UserInfoViewModel mUserModel;
-
     private FavoriteWeatherViewModel mFavoriteLocationModel;
-
+    /** Top search action for entering zip codes*/
     private SearchView mSearchView;
-
-    private SearchView.OnQueryTextListener mSearchListener;
-
-    private boolean favorited;
+    /** Whether or not the current location is a favorite location*/
+    private boolean mFavoriteLocation;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mWeatherModel = new ViewModelProvider(getActivity()).get(WeatherViewModel.class);
-        mLocationViewModel = new ViewModelProvider(getActivity()).get(LocationViewModel.class);
         mUserModel = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
         mFavoriteLocationModel = new ViewModelProvider(getActivity()).get(FavoriteWeatherViewModel.class);
     }
@@ -83,85 +74,87 @@ public class WeatherTabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         createWeatherTab(view, mWeatherModel.getForecastData(), mWeatherModel.getDailyData());
-        FragmentWeatherTabBinding binding = FragmentWeatherTabBinding.bind(getView());
         mWeatherModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherData -> {
             if(!weatherData.isEmpty()) {
                 createWeatherTab(view, weatherData.getForecastData(), weatherData.getDailyData());
-
             }
         });
-
-
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
         inflater.inflate(R.menu.top_weather_menu, menu);
 
-
+        //change the icon based on whether or not the location is a favorite
         setFavoriteIcon(menu.findItem(R.id.action_favorite));
         mWeatherModel.addWeatherDataListObserver(getViewLifecycleOwner(), weatherData -> {
             setFavoriteIcon(menu.findItem(R.id.action_favorite));
         });
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
+        createSearchView(searchItem);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    /**
+     * Creates the search view for entering zipcodes
+     * Creates snackbar display when invalid zipcode is entered
+     * @param searchItem Menu item to press to open search view
+     */
+    private void createSearchView(MenuItem searchItem) {
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
 
         if (searchItem != null) {
             mSearchView = (SearchView) searchItem.getActionView();
         }
 
-
         if (mSearchView != null) {
             mSearchView.setInputType(InputType.TYPE_CLASS_NUMBER);
             mSearchView.setQueryHint(getResources().getString(R.string.weather_zip));
             mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-            mSearchListener = new SearchView.OnQueryTextListener() {
-
+            mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-
-                    Log.i("onQueryTextSubmit", query);
-                    boolean validinput = isZipCode(query);
-                    if(validinput) {
-                        Log.i("Zip Code Query", "Valid");
+                    if(isZipCode(query)) {
                         mWeatherModel.connectZipCode(query, mUserModel.getJWT());
-                        mSearchView.setIconified(true);
                         mSearchView.setQuery("", false);
                         mSearchView.setIconified(true);
                     } else {
-                        Log.i("Zip Code Query", "Invalid");
                         makeSnackbar(R.string.weather_zip_error, Color.RED, Color.WHITE);
                     }
-
                     mSearchView.clearFocus(); //removes the keyboard
                     return true;
                 }
-
                 //Unimplemented method that does nothing
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     return false;
                 }
-            };
-            mSearchView.setOnQueryTextListener(mSearchListener);
+            });
         }
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * Checks if the submitted text has the format of a zipcode
+     * @param submitText Zipcode submission
+     * @return If the submitted text has a valid zipcode format
+     */
+    private boolean isZipCode(String submitText) {
+        Pattern pattern = Pattern.compile("^[0-9]{5}(?:-[0-9]{4})?$");
+        return pattern.matcher(submitText).matches();
+    }
+
+    /**
+     * Creates a message display at the bottom of the screen
+     * @param stringId String resource to display
+     * @param bgColor Background Color of the message popup
+     * @param textColor Text Color of the message popup
+     */
     private void makeSnackbar(int stringId, int bgColor, int textColor) {
         Snackbar snackbar = Snackbar.make(getView(), stringId, Snackbar.LENGTH_SHORT);
         snackbar.setBackgroundTint(bgColor);
         snackbar.setTextColor(textColor);
-        //Dismiss the snackbar when it's clicked
-        snackbar.setAction("Dismiss", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Call your action method here
-                snackbar.dismiss();
-            }
-        });
+        snackbar.setAction("Dismiss", click -> snackbar.dismiss());
         snackbar.show();
     }
 
@@ -169,23 +162,9 @@ public class WeatherTabFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if(item.getItemId() == R.id.action_map) {
-            Log.d("Weather Tab", "Pressed Map");
             Navigation.findNavController(getView()).navigate(WeatherTabFragmentDirections.actionNavigationWeatherToMapsFragment());
         } else if (item.getItemId() == R.id.action_favorite) {
-            if(favorited) { //unfavorite the location
-                mFavoriteLocationModel.connectDelete(mWeatherModel.getCity(), mWeatherModel.getState(),
-                        mWeatherModel.getLatitude(), mWeatherModel.getLongitude(), mUserModel.getJWT());
-                item.setIcon(R.drawable.weather_nonfavorite_24dp);
-                item.setTitle(R.string.weather_add_favorite);
-                makeSnackbar(R.string.weather_unfavorite, Color.BLUE, Color.WHITE);
-            } else { //favorite the location
-                mFavoriteLocationModel.connectPost(mWeatherModel.getCity(), mWeatherModel.getState(),
-                        mWeatherModel.getLatitude(), mWeatherModel.getLongitude(), mUserModel.getJWT());
-                item.setIcon(R.drawable.weather_favorite_24dp);
-                item.setTitle(R.string.weather_remove_favorite);
-                makeSnackbar(R.string.weather_favorite, Color.BLUE, Color.WHITE);
-            }
-            favorited = !favorited;
+            toggleFavoriteLocation(item);
         } else if(item.getItemId() == R.id.action_bookmark) {
             Navigation.findNavController(getView()).navigate(WeatherTabFragmentDirections.
                     actionNavigationWeatherToWeatherFavoriteLocationFragment());
@@ -193,26 +172,47 @@ public class WeatherTabFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-
-    private boolean isZipCode(String submitText) {
-        Pattern pattern = Pattern.compile("^[0-9]{5}(?:-[0-9]{4})?$");
-        return pattern.matcher(submitText).matches();
+    /**
+     * Toggles whether or not the location is a favorite location.
+     * Makes requests to the FavoriteLocationViewModel
+     * Update icons and text displayed for the menu items
+     * @param item Menu item to toggle favorite item
+     */
+    private void toggleFavoriteLocation(MenuItem item) {
+        if(mFavoriteLocation) { //unfavorite the location
+            mFavoriteLocationModel.connectDelete(mWeatherModel.getCity(), mWeatherModel.getState(),
+                    mWeatherModel.getLatitude(), mWeatherModel.getLongitude(), mUserModel.getJWT());
+            item.setIcon(R.drawable.weather_nonfavorite_24dp);
+            item.setTitle(R.string.weather_add_favorite);
+            makeSnackbar(R.string.weather_unfavorite, Color.BLUE, Color.WHITE);
+        } else { //favorite the location
+            mFavoriteLocationModel.connectPost(mWeatherModel.getCity(), mWeatherModel.getState(),
+                    mWeatherModel.getLatitude(), mWeatherModel.getLongitude(), mUserModel.getJWT());
+            item.setIcon(R.drawable.weather_favorite_24dp);
+            item.setTitle(R.string.weather_remove_favorite);
+            makeSnackbar(R.string.weather_favorite, Color.BLUE, Color.WHITE);
+        }
+        mFavoriteLocation = !mFavoriteLocation;
     }
 
+    /**
+     * If the location is a favorite then set the icon/text on the menu
+     * to reflect that
+     * @param starMenuItem Menu item to toggle favorites
+     */
     private void setFavoriteIcon(MenuItem starMenuItem) {
         if(mFavoriteLocationModel.containsLocation(mWeatherModel.getLatitude(), mWeatherModel.getLongitude())) {
             Log.d("Weather Tab", "Favorited Location");
-            favorited = true;
+            mFavoriteLocation = true;
             starMenuItem.setIcon(R.drawable.weather_favorite_24dp);
             starMenuItem.setTitle(R.string.weather_remove_favorite);
         } else {
             Log.d("Weather Tab", "NON Favorited Location");
-            favorited = false;
+            mFavoriteLocation = false;
             starMenuItem.setIcon(R.drawable.weather_nonfavorite_24dp);
             starMenuItem.setTitle(R.string.weather_add_favorite);
         }
     }
-
 
     /**
      * Creates the tabs that display weather information.
@@ -224,7 +224,6 @@ public class WeatherTabFragment extends Fragment {
         Map<String, Integer> mIconMap = createIconMap();
         String[] weatherTabText = new String[7];
         int[] weatherTabIcons = new int[7];
-        double[] weatherTemp = new double[7];
 
         for(int i = 0; i < 7; i++) {
             WeatherDailyData data = dailyData.get(i);
@@ -260,7 +259,6 @@ public class WeatherTabFragment extends Fragment {
         iconMap.put("Snow", R.drawable.weather_snow_24dp);
         iconMap.put("Rain", R.drawable.weather_rain_24dp);
         iconMap.put("Clear", R.drawable.weather_sun_24dp);
-
         return iconMap;
     }
 
@@ -297,6 +295,10 @@ public class WeatherTabFragment extends Fragment {
                     mWeatherModel.getCity(), mWeatherModel.getState());
         }
 
+        /**
+         * Forecast tab and 7 daily tabs
+         * @return Number of tabs (8)
+         */
         @Override
         public int getItemCount() {
             return 8;
