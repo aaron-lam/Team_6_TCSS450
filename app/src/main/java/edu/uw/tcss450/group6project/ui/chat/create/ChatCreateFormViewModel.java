@@ -296,4 +296,10 @@ public class ChatCreateFormViewModel extends AndroidViewModel {
         }
         fragment.addNewContactsToRoomCallback();
     }
+
+    public void uncheckContact(String memberId) {
+        Set<String> newSet = mSelectedContactsSet.getValue();
+        newSet.remove(memberId);
+        mSelectedContactsSet.setValue(newSet);
+    }
 }

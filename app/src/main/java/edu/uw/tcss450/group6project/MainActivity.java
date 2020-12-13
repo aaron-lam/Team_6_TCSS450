@@ -98,12 +98,13 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.navigation_chat) {
-                //When the user navigates to the chats page, reset the new message count.
-                //This will need some extra logic for your project as it should have
-                //multiple chat rooms.
-                mNewMessageModel.reset();
-            } else if (destination.getId() == R.id.navigation_contacts) {
+//            if (destination.getId() == R.id.navigation_chat) {
+//                //When the user navigates to the chats page, reset the new message count.
+//                //This will need some extra logic for your project as it should have
+//                //multiple chat rooms.
+//                mNewMessageModel.reset();
+//            } else
+            if (destination.getId() == R.id.navigation_contacts) {
                 // See above comment, but for contacts
                 mNewContactCountViewModel.reset();
             }

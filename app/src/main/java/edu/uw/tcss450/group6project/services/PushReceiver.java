@@ -90,7 +90,7 @@ public class PushReceiver extends BroadcastReceiver {
             Intent i = new Intent(context, AuthActivity.class);
             i.putExtras(intent.getExtras());
 
-            sendNotification(context, i, "Message from: " + message.getEmail(), message.getMessage());
+            sendNotification(context, i, "Message from: " + message.getUsername(), message.getMessage());
         }
     }
 

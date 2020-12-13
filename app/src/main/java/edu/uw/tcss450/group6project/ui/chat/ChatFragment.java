@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import edu.uw.tcss450.group6project.MainActivity;
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentChatBinding;
@@ -153,6 +155,8 @@ public class ChatFragment extends Fragment {
                 if (mChatRoomID != chatRoomID) {
                     mNewMessageModel.increment();
                 }
+                List<ChatMessage> chatMessageList = mChatRoomViewModel.getMessageListByChatId(chatRoomID);
+                chatMessageList.get(chatMessageList.size() - 1).setIsRead(true);
             }
 
         }
