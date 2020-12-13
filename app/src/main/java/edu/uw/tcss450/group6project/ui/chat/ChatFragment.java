@@ -83,7 +83,7 @@ public class ChatFragment extends Fragment {
         //Send the chat messages to the recycler view
         final RecyclerView rv = binding.listRoot;
         rv.setAdapter(new ChatRecyclerViewAdapter(mChatRoomViewModel.getMessageListByChatId(mChatRoomID),
-                mUserModel.getEmail()));
+                mUserModel.getUsername()));
 
         //When the user scrolls to the top of the RV, the swiper list will "refresh"
         //The user is out of messages, go out to the service and get more

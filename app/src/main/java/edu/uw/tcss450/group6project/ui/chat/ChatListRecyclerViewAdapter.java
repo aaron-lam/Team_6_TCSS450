@@ -112,16 +112,6 @@ public class ChatListRecyclerViewAdapter extends
     }
 
     /**
-     * Remove chat room of specific position.
-     * @param position position of chat room
-     */
-    public void removeItem(int position) {
-        this.mChats.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mChats.size());
-    }
-
-    /**
      * Represents an individual row View from the list of rows in the Chat Recycler View.
      *
      * @author Robert M

@@ -372,7 +372,8 @@ public class ChatRoomViewModel extends AndroidViewModel {
                 ChatMessage cMessage = new ChatMessage.Builder(
                         message.getInt("messageid"),
                         message.getString("email"),
-                        message.getString("message") //TODO put the timestamp back in
+                        message.getString("message"), //TODO put the timestamp back in
+                        message.getString("username")
                 ).build();
                 if (!list.contains(cMessage)) {
                     // don't add a duplicate

@@ -125,7 +125,6 @@ public class ChatCreateFormViewModel extends AndroidViewModel {
             Log.e("ERROR!", e.getMessage());
         }
         mContactList.setValue(contacts);
-        Log.d("abc", mSelectedContactsSet.getValue().toString());
     }
 
     /**
