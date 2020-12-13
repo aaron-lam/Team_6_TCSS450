@@ -4,19 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 
 import edu.uw.tcss450.group6project.model.PushyTokenViewModel;
-import edu.uw.tcss450.group6project.model.UserInfoViewModel;
-import edu.uw.tcss450.group6project.ui.auth.sign_in.SignInFragmentDirections;
 import me.pushy.sdk.Pushy;
 
 /**
@@ -51,7 +43,7 @@ public class AuthActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
 
-        sp = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        sp = getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
         int spTheme = sp.getInt("theme",0);
 
         if (spTheme != curTheme) {
@@ -63,7 +55,7 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-        sp = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        sp = getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
         curTheme = sp.getInt("theme",0);
         theme.applyStyle(curTheme, true);
         return theme;

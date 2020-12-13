@@ -16,9 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.auth0.android.jwt.JWT;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentSignInBinding;
 import edu.uw.tcss450.group6project.model.PushyTokenViewModel;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
@@ -32,7 +35,6 @@ import edu.uw.tcss450.group6project.utils.Validator;
  */
 public class SignInFragment extends Fragment {
 
-    private SharedPreferences sp;
     private FragmentSignInBinding mBinding;
     private SignInViewModel mSignInModel;
     private PushyTokenViewModel mPushyTokenViewModel;
@@ -94,6 +96,28 @@ public class SignInFragment extends Fragment {
                 this::observePushyPutResponse);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        SharedPreferences prefs =
+                getActivity().getSharedPreferences(
+                        getString(R.string.keys_shared_prefs),
+                        Context.MODE_PRIVATE);
+        if (prefs.contains(getString(R.string.keys_prefs_jwt))) {
+            String token = prefs.getString(getString(R.string.keys_prefs_jwt), "");
+            JWT jwt = new JWT(token);
+            // Check to see if the web token is still valid or not. To make a JWT expire after a
+            // longer or shorter time period, change the expiration time when the JWT is
+            // created on the web service.
+            if(!jwt.isExpired(0)) {
+                String email = jwt.getClaim("email").asString();
+                String username = prefs.getString("username","ERROR ON SHARED PREFERENCES");
+                successfulSignIn(email, token, username);
+                return;
+            }
+        }
+    }
+
     /**
      * Helper to abstract the request to send the pushy token to the web service
      */
@@ -130,7 +154,16 @@ public class SignInFragment extends Fragment {
      * @param jwt The web authentication token
      */
     public void successfulSignIn(final String email, final String jwt, final String username) {
+
+        SharedPreferences prefs =
+                getActivity().getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
+
+        //Store the credentials in SharedPrefs
+        prefs.edit().putString(getString(R.string.keys_prefs_jwt), jwt).apply();
+        prefs.edit().putString("username",username).apply();
+
         Navigation.findNavController(getView()).navigate(SignInFragmentDirections.actionSignInFragmentToMainActivity(email, jwt, username));
+        getActivity().finish();
     }
 
     /** This method sends the users credentials to the web service for authentication.

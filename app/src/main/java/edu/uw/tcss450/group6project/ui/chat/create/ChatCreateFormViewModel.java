@@ -127,7 +127,6 @@ public class ChatCreateFormViewModel extends AndroidViewModel {
         }
         Collections.sort(contacts);
         mContactList.setValue(contacts);
-        Log.d("abc", mSelectedContactsSet.getValue().toString());
     }
 
     /**
@@ -297,5 +296,11 @@ public class ChatCreateFormViewModel extends AndroidViewModel {
             throw new IllegalStateException("Unexpected response in ChatViewModel: " + response);
         }
         fragment.addNewContactsToRoomCallback();
+    }
+
+    public void uncheckContact(String memberId) {
+        Set<String> newSet = mSelectedContactsSet.getValue();
+        newSet.remove(memberId);
+        mSelectedContactsSet.setValue(newSet);
     }
 }

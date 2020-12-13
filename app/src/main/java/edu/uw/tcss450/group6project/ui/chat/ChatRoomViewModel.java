@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -41,11 +42,12 @@ public class ChatRoomViewModel extends AndroidViewModel {
      * The Key represents the Chat ID
      * The value represents the List of (known) messages for that that room.
      */
-    private Map<Integer, ChatRoom> mChatRooms;
+    private MutableLiveData<Map<Integer, ChatRoom>> mChatRooms;
 
     public ChatRoomViewModel(@NonNull Application application) {
         super(application);
-        mChatRooms = new HashMap<>();
+        mChatRooms = new MutableLiveData<>();
+        mChatRooms.setValue(new HashMap<>());
     }
 
 
@@ -56,9 +58,19 @@ public class ChatRoomViewModel extends AndroidViewModel {
      */
     public void addRoomObserver(@NonNull LifecycleOwner owner,
                                 @NonNull Observer<? super List<ChatMessage>> observer) {
-        for(ChatRoom cRoom : mChatRooms.values()) {
+        for(ChatRoom cRoom : mChatRooms.getValue().values()) {
             cRoom.observe(owner, observer);
         }
+    }
+
+    /**
+     * Register as an observer to listen to changes in ALL the chat rooms.
+     * @param owner the fragments lifecycle owner
+     * @param observer the observer
+     */
+    public void addRoomListObserver(@NonNull LifecycleOwner owner,
+                                    @NonNull Observer<? super Map<Integer, ChatRoom>> observer) {
+        mChatRooms.observe(owner, observer);
     }
 
     /**
@@ -88,11 +100,48 @@ public class ChatRoomViewModel extends AndroidViewModel {
         return getOrCreateMapEntry(chatId).getMessages();
     }
 
-    private ChatRoom getOrCreateMapEntry(final int chatId) {
-        if(!mChatRooms.containsKey(chatId)) {
-            mChatRooms.put(chatId, new ChatRoom(chatId));
+    /**
+     * Return a reference to the List<> associated with the chat room. If the View Model does
+     * not have a mapping for this chatID, it will be created.
+     *
+     * WARNING: While this method returns a reference to a mutable list, it should not be
+     * mutated externally in client code. Use public methods available in this class as
+     * needed.
+     *
+     * @param chatId the id of the chat room List to retrieve
+     * @return a reference to the list of messages
+     */
+    public List<ChatMessage> getMessageListByChatId(final int chatId, final String roomName) {
+        return getOrCreateMapEntry(chatId, roomName).getMessages();
+    }
+
+    /**
+     * Get or create map entry if not existed
+     * @param chatId chat Id
+     * @param roomName room name
+     * @return Chat room
+     */
+    private ChatRoom getOrCreateMapEntry(final int chatId, final String roomName) {
+        if(!mChatRooms.getValue().containsKey(chatId)) {
+            Map<Integer, ChatRoom> chatRooms = mChatRooms.getValue();
+            chatRooms.put(chatId, new ChatRoom(chatId, roomName));
+            mChatRooms.setValue(chatRooms);
         }
-        return mChatRooms.get(chatId);
+        return mChatRooms.getValue().get(chatId);
+    }
+
+    /**
+     * Get or create map entry if not existed
+     * @param chatId chat Id
+     * @return Chat room
+     */
+    private ChatRoom getOrCreateMapEntry(final int chatId) {
+        if(!mChatRooms.getValue().containsKey(chatId)) {
+            Map<Integer, ChatRoom> chatRooms = mChatRooms.getValue();
+            chatRooms.put(chatId, new ChatRoom(chatId));
+            mChatRooms.setValue(chatRooms);
+        }
+        return mChatRooms.getValue().get(chatId);
     }
 
     /**
@@ -100,8 +149,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
      * @return List of chat rooms.
      */
     public List<ChatRoom> getChatRooms() {
-        List<ChatRoom> rooms = new ArrayList<>(mChatRooms.values());
-        return new ArrayList<>(mChatRooms.values());
+        return new ArrayList<>(mChatRooms.getValue().values());
     }
 
     /**
@@ -236,7 +284,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
         String url = getApplication().getResources().getString(R.string.url_chat_messages) +
                 chatId +
                 "/" +
-                mChatRooms.get(chatId).getMessages().get(0).getMessageID();
+                mChatRooms.getValue().get(chatId).getMessages().get(0).getMessageID();
 
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -272,7 +320,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
      * @param message
      */
     public void addMessage(final int chatId, final ChatMessage message) {
-        ChatRoom room = mChatRooms.get(chatId);
+        ChatRoom room = mChatRooms.getValue().get(chatId);
         if (room != null) {
             room.addMessage(message);
         }
@@ -293,7 +341,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
             Log.d("Handle Chat Room Success", Integer.toString(roomCount));
             JSONArray rooms = response.getJSONArray("rows");
             for(int i = 0; i < roomCount; i++) {
-                if(!mChatRooms.containsKey(rooms.getInt(i))) {
+                if(!mChatRooms.getValue().containsKey(rooms.getInt(i))) {
                     int id = rooms.getInt(i);
                     Log.d("Room ID", Integer.toString(id));
                     getFirstMessages(id, jwt);
@@ -316,14 +364,16 @@ public class ChatRoomViewModel extends AndroidViewModel {
             throw new IllegalStateException("Unexpected response in ChatViewModel: " + response);
         }
         try {
-            list = getMessageListByChatId(response.getInt("chatId"));
+            String roomName = response.getString("roomName");
+            list = getMessageListByChatId(response.getInt("chatId"), roomName);
             JSONArray messages = response.getJSONArray("rows");
             for(int i = 0; i < messages.length(); i++) {
                 JSONObject message = messages.getJSONObject(i);
                 ChatMessage cMessage = new ChatMessage.Builder(
                         message.getInt("messageid"),
                         message.getString("email"),
-                        message.getString("message") //TODO put the timestamp back in
+                        message.getString("message"), //TODO put the timestamp back in
+                        message.getString("username")
                 ).build();
                 if (!list.contains(cMessage)) {
                     // don't add a duplicate
@@ -337,7 +387,7 @@ public class ChatRoomViewModel extends AndroidViewModel {
 
             }
             //inform observers of the change (setValue)
-            getOrCreateMapEntry(response.getInt("chatId")).setMessages(list);
+            getOrCreateMapEntry(response.getInt("chatId"), roomName).setMessages(list);
         }catch (JSONException e) {
             Log.e("JSON PARSE ERROR", "Found in handleChatMessageSuccess ChatViewModel");
             Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
@@ -352,7 +402,9 @@ public class ChatRoomViewModel extends AndroidViewModel {
         if (!response.has("sucess")) {
             throw new IllegalStateException("Unexpected response in ChatViewModel: " + response);
         }
-        this.mChatRooms.remove(chatId);
+        Map<Integer, ChatRoom> chatRoom = mChatRooms.getValue();
+        chatRoom.remove(chatId);
+        this.mChatRooms.setValue(chatRoom);
         holder.deleteChatCallback();
     }
 

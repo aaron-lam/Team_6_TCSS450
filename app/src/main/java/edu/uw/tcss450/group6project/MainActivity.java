@@ -39,6 +39,10 @@ import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.services.PushReceiver;
 import edu.uw.tcss450.group6project.ui.chat.ChatMessage;
 import edu.uw.tcss450.group6project.ui.chat.ChatRoomViewModel;
+import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequest;
+import edu.uw.tcss450.group6project.ui.contacts.requests_tab.ContactRequestTabViewModel;
+import edu.uw.tcss450.group6project.ui.weather.model.FavoriteWeather;
+import edu.uw.tcss450.group6project.ui.weather.model.FavoriteWeatherViewModel;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
 
 /**
@@ -52,10 +56,12 @@ public class MainActivity extends AppCompatActivity {
     // Configuration for a bottom navigation bar.
     private AppBarConfiguration mAppBarConfiguration;
 
+    private UserInfoViewModel mUserModel;
     private MainPushMessageReceiver mPushMessageReceiver;
     private NewMessageCountViewModel mNewMessageModel;
     private NewContactCountViewModel mNewContactCountViewModel;
     private WeatherViewModel mWeatherModel;
+    private FavoriteWeatherViewModel mFavoriteWeatherModel;
 
     SharedPreferences sp;
     int curTheme;
@@ -84,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
         mNewMessageModel = new ViewModelProvider(this).get(NewMessageCountViewModel.class);
         mNewContactCountViewModel = new ViewModelProvider(this).get(NewContactCountViewModel.class);
         mWeatherModel = new ViewModelProvider(this).get(WeatherViewModel.class);
+        mUserModel = new ViewModelProvider(this).get(UserInfoViewModel.class);
+
+        mFavoriteWeatherModel = new ViewModelProvider(this).get(FavoriteWeatherViewModel.class);
+        mFavoriteWeatherModel.connectGet(mUserModel.getJWT());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
@@ -96,12 +106,13 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.navigation_chat) {
-                //When the user navigates to the chats page, reset the new message count.
-                //This will need some extra logic for your project as it should have
-                //multiple chat rooms.
-                mNewMessageModel.reset();
-            } else if (destination.getId() == R.id.navigation_contacts) {
+//            if (destination.getId() == R.id.navigation_chat) {
+//                //When the user navigates to the chats page, reset the new message count.
+//                //This will need some extra logic for your project as it should have
+//                //multiple chat rooms.
+//                mNewMessageModel.reset();
+//            } else
+            if (destination.getId() == R.id.navigation_contacts) {
                 // See above comment, but for contacts
                 mNewContactCountViewModel.reset();
             }
@@ -200,7 +211,8 @@ public class MainActivity extends AppCompatActivity {
                                             .get(LocationViewModel.class);
                                 }
                                 mLocationModel.setLocation(location);
-                                mWeatherModel.connectLocation(mLocationModel.getLatitude(), mLocationModel.getLongitude());
+                                mWeatherModel.connectLocation(mLocationModel.getLatitude(),
+                                        mLocationModel.getLongitude(), mUserModel.getJWT());
                             } else {
                                 Log.e("LOCATION", "NULL");
                             }
@@ -231,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
 
-        sp = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        sp = getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
         int spTheme = sp.getInt("theme",0);
 
         if (spTheme != curTheme) {
@@ -243,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-        sp = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        sp = getSharedPreferences(getString(R.string.keys_shared_prefs), Context.MODE_PRIVATE);
         curTheme = sp.getInt("theme",0);
         theme.applyStyle(curTheme, true);
         return theme;
@@ -272,7 +284,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
-                // TODO: Make sure this works properly
             case R.id.button_top_options_menu_logout:
 
                 // Reset theme
@@ -280,11 +291,27 @@ public class MainActivity extends AppCompatActivity {
                 editor.putInt("theme",R.style.ThemeOne);
                 editor.commit();
 
+                // Run logout
+                logOut();
+
                 // Exit back to home page
                 this.finish();
+                intent = new Intent(this, AuthActivity.class);
+                startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logOut() {
+        SharedPreferences prefs =
+                getSharedPreferences(
+                        getString(R.string.keys_shared_prefs),
+                        Context.MODE_PRIVATE);
+        prefs.edit().remove(getString(R.string.keys_prefs_jwt)).apply();
+        prefs.edit().remove("username").apply();
+        //End the app completely
+        finishAndRemoveTask();
     }
 
     /**
@@ -294,6 +321,7 @@ public class MainActivity extends AppCompatActivity {
         ViewModelProvider vm = new ViewModelProvider(MainActivity.this);
 
         private ChatRoomViewModel mChatRoomModel = vm.get(ChatRoomViewModel.class);
+        private ContactRequestTabViewModel mContactRequestModel = vm.get(ContactRequestTabViewModel.class);
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -311,14 +339,22 @@ public class MainActivity extends AppCompatActivity {
                 //Inform the view model holding chatroom messages of the new
                 //message.
                 mChatRoomModel.addMessage(intent.getIntExtra("chatid", -1), cm);
-            }
-            else if (intent.hasExtra("roomName") && nd.getId() != R.id.navigation_chat) {
-                mNewMessageModel.increment();
+            } else if (intent.hasExtra("roomName")) {
+                if (nd.getId() != R.id.navigation_chat) {
+                    mNewMessageModel.increment();
+                }
             }
             // At this point, it must be a contact related notification, but you still need
             // to check if you're on the contacts page before updating notifications
             else if (nd.getId() != R.id.navigation_contacts) {
+                if(intent.getStringExtra("type").equals("newContact")) {
+                    mContactRequestModel.addContactRequest(new ContactRequest.Builder(
+                            intent.getStringExtra("username"),
+                            intent.getStringExtra("memberid")
+                    ).build());
+                }
                 mNewContactCountViewModel.increment();
+
             }
         }
     }

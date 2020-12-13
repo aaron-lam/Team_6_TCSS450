@@ -97,7 +97,10 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
             e.printStackTrace();
             Log.e("ERROR!", e.getMessage());
         }
-        mContactRequestList.setValue(contactRequests);
+
+        if (contactRequests.size() > 0) {
+            mContactRequestList.setValue(contactRequests);
+        }
     }
 
     /**
@@ -222,4 +225,15 @@ public class ContactRequestTabViewModel extends AndroidViewModel {
         tempList.remove(tempContactRequest);
         mContactRequestList.setValue(tempList);
     }
+
+    /**
+     * When a chat message is received externally to this ViewModel, add it
+     * with this method.
+     * @param cr Contact Request to add
+     */
+    public void addContactRequest(ContactRequest cr) {
+        mContactRequestList.getValue().add(cr);
+        mContactRequestList.setValue(mContactRequestList.getValue());
+    }
+
 }

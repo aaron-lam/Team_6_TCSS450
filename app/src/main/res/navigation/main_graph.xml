@@ -52,6 +52,9 @@
         <action
             android:id="@+id/action_navigation_weather_to_mapsFragment"
             app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_navigation_weather_to_weatherFavoriteLocationFragment"
+            app:destination="@id/weatherFavoriteLocationFragment" />
     </fragment>
     <fragment
         android:id="@+id/passwordChangeFragment"
@@ -76,4 +79,8 @@
             android:name="roomId"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/weatherFavoriteLocationFragment"
+        android:name="edu.uw.tcss450.group6project.ui.weather.favorites.WeatherFavoriteLocationFragment"
+        android:label="Favorite Locations" />
 </navigation>

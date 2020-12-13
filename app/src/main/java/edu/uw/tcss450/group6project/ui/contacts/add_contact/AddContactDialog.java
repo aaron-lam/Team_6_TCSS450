@@ -70,20 +70,34 @@ public class AddContactDialog {
         // Submit button functionality
         mSubmit.setOnClickListener(button -> {
 
-            Validator validator = new Validator(mCurrentFragment.getActivity(), mUsername, "username");
+            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        Validator validator = new Validator(mCurrentFragment.getActivity(), mUsername, "username");
 
-            // If all fields are valid, send the request
-            if (validator.validateAll()) {
-                // Disable so that the user cannot send multiple requests quickly
-                mSubmit.setEnabled(false);
-                verifyAddContactWithServer(mUsername.getText().toString());
-            }
+                        // If all fields are valid, send the request
+                        if (validator.validateAll()) {
+                            // Disable so that the user cannot send multiple requests quickly
+                            mSubmit.setEnabled(false);
+                            verifyAddContactWithServer(mUsername.getText().toString());
+                        }
 
-            if (firstCall) {
-                mAddContactViewModel.addResponseObserver(mCurrentFragment.getViewLifecycleOwner(),
-                        this::observeResponse);
-                firstCall = false;
-            }
+                        if (firstCall) {
+                            mAddContactViewModel.addResponseObserver(mCurrentFragment.getViewLifecycleOwner(),
+                                    this::observeResponse);
+                            firstCall = false;
+                        }
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(button.getContext());
+            builder.setMessage("If the user exists, they will be sent a contact request. \n\nAre you sure you want to proceed?")
+                    .setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
         });
     }
 

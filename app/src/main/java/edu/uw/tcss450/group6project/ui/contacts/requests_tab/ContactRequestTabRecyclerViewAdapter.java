@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group6project.ui.contacts.requests_tab;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,7 +107,21 @@ public class ContactRequestTabRecyclerViewAdapter extends
          * @param button the deny button
          */
         private void handleDeny(final View button) {
-            mContactRequestTabViewModel.connectDeny(mUserInfoViewModel.getJWT(),mContactRequest.getMemberId());
+            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        mContactRequestTabViewModel.connectDeny(mUserInfoViewModel.getJWT(),mContactRequest.getMemberId());
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(button.getContext());
+            builder.setMessage("Deny contact request from " + mContactRequest.getUsername() + "?")
+                    .setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
         }
 
         /** Used to confirm a contact request. Called by hitting the confirm button on a contact request
@@ -113,7 +129,21 @@ public class ContactRequestTabRecyclerViewAdapter extends
          * @param button the confirm button
          */
         private void handleConfirm(final View button) {
-            mContactRequestTabViewModel.connectConfirm(mUserInfoViewModel.getJWT(),mContactRequest.getMemberId());
+            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        mContactRequestTabViewModel.connectConfirm(mUserInfoViewModel.getJWT(),mContactRequest.getMemberId());
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(button.getContext());
+            builder.setMessage("Confirm contact request from " + mContactRequest.getUsername() + "?")
+                    .setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
         }
 
         /**

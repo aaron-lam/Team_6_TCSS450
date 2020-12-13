@@ -25,11 +25,9 @@ import java.util.Map;
 import java.util.function.IntFunction;
 
 import edu.uw.tcss450.group6project.R;
-import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
-import edu.uw.tcss450.group6project.ui.weather.model.WeatherData;
 
 /**
- * View Model class to store data about weather.
+ * View Model class to store and update data about weather.
  * @author Anthony
  */
 public class WeatherViewModel extends AndroidViewModel {
@@ -47,7 +45,12 @@ public class WeatherViewModel extends AndroidViewModel {
         mWeatherData.setValue(new WeatherData());
     }
 
-    public void connectZipCode(String zipcode) {
+    /**
+     * Connects to the webservice and request the weather for an entered zipcode.
+     * @param zipcode zipcode of weather request
+     * @param jwt jwt for authorization and user info.
+     */
+    public void connectZipCode(String zipcode, String jwt) {
         String url = getApplication().getResources().getString(R.string.url_weather_location);
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -58,6 +61,7 @@ public class WeatherViewModel extends AndroidViewModel {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
+                headers.put(getApplication().getResources().getString(R.string.header_jwt_auth), jwt);
                 headers.put(getApplication().getResources().getString(R.string.keys_json_weather_zip), zipcode);
                 return headers;
             }
@@ -77,7 +81,7 @@ public class WeatherViewModel extends AndroidViewModel {
      * @param latitude latitude of request
      * @param longitude longitude of request
      */
-    public void connectLocation(double latitude, double longitude) {
+    public void connectLocation(double latitude, double longitude, String jwt) {
         String url = getApplication().getResources().getString(R.string.url_weather_location);
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -88,6 +92,7 @@ public class WeatherViewModel extends AndroidViewModel {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
+                headers.put(getApplication().getResources().getString(R.string.header_jwt_auth), jwt);
                 headers.put(getApplication().getResources().getString(R.string.keys_json_weather_lat), Double.toString(latitude));
                 headers.put(getApplication().getResources().getString(R.string.keys_json_weather_long), Double.toString(longitude));
                 return headers;
@@ -132,14 +137,37 @@ public class WeatherViewModel extends AndroidViewModel {
         return mWeatherData.getValue().getForecastData();
     }
 
+    /**
+     * Get the state of the current weather forecast.
+     * @return current state of weather info
+     */
     public String getState() {
         return mWeatherData.getValue().getState();
     }
 
+    /**
+     * Get the city of the current weather forecast.
+     * @return current city of weather info
+     */
     public String getCity() {
         return mWeatherData.getValue().getCity();
     }
 
+    /**
+     * Get the latitude of the current weather forecast.
+     * @return current latitude of weather info
+     */
+    public double getLatitude() {
+        return mWeatherData.getValue().getLatitude();
+    }
+
+    /**
+     * Get the longitude of the current weather forecast.
+     * @return current longitude of weather info
+     */
+    public double getLongitude() {
+        return  mWeatherData.getValue().getLongitude();
+    }
 
     /**
      * When a successful call is made to the server. Parses the retrieved JSON
@@ -219,6 +247,22 @@ public class WeatherViewModel extends AndroidViewModel {
                 mWeatherData.getValue().setState(state);
             } else {
                 Log.e("WEATHER MODEL ERROR!", "No city data");
+            }
+
+            if(root.has(getString.apply(R.string.keys_json_weather_lat))) {
+                double latitude = root.getDouble(getString.apply(R.string.keys_json_weather_lat));
+                Log.d("Weather Latitude", Double.toString(latitude));
+                mWeatherData.getValue().setLatitude(latitude);
+            } else {
+                Log.e("WEATHER MODEL ERROR!", "No latitude data");
+            }
+
+            if(root.has(getString.apply(R.string.keys_json_weather_long))) {
+                double longitude = root.getDouble(getString.apply(R.string.keys_json_weather_long));
+                Log.d("Weather Longitude", Double.toString(longitude));
+                mWeatherData.getValue().setLongitude(longitude);
+            } else {
+                Log.e("WEATHER MODEL ERROR!", "No latitude data");
             }
 
         } catch (JSONException e) {

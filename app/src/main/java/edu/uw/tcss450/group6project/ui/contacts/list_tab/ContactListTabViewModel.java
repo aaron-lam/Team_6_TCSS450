@@ -108,8 +108,11 @@ public class ContactListTabViewModel extends AndroidViewModel {
             e.printStackTrace();
             Log.e("ERROR!", e.getMessage());
         }
-        Collections.sort(contacts);
-        mContactList.setValue(contacts);
+
+        if (contacts.size() > 0) {
+            Collections.sort(contacts);
+            mContactList.setValue(contacts);
+        }
     }
 
     /**
