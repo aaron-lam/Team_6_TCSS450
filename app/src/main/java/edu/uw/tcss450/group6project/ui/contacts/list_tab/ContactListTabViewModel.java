@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +110,7 @@ public class ContactListTabViewModel extends AndroidViewModel {
         }
 
         if (contacts.size() > 0) {
+            Collections.sort(contacts);
             mContactList.setValue(contacts);
         }
     }

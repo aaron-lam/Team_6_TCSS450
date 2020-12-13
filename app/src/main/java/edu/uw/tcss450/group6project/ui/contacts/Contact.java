@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Robert M, Aaron L
  * @version 12 November 2020
  */
-public class Contact implements Serializable {
+public class Contact implements Serializable, Comparable<Contact> {
 
     /**
      * The contact's first name.
@@ -26,6 +26,11 @@ public class Contact implements Serializable {
     private final String mUserName;
 
     private final String mMemberId;
+
+    @Override
+    public int compareTo(Contact contact) {
+        return mUserName.compareTo(contact.mUserName);
+    }
 
     /**
      * Helper class for building immutable Contact object.
