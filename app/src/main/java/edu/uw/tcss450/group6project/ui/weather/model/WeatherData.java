@@ -3,8 +3,14 @@ package edu.uw.tcss450.group6project.ui.weather.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
 
+/**
+ * Class that encapsulates all the weather information retrieved from the web-service
+ * Contains Daily Weather for 7 days
+ * Contains Hourly Weather for 48-hours
+ * Contains Location of the weather forecast.
+ * @author Anthony
+ */
 public class WeatherData {
 
     /** List of daily weather conditions*/

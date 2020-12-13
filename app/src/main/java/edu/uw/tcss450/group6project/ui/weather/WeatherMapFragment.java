@@ -27,14 +27,25 @@ import edu.uw.tcss450.group6project.model.LocationViewModel;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
 
+/**
+ * Fragment that displays a map and lets a user select a location
+ * to retrieve weather information from.
+ * @author Anthony
+ */
 public class WeatherMapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener{
 
+    /** Model for the user's current device location. */
     private LocationViewModel mLocationModel;
+    /** Model for the weather. */
     private WeatherViewModel mWeatherModel;
+    /** Model for the user's information. Required for JWT. */
     private UserInfoViewModel mUserModel;
+    /** The map being displayed. */
     private GoogleMap mMap;
 
+    /** Latitude of the last click. */
     private double mLatitude;
+    /** Longitude of hte last click. */
     private double mLongitude;
 
 

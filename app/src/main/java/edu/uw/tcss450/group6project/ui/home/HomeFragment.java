@@ -31,9 +31,13 @@ import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
  */
 public class HomeFragment extends Fragment {
 
+    /** Model storing user information. */
     private UserInfoViewModel mUserModel;
+    /** Model storing weather information. */
     private WeatherViewModel mWeatherModel;
+    /** Model storing info about chat rooms the user is in. */
     private ChatRoomViewModel mChatRoomModel;
+    /** Model storing info about contact requests the user has received. */
     private ContactRequestTabViewModel mContactRequestModel;
 
     @Override
@@ -98,13 +102,11 @@ public class HomeFragment extends Fragment {
      * @return Map of weather icons
      */
     private Map<String, Integer> createIconMap() {
-
         Map<String, Integer> iconMap = new HashMap<>();
         iconMap.put("Clouds", R.drawable.weather_cloud_24dp);
         iconMap.put("Snow", R.drawable.weather_snow_24dp);
         iconMap.put("Rain", R.drawable.weather_rain_24dp);
         iconMap.put("Clear", R.drawable.weather_sun_24dp);
-
         return iconMap;
     }
 

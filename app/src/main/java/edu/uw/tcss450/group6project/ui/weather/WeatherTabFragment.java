@@ -40,18 +40,23 @@ import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
 
 /**
- * A fragment to navigate between single day
- * and weekly weather fragments
+ * A fragment to display all the weather information.
+ * Displays 48-hourly forecast
+ * Displays 7-day daily forecast.
+ * Allows user update via zipcode, map, and favorite locations
+ * @author Anthony
  */
 public class WeatherTabFragment extends Fragment {
 
-    /** Model for the weather data*/
+    /** Model for the weather data. */
     private WeatherViewModel mWeatherModel;
+    /** Model for the user data. */
     private UserInfoViewModel mUserModel;
+    /** Model for the user's favorite locations. */
     private FavoriteWeatherViewModel mFavoriteLocationModel;
-    /** Top search action for entering zip codes*/
+    /** Top search action for entering zip codes. */
     private SearchView mSearchView;
-    /** Whether or not the current location is a favorite location*/
+    /** Whether or not the current location is a favorite location. */
     private boolean mFavoriteLocation;
 
     @Override
