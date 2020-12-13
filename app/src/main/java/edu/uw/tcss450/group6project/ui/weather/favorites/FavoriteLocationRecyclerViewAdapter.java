@@ -1,6 +1,5 @@
 package edu.uw.tcss450.group6project.ui.weather.favorites;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 import edu.uw.tcss450.group6project.R;
 import edu.uw.tcss450.group6project.databinding.FragmentFavoriteLocationCardBinding;
 import edu.uw.tcss450.group6project.model.UserInfoViewModel;
 import edu.uw.tcss450.group6project.ui.weather.model.FavoriteWeather;
-import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
 import edu.uw.tcss450.group6project.ui.weather.model.WeatherViewModel;
 
 /**

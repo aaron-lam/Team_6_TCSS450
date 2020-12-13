@@ -13,10 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import edu.uw.tcss450.group6project.R;
-import edu.uw.tcss450.group6project.databinding.FragmentFavoriteLocationCardBinding;
 import edu.uw.tcss450.group6project.databinding.FragmentWeatherFavoriteLocationBinding;
-import edu.uw.tcss450.group6project.databinding.FragmentWeatherForecastBinding;
-import edu.uw.tcss450.group6project.ui.weather.forecast.ForecastRecyclerViewAdapter;
 import edu.uw.tcss450.group6project.ui.weather.model.FavoriteWeatherViewModel;
 
 /**

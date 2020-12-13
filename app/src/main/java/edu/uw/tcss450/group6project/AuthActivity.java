@@ -4,19 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 
 import edu.uw.tcss450.group6project.model.PushyTokenViewModel;
-import edu.uw.tcss450.group6project.model.UserInfoViewModel;
-import edu.uw.tcss450.group6project.ui.auth.sign_in.SignInFragmentDirections;
 import me.pushy.sdk.Pushy;
 
 /**

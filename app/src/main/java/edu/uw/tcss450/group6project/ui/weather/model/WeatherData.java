@@ -3,7 +3,6 @@ package edu.uw.tcss450.group6project.ui.weather.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
 
 /**
  * Class that encapsulates all the weather information retrieved from the web-service

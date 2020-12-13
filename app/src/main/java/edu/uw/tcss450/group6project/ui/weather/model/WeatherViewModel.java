@@ -25,8 +25,6 @@ import java.util.Map;
 import java.util.function.IntFunction;
 
 import edu.uw.tcss450.group6project.R;
-import edu.uw.tcss450.group6project.ui.weather.model.WeatherDailyData;
-import edu.uw.tcss450.group6project.ui.weather.model.WeatherData;
 
 /**
  * View Model class to store and update data about weather.
