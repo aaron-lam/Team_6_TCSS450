@@ -354,7 +354,6 @@ public class MainActivity extends AppCompatActivity {
                     ).build());
                 }
                 mNewContactCountViewModel.increment();
-
             }
         }
     }

@@ -56,13 +56,19 @@ public class ForgotPasswordViewModel extends AndroidViewModel {
      */
     public void connectForgotPassword(final String email) {
 
-        String url = "https://team6-tcss450-web-service.herokuapp.com/password/reset" +
-                "?email="+email;
+        String url = "https://team6-tcss450-web-service.herokuapp.com/password/reset";
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("email", email);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         Request request = new JsonObjectRequest(
-                Request.Method.GET,
+                Request.Method.PUT,
                 url,
-                null, //no body for this get request
+                body,
                 mResponse::setValue,
                 this::handleError);
 
